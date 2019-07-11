@@ -1,6 +1,7 @@
-# Lucio's Dotfiles (Inspired by https://github.com/nachovizzo/dotfiles/)
+# Lucio's Dotfiles
+##### (Inspired by https://github.com/nachovizzo/dotfiles/)
 
-## Init the dotfile repository into your home directory
+### Init the dotfile repository into your home directory
 
 ```sh
 git init
@@ -10,8 +11,15 @@ git reset origin/master --hard
 git pull origin master
 ```
 
-## Install all packages(optional)
+### Install all packages(optional)
 
 ```sh
-sudo apt update && cat pkglist | xargs sudo apt install
+cd ~
+sudo sh setup_computer.sh
 ```
+
+
+### TODO
+ - Set "PrtSc" improved configuration (i.e. save to a specific folder)
+ - Set used shortcuts
+ - Create AdPlan specific config
