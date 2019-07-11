@@ -1,0 +1,26 @@
+define chicken-mode
+    set confirm on
+end
+
+define ballsy-mode
+    set confirm off
+end
+
+define rr
+    monitor reset halt
+    run
+end
+
+define lrr
+    load
+    monitor reset halt
+    run
+end
+
+define ter
+ 	target extended-remote $arg0-$arg1:$arg2
+end
+
+define tercb
+ 	target extended-remote cb-$arg0:3333
+end
