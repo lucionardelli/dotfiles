@@ -1,0 +1,354 @@
+[system/locale]
+region='es_AR.UTF-8'
+
+[org/gnome/settings-daemon/plugins/power]
+sleep-inactive-battery-type='suspend'
+button-power='suspend'
+lid-close-battery-action='hibernate'
+sleep-inactive-ac-timeout=3600
+sleep-inactive-ac-type='nothing'
+sleep-inactive-battery-timeout=3600
+
+[org/gnome/settings-daemon/plugins/media-keys]
+screenshot=''
+terminal='<Primary><Alt>t'
+calculator='<Super>k'
+window-screenshot=''
+www='<Super>w'
+home='<Super>n'
+area-screenshot=''
+custom-keybindings=['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/']
+
+[org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2]
+binding='<Alt>Print'
+command='gnome-screenshot -w'
+name='Save a screenshot of a window'
+
+[org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1]
+binding='Print'
+command='gnome-screenshot'
+name='Save a screenshot'
+
+[org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4]
+binding='<Super>r'
+command='/home/lucio/irobot/brewst/result/debug/bin/robo-scope'
+name='Roboscope'
+
+[org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0]
+binding='<Super>t'
+command='gnome-terminal'
+name='Launch terminal II'
+
+[org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3]
+binding='<Shift>Print'
+command='gnome-screenshot -a'
+name='Save a screenshot of an area'
+
+[org/gnome/shell/calendar]
+show-weekdate=false
+
+[org/gnome/settings-daemon/plugins/xsettings]
+overrides={'Gdk/WindowScalingFactor': <2>, 'Gtk/EnablePrimaryPaste': <1>}
+
+[org/gnome/shell/keybindings]
+toggle-message-tray=@as []
+focus-active-notification=@as []
+
+[org/gnome/shell]
+enabled-extensions=['alternate-tab@gnome-shell-extensions.gcampax.github.com', 'cpupower@mko-sl.de', 'caffeine@patapon.info', 'Hide_Activities@shay.shayel.org', 'TopIcons@phocean.net', 'dash-to-dock@micxgx.gmail.com', 'drop-down-terminal@gs-extensions.zzrough.org', 'launch-new-instance@gnome-shell-extensions.gcampax.github.com', 'native-window-placement@gnome-shell-extensions.gcampax.github.com', 'noannoyance@sindex.com', 'openweather-extension@jenslody.de', 'world_clock_lite@ailin.nemui', 'places-menu@gnome-shell-extensions.gcampax.github.com', 'drive-menu@gnome-shell-extensions.gcampax.github.com', 'remove-dropdown-arrows@mpdeimos.com', 'status-area-horizontal-spacing@mathematical.coffee.gmail.com', 'touchpad-indicator@orangeshirt', 'workspace-indicator@gnome-shell-extensions.gcampax.github.com', 'windowsNavigator@gnome-shell-extensions.gcampax.github.com']
+command-history=[]
+favorite-apps=['google-chrome.desktop', 'firefox.desktop', 'gnome-terminal.desktop', 'org.gnome.Nautilus.desktop']
+
+[org/gnome/shell/app-switcher]
+current-workspace-only=false
+
+[org/gnome/shell/overrides]
+dynamic-workspaces=true
+workspaces-only-on-primary=false
+
+[org/gnome/shell/window-switcher]
+current-workspace-only=true
+app-icon-mode='both'
+
+[org/gnome/shell/extensions/status-area-horizontal-spacing]
+hpadding=5
+
+[org/gnome/shell/extensions/dash-to-dock]
+autohide-in-fullscreen=false
+preferred-monitor=0
+transparency-mode='FIXED'
+extend-height=false
+dock-fixed=false
+intellihide=false
+intellihide-mode='FOCUS_APPLICATION_WINDOWS'
+animation-time=0.10000000000000002
+multi-monitor=false
+hide-delay=0.10000000000000002
+custom-theme-customize-running-dots=false
+autohide=true
+apply-custom-theme=false
+pressure-threshold=200.0
+custom-theme-running-dots=true
+isolate-monitors=false
+dock-position='BOTTOM'
+custom-theme-shrink=false
+background-opacity=0.35999999999999999
+height-fraction=0.35999999999999999
+dash-max-icon-size=29
+require-pressure-to-show=true
+icon-size-fixed=true
+isolate-workspaces=true
+
+[org/gnome/shell/extensions/openweather]
+weather-provider='openweathermap'
+center-forecast=false
+menu-alignment=46.899999999999999
+days-forecast=2
+geolocation-provider='openstreetmaps'
+unit='celsius'
+actual-city=1
+use-default-owm-key=true
+show-text-in-panel=true
+show-comment-in-panel=false
+use-symbolic-icons=true
+position-in-panel='center'
+wind-speed-unit='kph'
+translate-condition=false
+city='-32.9595004,-60.6615415>Rosario, Municipio de Rosario, Departamento Rosario, Sta. Fe, S2000, Argentina >-1 && 48.8566101,2.3514992>Paris, Île-de-France, France métropolitaine, France >-1 && 34.1476452,-118.1444779>Pasadena, Los Angeles County, California, United States of America >-1'
+wind-direction=true
+pressure-unit='hPa'
+show-comment-in-forecast=false
+decimal-places=1
+
+[org/gnome/shell/extensions/world-clock]
+num-buttons=int16 2
+num-buttons2=int16 2
+active-buttons=['KMWS', 'SABE', 'LFPB,LFPO,LFPG']
+button-position='RL'
+button-position2='RL'
+
+[org/gnome/shell/extensions/cpupower]
+taskbar-freq-unit-ghz=true
+profiles=[(0, 10, false, 'Energy Saver', '1502508831'), (0, 30, false, 'Quiet', '837714990'), (20, 80, true, 'Multimedia', '3113384332'), (50, 100, true, 'High Performance', '2278033331')]
+
+[org/gnome/shell/extensions/caffeine]
+enable-fullscreen=false
+show-notifications=false
+user-enabled=false
+restore-state=false
+
+[org/gnome/shell/extensions/topicons]
+icon-size=22
+tray-pos='left'
+icon-brightness=0.40000000000000002
+icon-saturation=0.30000000000000004
+icon-contrast=-0.10000000000000003
+icon-opacity=186
+tray-order=0
+icon-spacing=10
+
+[org/gnome/clocks]
+world-clocks=[{'location': <(uint32 2, <('Pasadena', 'KMWS', true, [(0.59748437478162797, -2.0606520760057356)], [(0.59599128051313177, -2.0620107799218284)])>)>}, {'location': <(uint32 2, <('Buenos Aires', 'SABE', true, [(-0.60330215059047076, -1.0195631771911182)], [(-0.6036657550335387, -1.024028305376373)])>)>}, {'location': <(uint32 2, <('Paris', 'LFPB', true, [(0.85462956287765413, 0.042760566673861078)], [(0.8528842336256599, 0.040724343395436846)])>)>}]
+
+[org/gnome/nautilus/preferences]
+sort-directories-first=true
+enable-interactive-search=true
+
+[org/gnome/nautilus/desktop]
+home-icon-visible=false
+volumes-visible=true
+trash-icon-visible=true
+
+[org/gnome/gnome-screenshot]
+include-pointer=false
+include-border=true
+border-effect='none'
+auto-save-directory='/home/lucio/Pictures/screenshots'
+delay=0
+last-save-directory='file:///home/lucio/Pictures/screenshots'
+
+[org/gnome/desktop/interface]
+clock-show-date=true
+gtk-key-theme='Default'
+scaling-factor=uint32 2
+gtk-im-module='gtk-im-context-simple'
+clock-show-seconds=false
+text-scaling-factor=0.75
+cursor-blink=true
+
+[org/gnome/desktop/screensaver]
+picture-uri='file:///home/lucio/Pictures/xkcd_no_problems_only_opportunities.png'
+color-shading-type='solid'
+primary-color='#000000000000'
+picture-options='zoom'
+secondary-color='#000000000000'
+
+[org/gnome/desktop/peripherals/touchpad]
+click-method='areas'
+speed=0.78761061946902644
+tap-to-click=true
+send-events='enabled'
+
+[org/gnome/desktop/peripherals/mouse]
+speed=0.0
+
+[org/gnome/desktop/session]
+idle-delay=uint32 900
+
+[org/gnome/desktop/wm/preferences]
+button-layout='appmenu:close'
+
+[org/gnome/desktop/wm/keybindings]
+maximize=['<Super>Up', '<Super>Up', '<Primary><Alt>KP_5']
+unmaximize=['<Super>Down', '<Super>Down', '<Alt>F5']
+switch-to-workspace-1=['<Super>1']
+switch-to-workspace-2=['<Super>2']
+switch-to-workspace-3=['<Super>3']
+switch-to-workspace-4=['<Super>4']
+toggle-fullscreen=['F11']
+maximize-vertically=['<Super>v']
+switch-group-backward=['<Shift><Alt>grave', '<Shift><Alt>Above_Tab']
+switch-group=['<Alt>grave', '<Alt>Above_Tab']
+switch-windows=@as []
+maximize-horizontally=['<Super>h']
+
+[org/gnome/desktop/a11y/magnifier]
+mag-factor=1.5
+
+[org/gnome/desktop/a11y/applications]
+screen-magnifier-enabled=false
+
+[org/gnome/desktop/sound]
+theme-name='freedesktop'
+event-sounds=true
+
+[org/gnome/desktop/datetime]
+automatic-timezone=true
+
+[org/gnome/desktop/background]
+picture-uri='file:///home/lucio/Pictures/427863-desktop-top.jpg'
+show-desktop-icons=true
+color-shading-type='solid'
+primary-color='#000000000000'
+picture-options='zoom'
+secondary-color='#000000000000'
+
+[org/gnome/desktop/input-sources]
+current=uint32 1
+sources=[('xkb', 'us+altgr-intl'), ('xkb', 'us')]
+xkb-options=['compose:ralt']
+
+[org/gnome/gnome-session]
+auto-save-session=true
+auto-save-session-one-shot=false
+
+[org/gnome/meld]
+window-size=(405, 400)
+insert-spaces-instead-of-tabs=true
+vc-status-filters=['modified', 'flatten']
+window-state='maximized'
+draw-spaces=@as []
+indent-width=4
+
+[org/gnome/terminal/legacy]
+mnemonics-enabled=true
+menu-accelerator-enabled=true
+schema-version=uint32 3
+default-show-menubar=false
+tab-position='top'
+
+[org/gnome/terminal/legacy/keybindings]
+toggle-menubar='<Alt>t'
+find='<Primary><Shift>f'
+reset-and-clear='<Primary>F5'
+find-previous='<Primary>k'
+reset='disabled'
+find-next='<Primary>j'
+help='disabled'
+
+[org/gnome/terminal/legacy/profiles:/:403ad0ad-755d-46c1-bdea-d44fce5f95d2]
+foreground-color='#CDD3DE'
+visible-name='Nachos'
+scrollbar-policy='never'
+palette=['#1B2B34', '#EC5F67', '#99C794', '#FAC863', '#6699CC', '#C594C5', '#5FB3B3', '#A7ADBA', '#4F5B66', '#EC5F67', '#99C794', '#FAC863', '#6699CC', '#C594C5', '#5FB3B3', '#D8DEE9']
+use-system-font=true
+use-transparent-background=true
+use-theme-colors=false
+font='Fira Code 12'
+use-theme-transparency=false
+allow-bold=true
+use-theme-background=false
+bold-color-same-as-fg=true
+bold-color='#CDD3DE'
+background-color='rgb(28,30,38)'
+background-transparency-percent=7
+audible-bell=false
+
+[org/gnome/system/location]
+enabled=false
+
+[org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9]
+visible-name='blanco'
+palette=['rgb(0,0,0)', 'rgb(204,0,0)', 'rgb(78,154,6)', 'rgb(196,160,0)', 'rgb(52,101,164)', 'rgb(117,80,123)', 'rgb(6,152,154)', 'rgb(211,215,207)', 'rgb(85,87,83)', 'rgb(239,41,41)', 'rgb(138,226,52)', 'rgb(252,233,79)', 'rgb(114,159,207)', 'rgb(173,127,168)', 'rgb(52,226,226)', 'rgb(238,238,236)']
+scroll-on-output=false
+use-transparent-background=false
+backspace-binding='auto'
+use-theme-colors=true
+use-theme-transparency=false
+scrollback-unlimited=true
+audible-bell=false
+scrollbar-policy='never'
+
+[org/gnome/terminal/legacy/profiles:/:403ad0ad-755d-46c1-bdea-d44fce5f95d1]
+foreground-color='rgb(0,255,0)'
+visible-name='verde'
+backspace-binding='auto'
+use-theme-colors=false
+delete-binding='auto'
+scrollback-unlimited=true
+background-color='rgb(0,0,0)'
+scrollbar-policy='never'
+audible-bell=false
+
+[org/gnome/terminal/legacy/profiles:]
+list=['b1dcc9dd-5262-4d8d-a863-c897e6d979b9', '88c568fb-7350-48b1-b6e0-0fb85adeac04', '403ad0ad-755d-46c1-bdea-d44fce5f95d1', '403ad0ad-755d-46c1-bdea-d44fce5f95d2']
+default='403ad0ad-755d-46c1-bdea-d44fce5f95d2'
+
+[org/gnome/terminal/legacy/profiles:/:88c568fb-7350-48b1-b6e0-0fb85adeac04]
+foreground-color='rgb(170,170,170)'
+visible-name='negro'
+backspace-binding='auto'
+use-theme-colors=false
+delete-binding='auto'
+scrollback-unlimited=true
+background-color='rgb(0,0,0)'
+scrollbar-policy='never'
+audible-bell=false
+
+[org/gnome/gnome-system-monitor]
+show-dependencies=false
+current-tab='resources'
+maximized=false
+show-whose-processes='user'
+window-state=(700, 500, 50, 50)
+
+[org/gnome/mutter/keybindings]
+toggle-tiled-right=['<Primary><Super>Right', '<Super>Right']
+toggle-tiled-left=['<Primary><Super>Left', '<Super>Left']
+
+[org/gtk/settings/color-chooser]
+selected-color=(true, 0.54117647058823526, 0.88627450980392153, 0.20392156862745098, 1.0)
+custom-colors=[(0.66666666666666663, 0.66666666666666663, 0.66666666666666663, 1.0), (0.80392156862745101, 0.0, 0.0, 1.0)]
+
+[org/zzrough/gs-extensions/drop-down-terminal]
+foreground-color='rgb(138,226,52)'
+transparency-level=uint32 78
+terminal-size='40%'
+real-shortcut=['<Alt>grave']
+scrollbar-visible=false
+enable-toggle-on-scroll=false
+terminal-position='Top'
+shortcut-type='other'
+enable-audible-bell=false
+other-shortcut=['<Alt>grave']
+first-start=false
