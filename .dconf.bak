@@ -31,7 +31,7 @@ name='Save a screenshot'
 
 [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4]
 binding='<Super>r'
-command='/home/lucio/irobot/brewst/result/debug/bin/robo-scope'
+command='/home/<YOUR_USERNAME>/irobot/brewst/result/debug/bin/robo-scope'
 name='Roboscope'
 
 [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0]
@@ -163,9 +163,9 @@ trash-icon-visible=true
 include-pointer=false
 include-border=true
 border-effect='none'
-auto-save-directory='/home/lucio/Pictures/screenshots'
+auto-save-directory='/home/<YOUR_USERNAME>/Pictures/screenshots'
 delay=0
-last-save-directory='file:///home/lucio/Pictures/screenshots'
+last-save-directory='file:///home/<YOUR_USERNAME>/Pictures/screenshots'
 
 [org/gnome/desktop/interface]
 clock-show-date=true
@@ -177,7 +177,7 @@ text-scaling-factor=0.75
 cursor-blink=true
 
 [org/gnome/desktop/screensaver]
-picture-uri='file:///home/lucio/Pictures/xkcd_no_problems_only_opportunities.png'
+picture-uri='file:///home/<YOUR_USERNAME>/Pictures/xkcd_no_problems_only_opportunities.png'
 color-shading-type='solid'
 primary-color='#000000000000'
 picture-options='zoom'
@@ -226,7 +226,7 @@ event-sounds=true
 automatic-timezone=true
 
 [org/gnome/desktop/background]
-picture-uri='file:///home/lucio/Pictures/427863-desktop-top.jpg'
+picture-uri='file:///home/<YOUR_USERNAME>/Pictures/427863-desktop-top.jpg'
 show-desktop-icons=true
 color-shading-type='solid'
 primary-color='#000000000000'

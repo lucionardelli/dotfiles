@@ -47,7 +47,9 @@ sudo apt -y install vlc gnome-clocks meld
 sudo sed -i 's/#\s*Defaults\s\+insults/Defaults\tinsults/' /etc/sudoers
 
 # Config gnome things
-dconf load / < .dconf.bak
+cp .dconf.bak /tmp/dconf.bak
+sed -i 's/<YOUR_USERNAME>/$USER' /tmp/dconf.bak
+dconf load / < /tmp/dconf.bak
 
 # Clean all the things!
 sudo apt -y autoremove
