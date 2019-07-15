@@ -17,7 +17,7 @@ cp -r .dotfile-gitinfo .git/info
 # Install basic things
 sudo apt update -y
 sudo apt upgrade -y
-sudo apt install -y vim-gnome git curl openssh-server
+sudo apt install -y vim-gnome curl openssh-server
 
 # Set vim as default editor
 sudo update-alternatives --set editor /usr/bin/vim.gnome
@@ -29,7 +29,7 @@ pip install --user --upgrade virtualenv virtualenvwrapper
 
 # Make VIM ASF
 sudo apt install -y ruby-dev cowsay
-`vim -c "PlugInstall|qa" > /dev/null 2>&1`
+vim -c "PlugInstall|qa" > /dev/null 2>&1
 
 # Install Chrome (already set as default)
 wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -O /tmp/google-chrome-stable_current_amd64.deb
@@ -43,7 +43,7 @@ sudo sed -i 's/#\s*Defaults\s\+insults/Defaults\tinsults/' /etc/sudoers
 
 # Config gnome things
 cp .dconf.bak /tmp/dconf.bak
-sed -i 's/<YOUR_USERNAME>/$USER' /tmp/dconf.bak
+sed -i "s/<YOUR_USERNAME>/$USER/" /tmp/dconf.bak
 dconf reset -f /
 dconf load / < /tmp/dconf.bak
 
