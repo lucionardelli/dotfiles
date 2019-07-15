@@ -16,7 +16,7 @@ git config --global user.email <YOUR EMAIL@EXAMPLE.COM>
 
 ```sh
 git init
-git remote add origin git@github.com:lucionardelli/dotfiles.git
+git remote add origin https://github.com/lucionardelli/dotfiles.git
 git fetch
 git reset origin/master --hard
 git pull origin master

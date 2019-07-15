@@ -8,11 +8,11 @@ if [ -z "$USER_NAME" ]; then
     read -p 'Please enter your full name: ' USER_NAME
 fi
 
-mv .gitconfig.bak .gitconfig
-sed -i 's/<YOUR_EMAIL>/$USER_EMAIL' .gitconfig
-sed -i 's/<YOUR_NAME>/$USER_NAME' .gitconfig
+cp .gitconfig.bak .gitconfig
+git config --global user.emaul $USER_EMAIL
+git config --global user.name $USER_NAME
 
-mv .dotfile-gitinfo .git/info
+cp -r .dotfile-gitinfo .git/info
 
 # Install basic things
 sudo apt update -y
@@ -28,13 +28,8 @@ sudo apt install -y python-pip python3-pip python-setuptools
 pip install --user --upgrade virtualenv virtualenvwrapper
 
 # Make VIM ASF
-sudo apt intsall -y ruby-dev cowsay
+sudo apt install -y ruby-dev cowsay
 `vim -c "PlugInstall|qa" > /dev/null 2>&1`
-
-# Reset config from terminal and load saved config
-dconf dump /org/gnome/terminal/ > /tmp/gnome_terminal_settings_backup.txt
-dconf reset -f /org/gnome/terminal/
-dconf load /org/gnome/terminal/ < .gnome_termianl_settings.txt
 
 # Install Chrome (already set as default)
 wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -O /tmp/google-chrome-stable_current_amd64.deb
@@ -49,7 +44,10 @@ sudo sed -i 's/#\s*Defaults\s\+insults/Defaults\tinsults/' /etc/sudoers
 # Config gnome things
 cp .dconf.bak /tmp/dconf.bak
 sed -i 's/<YOUR_USERNAME>/$USER' /tmp/dconf.bak
+dconf reset -f /
 dconf load / < /tmp/dconf.bak
 
-# Clean all the things!
+# Reboot. But first...Clean all the things!
 sudo apt -y autoremove
+echo "You might want to...
+ sudo reboot"
