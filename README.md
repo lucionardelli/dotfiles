@@ -36,8 +36,3 @@ sudo bash .setup_computer.sh
  - Add images?
  - Create AdPlan specific config
  - TEST IT!
-
- - Do this in a different file .setup_irobot
- - iRobot VPN can't be run in the same terminal (--background option? -u "username")
- - checkout irobot's vpn repo (ssh://git@git.wardrobe.irobot.com:7999/~rrosa/vpn.git)
- - Configure irobot-bg vpn as per above repo
