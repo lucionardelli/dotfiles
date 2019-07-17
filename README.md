@@ -19,7 +19,9 @@ git init
 git remote add origin https://github.com/lucionardelli/dotfiles.git
 git fetch
 git reset origin/master --hard
-git pull origin master
+git branch --set-upstream-to=origin/master master
+git pull
+source ~/.bashrc
 ```
 
 ### Install all packages(optional)
