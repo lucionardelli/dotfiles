@@ -1,0 +1,60 @@
+# PATHs
+export IROBOT_DIR=$HOME/irobot/
+export IROBOT_DOCS_DIR=$HOME/irobot/docs/
+export BREWST_DIR=$HOME/irobot/brewst/
+export BREWST_HOME=$BREWST_DIR
+export ROOST_DIR=$HOME/irobot/brewst/roost/
+export ROBOLOG_DIR=$HOME/irobot/robolog/
+export ROBOLOG2_DIR=$HOME/irobot/robolog2/
+export ROBOLOG_PYTHON_API_DIR=$HOME/irobot/rapi/
+
+# Necessary to use brewst-sdk
+export PATH=/opt/irobot/brewst-1.0/bin:$PATH
+export PATH=/opt/ccache/bin:$PATH
+export PATH=/opt/irobot/x86_64-oesdk-linux/usr/bin/arm-oe-linux-gnueabi:$PATH
+
+# Activate icecc
+export PATH=/usr/lib/icecc/bin/:$PATH # Iceccream + ccace is not working with this?
+export CCACHE_PREFIX=icecc
+
+# Simulator
+# source /opt/ros/lunar/setup.bash
+# source /opt/irobot/simulator/setup.bash
+
+# Quick path aliases
+alias cd-irobot-dir='cd '$IROBOT_DIR
+alias cd-irobot-ddir='cd '$IROBOT_DOCS_DIR
+alias fcd='cd '$HOME/irobot/floorcare-dev
+alias b='cd '$BREWST_DIR
+alias r='cd '$ROBOLOG_DIR
+alias r2='cd '$ROBOLOG2_DIR
+alias rp='cd '$ROBOLOG_PYTHON_API_DIR
+alias rapi='cd '$ROBOLOG_PYTHON_API_DIR
+alias brewst-dev='cd '$BREWST_DIR
+alias roost-dev='cd '$ROOST_DIR
+
+# Life's too short, ssh aliases
+alias scb19='ssh pi@cb-19'
+alias kraken='ssh -X lnardelli@kraken'
+alias jabba='ssh -X lnardelli@jabba'
+alias it6237='ssh -X lnardelli@it6237'
+alias cojuda='ssh -X lnardelli@cojuda'
+alias edison='ssh -p 2222 root@edison-051'
+alias smeagol='ssh -X lnardelli@smeagol'
+
+
+alias gdb-cb19='arm-none-eabi-gdb -ex "target extended-remote cb-19:3333" cambot_d.elf'
+
+# VPN
+alias vpn='sudo $HOME/irobot/vpn/irobot-vpn.sh -c=irobot-gb'
+
+# Compile, compile, compile
+alias moblcompile='cd $ROOST_DIR;nice -n15 scons -j5 --verbose lewis'
+alias navlcompile='cd $BREWST_DIR;nice -n15 scons -j5 --os=eLinux --arch=apq8009 --robot=lewis'
+alias erspncomplie='cd $BREWST_DIR;nice -n15 scons -j5 --verbose --ccahce --no-embedded ersp-navigation'
+# alias s='cd $BREWST_DIR;scons --verbose -j$(getconf _NPROCESSORS_ONLN) --enable-ccache --ccache-set-basedir --interactive'
+alias s='cd $BREWST_DIR;scons --verbose -j$(getconf _NPROCESSORS_ONLN) --enable-ccache --ccache-set-basedir --robot=lewis --interactive'
+alias sr='cd $ROOS_DIR;scons --verbose -j$(getconf _NPROCESSORS_ONLN) --enable-ccache --ccache-set-basedir --interactive'
+
+# Add helpful compile alias
+export PATH=${BREWST_HOME}/scripts/bash-scripts:${PATH}
