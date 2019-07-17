@@ -89,7 +89,7 @@ fi
 cd /irobot
 
 # Get the code
-git clone --recurse-submodules --branch floorcare-dev ssh://git@git.wardrobe.irobot.com:7999/brewst/brewst.git $BREWST_HOME
+git clone --recurse-submodules --branch floorcare-dev ssh://git@git.wardrobe.irobot.com:7999/brewst/brewst.git
 git submodule update --init --recursive
 git got get
 ln -s /irobot/brewst $HOME/irobot/
