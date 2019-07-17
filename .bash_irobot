@@ -14,12 +14,16 @@ export PATH=/opt/ccache/bin:$PATH
 export PATH=/opt/irobot/x86_64-oesdk-linux/usr/bin/arm-oe-linux-gnueabi:$PATH
 
 # Activate icecc
-export PATH=/usr/lib/icecc/bin/:$PATH # Iceccream + ccace is not working with this?
-export CCACHE_PREFIX=icecc
+# export PATH=/usr/lib/icecc/bin/:$PATH # Iceccream + ccace is not working with this?
+# export CCACHE_PREFIX=icecc
 
 # Simulator
-# source /opt/ros/lunar/setup.bash
-# source /opt/irobot/simulator/setup.bash
+if [ -f /opt/ros/lunar/setup.bash ]; then
+    source /opt/ros/lunar/setup.bash
+fi
+if [ -f /opt/irobot/simulator/setup.bash ]; then
+    source /opt/irobot/simulator/setup.bash
+fi
 
 # Quick path aliases
 alias cd-irobot-dir='cd '$IROBOT_DIR
