@@ -1,5 +1,5 @@
-USER_EMAIL=`git config user.email`
-USER_NAME=`git config user.name`
+USER_EMAIL=`git config --global user.email`
+USER_NAME=`git config --global user.name`
 
 if [ -z "$USER_EMAIL" ]; then
     read -p 'Please enter your email: ' USER_EMAIL
@@ -9,9 +9,10 @@ if [ -z "$USER_NAME" ]; then
 fi
 
 cp .gitconfig.bak .gitconfig
-git config --global user.emaul $USER_EMAIL
+git config --global user.email $USER_EMAIL
 git config --global user.name $USER_NAME
 
+rm -rf .git/info
 cp -r .dotfile-gitinfo .git/info
 
 # Install basic things
@@ -23,9 +24,13 @@ sudo apt install -y vim-gnome curl openssh-server
 sudo update-alternatives --set editor /usr/bin/vim.gnome
 
 # Install basic development packages
-sudo apt install -y build-essential python-dev
-sudo apt install -y python-pip python3-pip python-setuptools
+sudo apt install -y build-essential python-dev python3-dev
+sudo apt install -y python-pip python3-pip python3-setuptools
+sudo pip install --upgrade pip
+sudo pip3 install --upgrade pip
 pip install --user --upgrade virtualenv virtualenvwrapper
+pip3 install --user --upgrade virtualenv virtualenvwrapper
+
 
 # Make VIM ASF
 sudo apt install -y ruby-dev cowsay
@@ -48,6 +53,6 @@ dconf reset -f /
 dconf load / < /tmp/dconf.bak
 
 # Reboot. But first...Clean all the things!
-sudo apt -y autoremove
+sudo apt autoremove
 echo "You might want to...
  sudo reboot"

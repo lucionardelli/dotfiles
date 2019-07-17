@@ -48,7 +48,7 @@ command='gnome-screenshot -a'
 name='Save a screenshot of an area'
 
 [org/gnome/settings-daemon/plugins/xsettings]
-overrides={'Gdk/WindowScalingFactor': <1>, 'Gtk/EnablePrimaryPaste': <1>}
+overrides={'Gdk/WindowScalingFactor': <2>, 'Gtk/EnablePrimaryPaste': <1>}
 
 [org/gnome/settings-daemon/peripherals/keyboard]
 numlock-state='off'
@@ -186,9 +186,9 @@ last-save-directory='file:///home/<YOUR_USERNAME>/Pictures/screenshots'
 [org/gnome/desktop/interface]
 clock-show-date=true
 gtk-key-theme='Default'
-scaling-factor=uint32 1
+scaling-factor=uint32 2
 gtk-im-module='gtk-im-context-simple'
-text-scaling-factor=1
+text-scaling-factor=0.75
 cursor-blink=true
 
 [org/gnome/desktop/notifications]
