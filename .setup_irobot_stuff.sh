@@ -43,14 +43,6 @@ if [ $? -ne 0 ]; then
     sudo sed -i 's/ICECC_ALLOW_REMOTE=.yes/ICECC_ALLOW_REMOTE="no/' /etc/icecc/icecc.conf > /dev/null 2>&1
 fi
 
-# Don't put everything in the home folder
-if [ ! -d /irobot ]; then
-    sudo mkdir /irobot
-    sudo chown -R $USER:$USER /irobot
-    ln -s /irobot $HOME/
-fi
-cd $HOME/irobot
-
 # Check/create SSH key
 CREATE_SSH_KEY='no'
 
@@ -84,11 +76,25 @@ if [[ ! "$KEY_IN_BB" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
     exit 1
 fi
 
+# Create irobot dir in home folder
+if [ ! -d ~/irobot ]; then
+    mkdir ~/irobot
+fi
+
+# Don't put everything in the home folder
+if [ ! -d /irobot ]; then
+    sudo mkdir /irobot
+    sudo chown -R $USER:$USER /irobot
+fi
+cd /irobot
+
 # Get the code
 git clone --recurse-submodules --branch floorcare-dev ssh://git@git.wardrobe.irobot.com:7999/brewst/brewst.git $BREWST_HOME
 git submodule update --init --recursive
 git got get
+ln -s /irobot/brewst $HOME/irobot/
 
 # Get the wonderful VPN split routing script
 git clone ssh://git@git.wardrobe.irobot.com:7999/~rrosa/vpn.git
+ln -s /irobot/vpn $HOME/irobot/
 
