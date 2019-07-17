@@ -1,3 +1,7 @@
+#! /bin/bash
+
+# Setup all the things!
+
 USER_EMAIL=`git config --global user.email`
 USER_NAME=`git config --global user.name`
 
@@ -52,7 +56,7 @@ sed -i "s/<YOUR_USERNAME>/$USER/" /tmp/dconf.bak
 dconf reset -f /
 dconf load / < /tmp/dconf.bak
 
-# Reboot. But first...Clean all the things!
+# Reboot. But first...cleaning up my closet!
 sudo apt autoremove
 echo "You might want to...
  sudo reboot"

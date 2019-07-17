@@ -28,7 +28,7 @@ source ~/.bashrc
 
 ```sh
 cd ~
-sudo sh .setup_computer.sh
+sudo bash .setup_computer.sh
 ```
 
 
