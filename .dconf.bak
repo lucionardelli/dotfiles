@@ -172,9 +172,6 @@ home-icon-visible=false
 volumes-visible=true
 trash-icon-visible=true
 
-[org/gnome/evince]
-document-directory=@ms 'file:///home/<YOUR_USERNAME>/Dropbox/Viajes%202018/Espa%C3%B1a'
-
 [org/gnome/gnome-screenshot]
 include-pointer=false
 include-border=true
@@ -254,7 +251,7 @@ apps=['alacarte.desktop', 'authconfig.desktop', 'ca.desrt.dconf-editor.desktop',
 name='X-GNOME-Sundry.directory'
 
 [org/gnome/desktop/screensaver]
-picture-uri='file:///home/<YOUR_USERNAME>/Pictures/xkcd_no_problems_only_opportunities.png'
+picture-uri='file:///home/<YOUR_USERNAME>/Pictures/xkcd3.png'
 color-shading-type='solid'
 primary-color='#000000000000'
 picture-options='zoom'
@@ -303,7 +300,7 @@ event-sounds=true
 automatic-timezone=true
 
 [org/gnome/desktop/background]
-picture-uri='file:///home/<YOUR_USERNAME>/Pictures/427863-desktop-top.jpg'
+picture-uri='file:///home/<YOUR_USERNAME>/Pictures/xkcd1.jpg'
 show-desktop-icons=true
 color-shading-type='solid'
 primary-color='#000000000000'
@@ -360,9 +357,6 @@ bold-color='#CDD3DE'
 background-color='rgb(28,30,38)'
 background-transparency-percent=7
 audible-bell=false
-
-[org/gnome/system/location]
-enabled=false
 
 [org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9]
 visible-name='blanco'
