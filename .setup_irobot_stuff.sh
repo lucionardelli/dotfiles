@@ -3,7 +3,7 @@
 # iRobot's stuff
 
 # Conect to the VPN
-sudo apt install -y openconnect
+sudo apt install -y openconnect network-manager-openconnect-gnome
 sudo openconnect -b vpn.irobot.com
 
 # Copy the irobot-gb VPN config to the correct location
