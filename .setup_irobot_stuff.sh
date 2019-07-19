@@ -8,7 +8,19 @@ sudo openconnect -b vpn.irobot.com
 
 # Copy the irobot-gb VPN config to the correct location
 sudo cp .irobot-gb.config /etc/NetworkManager/system-connections/irobot-gb
+UUID=`uuidgen`
+sudo grep -r $UUID /etc/NetworkManager/system-connections/
+EXISTS=$?
+while [  $EXISTS -eq 1 ]; do
+    UUID=`uuidgen`
+    sudo grep -r $UUID /etc/NetworkManager/system-connections/
+    EXISTS=$?
+done
+sed -i "s/<UUID>/$UUID/" /etc/NetworkManager/system-connections/irobot-gb
 sed -i "s/<YOUR_USERNAME>/$USER/" /etc/NetworkManager/system-connections/irobot-gb
+sed -i "s/<TIMESTAMP>/`date +%s`/" /etc/NetworkManager/system-connections/irobot-gb
+
+# Set the correct permissions
 sudo chmod 0600 /etc/NetworkManager/system-connections/irobot-gb
 sudo chown root:root /etc/NetworkManager/system-connections/irobot-gb
 
@@ -97,6 +109,11 @@ ln -s /irobot/brewst $HOME/irobot/
 # Get the wonderful VPN split routing script
 git clone ssh://git@git.wardrobe.irobot.com:7999/~rrosa/vpn.git
 ln -s /irobot/vpn $HOME/irobot/
+
+# Trust the VPN script
+SCRIPT=/irobot/vpn $HOME/irobot/irobot-vpn.sh
+sudo echo "$USER ALL=(ALL) NOPASSWD: $SCRIPT" >> /etc/sudoers
+
 # Restart network manager in order to have access to the above created vpn
 service network-manager restart
 
