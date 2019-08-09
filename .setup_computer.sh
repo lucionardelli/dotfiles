@@ -45,7 +45,7 @@ wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -
 sudo dpkg -i /tmp/google-chrome-stable_current_amd64.deb
 
 # Install useful stuff
-sudo apt -y install vlc gnome-clocks meld xclip
+sudo apt -y install vlc gnome-clocks meld xclip silversearcher-ag exuberant-ctags htop tig flake8 python-flake8 python3-flake8 clang-7
 
 # Improve wrong password messages
 sudo sed -i 's/#\s*Defaults\s\+insults/Defaults\tinsults/' /etc/sudoers
