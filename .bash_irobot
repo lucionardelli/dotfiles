@@ -6,6 +6,7 @@ export BREWST_HOME=$BREWST_DIR
 export ROOST_DIR=$HOME/irobot/brewst/roost/
 export ROBOLOG_DIR=$HOME/irobot/robolog/
 export ROBOLOG2_DIR=$HOME/irobot/robolog2/
+export ROBOLOG2_UI_DIR=$HOME/irobot/robolog2-ui/
 export ROBOLOG_PYTHON_API_DIR=$HOME/irobot/rapi/
 
 # Necessary to use brewst-sdk
@@ -32,6 +33,7 @@ alias fcd='cd '$HOME/irobot/floorcare-dev
 alias b='cd '$BREWST_DIR
 alias r='cd '$ROBOLOG_DIR
 alias r2='cd '$ROBOLOG2_DIR
+alias r2u='cd '$ROBOLOG2_UI_DIR
 alias rp='cd '$ROBOLOG_PYTHON_API_DIR
 alias rapi='cd '$ROBOLOG_PYTHON_API_DIR
 alias brewst-dev='cd '$BREWST_DIR
