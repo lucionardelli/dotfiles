@@ -187,7 +187,7 @@ if [ -f /usr/share/bash-completion/completions/git ]; then
 fi
 
 # Use this utility script to allow nvm to be load in a "lazy" fashion.
-[ -s ".lazyload_nvm.sh" ] && \. ".lazyload_nvm.sh"  # This loads nvm
+[ -s ".lazyload_nvm.sh" ] && source ".lazyload_nvm.sh"  # This loads nvm
 
 # Avoid removing everything when using https://github.com/lucionardelli/dotfiles repo
-[ -s ".git_clean.sh" ] && \. ".git_clean.sh"
+[ -s ".git_clean.sh" ] && source ".git_clean.sh"
