@@ -20,12 +20,17 @@ window-screenshot=''
 www='<Super>w'
 home='<Super>n'
 area-screenshot=''
-custom-keybindings=['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/']
+custom-keybindings=['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/']
 
 [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2]
 binding='<Alt>Print'
 command='gnome-screenshot -w'
 name='Save a screenshot of a window'
+
+[org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5]
+binding='<Shift><Super>w'
+command='google-chrome --incognito'
+name='Open incognito'
 
 [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1]
 binding='Print'
@@ -48,7 +53,7 @@ command='gnome-screenshot -a'
 name='Save a screenshot of an area'
 
 [org/gnome/settings-daemon/plugins/xsettings]
-overrides={'Gdk/WindowScalingFactor': <1>, 'Gtk/EnablePrimaryPaste': <1>}
+overrides={'Gdk/WindowScalingFactor': <1>, 'Gtk/ShellShowsAppMenu': <0>, 'Gtk/EnablePrimaryPaste': <1>}
 
 [org/gnome/settings-daemon/peripherals/keyboard]
 numlock-state='off'
@@ -58,8 +63,8 @@ toggle-message-tray=@as []
 focus-active-notification=@as []
 
 [org/gnome/shell]
-enabled-extensions=['alternate-tab@gnome-shell-extensions.gcampax.github.com', 'cpupower@mko-sl.de', 'caffeine@patapon.info', 'Hide_Activities@shay.shayel.org', 'TopIcons@phocean.net', 'dash-to-dock@micxgx.gmail.com', 'drop-down-terminal@gs-extensions.zzrough.org', 'launch-new-instance@gnome-shell-extensions.gcampax.github.com', 'native-window-placement@gnome-shell-extensions.gcampax.github.com', 'noannoyance@sindex.com', 'openweather-extension@jenslody.de', 'world_clock_lite@ailin.nemui', 'places-menu@gnome-shell-extensions.gcampax.github.com', 'drive-menu@gnome-shell-extensions.gcampax.github.com', 'remove-dropdown-arrows@mpdeimos.com', 'status-area-horizontal-spacing@mathematical.coffee.gmail.com', 'touchpad-indicator@orangeshirt', 'workspace-indicator@gnome-shell-extensions.gcampax.github.com', 'windowsNavigator@gnome-shell-extensions.gcampax.github.com']
-command-history=['vpn', 'geogebra', 'r', 'gconf-editor', 'xterm', 'gnome-terminal', 'sudo gedit', 'sudo gvim', 'gvim', 'robo-scope']
+enabled-extensions=['alternate-tab@gnome-shell-extensions.gcampax.github.com', 'dash-to-dock@micxgx.gmail.com', 'drop-down-terminal@gs-extensions.zzrough.org', 'Hide_Activities@shay.shayel.org', 'launch-new-instance@gnome-shell-extensions.gcampax.github.com', 'native-window-placement@gnome-shell-extensions.gcampax.github.com', 'noannoyance@sindex.com', 'openweather-extension@jenslody.de', 'world_clock_lite@ailin.nemui', 'drive-menu@gnome-shell-extensions.gcampax.github.com', 'remove-dropdown-arrows@mpdeimos.com', 'status-area-horizontal-spacing@mathematical.coffee.gmail.com', 'TopIcons@phocean.net', 'workspace-indicator@gnome-shell-extensions.gcampax.github.com', 'windowsNavigator@gnome-shell-extensions.gcampax.github.com', 'caffeine@patapon.info']
+command-history=['vpn', 'geogebra', 'r', 'gconf-editor', 'xterm', 'gnome-terminal', 'sudo gedit', 'sudo gvim', 'gvim', 'robo-scope', 'r', 'icemon', 'robo-scope', 'roboscope', 'robo-scope', 'robot-scope', 'robo-scope', 'r', 'robo-scope', 'r', 'robo-scope', 'r', 'robo-scope', 'firefox', 'robo-scope', 'zoom', 'r', 'xkill', 'slack', 'xkill', 'r', 'robo-scope', 'r', 'robo-scope']
 favorite-apps=['google-chrome.desktop', 'firefox.desktop', 'gnome-terminal.desktop', 'org.gnome.Nautilus.desktop']
 
 [org/gnome/shell/app-switcher]
@@ -88,7 +93,7 @@ menu-alignment=46.899999999999999
 days-forecast=2
 geolocation-provider='openstreetmaps'
 unit='celsius'
-actual-city=1
+actual-city=0
 use-default-owm-key=true
 show-text-in-panel=true
 show-comment-in-panel=false
@@ -105,7 +110,7 @@ decimal-places=1
 [org/gnome/shell/extensions/world-clock]
 num-buttons=int16 2
 num-buttons2=int16 2
-active-buttons=['KMWS', 'SABE', 'LFPB,LFPO,LFPG']
+active-buttons=['KMWS', 'EGLL,EGLC,EGKK', 'SABE', 'LFPB,LFPO,LFPG', 'KBED']
 button-position='RL'
 button-position2='RL'
 
@@ -114,9 +119,9 @@ taskbar-freq-unit-ghz=true
 profiles=[(0, 10, false, 'Energy Saver', '1502508831'), (0, 30, false, 'Quiet', '837714990'), (20, 80, true, 'Multimedia', '3113384332'), (50, 100, true, 'High Performance', '2278033331')]
 
 [org/gnome/shell/extensions/caffeine]
+user-enabled=true
 enable-fullscreen=false
 show-notifications=false
-user-enabled=false
 restore-state=false
 
 [org/gnome/shell/extensions/topicons]
@@ -156,14 +161,15 @@ icon-size-fixed=true
 isolate-workspaces=true
 
 [org/gnome/clocks/state/window]
-size=(872, 690)
+size=(879, 690)
 state=128
 panel-id='world'
 
 [org/gnome/clocks]
-world-clocks=[{'location': <(uint32 2, <('Pasadena', 'KMWS', true, [(0.59748437478162797, -2.0606520760057356)], [(0.59599128051313177, -2.0620107799218284)])>)>}, {'location': <(uint32 2, <('Buenos Aires', 'SABE', true, [(-0.60330215059047076, -1.0195631771911182)], [(-0.6036657550335387, -1.024028305376373)])>)>}, {'location': <(uint32 2, <('Paris', 'LFPB', true, [(0.85462956287765413, 0.042760566673861078)], [(0.8528842336256599, 0.040724343395436846)])>)>}]
+world-clocks=[{'location': <(uint32 2, <('Pasadena', 'KMWS', true, [(0.59748437478162797, -2.0606520760057356)], [(0.59599128051313177, -2.0620107799218284)])>)>}, {'location': <(uint32 2, <('Buenos Aires', 'SABE', true, [(-0.60330215059047076, -1.0195631771911182)], [(-0.6036657550335387, -1.024028305376373)])>)>}, {'location': <(uint32 2, <('Paris', 'LFPB', true, [(0.85462956287765413, 0.042760566673861078)], [(0.8528842336256599, 0.040724343395436846)])>)>}, {'location': <(uint32 2, <('London', 'EGLL', true, [(0.89855367075064974, -0.0078539816339744835)], [(0.89884456477707964, -0.0020362232784242244)])>)>}, {'location': <(uint32 2, <('Bedford', 'KBED', true, [(0.74121223868336095, -1.2443227861787161)], [(0.74160174381252864, -1.2440038272579141)])>)>}]
 
 [org/gnome/nautilus/preferences]
+show-hidden-files=false
 sort-directories-first=true
 enable-interactive-search=true
 
@@ -187,6 +193,7 @@ scaling-factor=uint32 1
 gtk-im-module='gtk-im-context-simple'
 text-scaling-factor=1
 cursor-blink=true
+toolkit-accessibility=false
 
 [org/gnome/desktop/notifications]
 application-children=['org-gnome-chromegnomeshell', 'org-gnome-nautilus', 'deja-dup', 'thunderbird', 'transmission-gtk', 'nautilus', 'gnome-network-panel', 'google-chrome', 'chrome-cnciopoikihiagdjbjpnocolokfelagl-default', 'org-gnome-software', 'file-roller', 'firefox', 'slack', 'skypeforlinux']
@@ -316,6 +323,10 @@ xkb-options=['compose:ralt']
 auto-save-session=true
 auto-save-session-one-shot=false
 
+[org/gnome/eog/view]
+background-color='rgb(0,0,0)'
+use-background-color=true
+
 [org/gnome/meld]
 window-size=(405, 400)
 insert-spaces-instead-of-tabs=true
@@ -351,6 +362,7 @@ use-theme-colors=false
 font='Fira Code 12'
 use-theme-transparency=false
 allow-bold=true
+scrollback-unlimited=true
 use-theme-background=false
 bold-color-same-as-fg=true
 bold-color='#CDD3DE'
@@ -408,18 +420,26 @@ toggle-tiled-right=['<Primary><Super>Right', '<Super>Right']
 toggle-tiled-left=['<Primary><Super>Left', '<Super>Left']
 
 [org/gtk/settings/color-chooser]
-selected-color=(true, 0.54117647058823526, 0.88627450980392153, 0.20392156862745098, 1.0)
+selected-color=(true, 0.1803921568627451, 0.20392156862745098, 0.21176470588235294, 1.0)
 custom-colors=[(0.66666666666666663, 0.66666666666666663, 0.66666666666666663, 1.0), (0.80392156862745101, 0.0, 0.0, 1.0)]
 
 [org/zzrough/gs-extensions/drop-down-terminal]
-foreground-color='rgb(138,226,52)'
+foreground-color='rgb(238,238,236)'
 transparency-level=uint32 78
 terminal-size='40%'
 real-shortcut=['<Alt>grave']
 scrollbar-visible=false
 enable-toggle-on-scroll=false
 terminal-position='Top'
+enable-animation=true
 shortcut-type='other'
 enable-audible-bell=false
 other-shortcut=['<Alt>grave']
+background-color='rgb(46,52,54)'
 first-start=false
+
+[ca/desrt/dconf-editor]
+window-is-fullscreen=false
+window-height=600
+window-width=800
+window-is-maximized=false
