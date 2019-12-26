@@ -15,7 +15,7 @@ endif
 
 " manually load vim-plug the first time
 if vim_plug_just_installed
-    :execute 'source '.fnameescape(vim_plug_path)
+    execute 'source '.fnameescape(vim_plug_path)
 endif
 
 " Obscure hacks done, you can now modify the rest of the .vimrc as you wish :)
@@ -206,9 +206,16 @@ function! Get_visual_selection()
     let [lnum1, col1] = getpos("'<")[1:2]
     let [lnum2, col2] = getpos("'>")[1:2]
     let lines = getline(lnum1, lnum2)
+    if len(lines) == 0
+        return ''
+    endif
     let lines[-1] = lines[-1][: col2 - (&selection == 'inclusive' ? 1 : 2)]
     let lines[0] = lines[0][col1 - 1:]
     return join(lines, "\n")
+endfunction
+
+function! ChangeCurrentWordTo(word)
+    execute "%s/\\<" . expand('<cword>') . "\\>/" . a:word . "/gc"
 endfunction
 
 " RO files are open with a different color (Needs to be improved, because it changes all the window not only the buffer)
@@ -217,6 +224,11 @@ endfunction
 "highlight Normal ctermfg=grey ctermbg=darkblue
 "endif
 "endfunction
+
+function! MakeJsonPretty()
+    execute "%!python -m json.tool"
+    execute "w"
+endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
@@ -229,8 +241,6 @@ set encoding=utf-8
 " Open new vertical split panes to right, which feels more natural
 set splitright
 set fillchars+=vert:│
-" Cycle around splits with TAB
-nnoremap <TAB> <C-w><C-w>
 
 " Change the current working directory when
 " opening a file or switch buffers
@@ -320,7 +330,6 @@ if &diff
     command! GAdd :Gwrite | w! | qall
 
     nnoremap <C-a> :GAdd <CR>
-    unmap <TAB>
     nnoremap <C-i> :GIgnore <CR>
     set cursorline
     map ] ]c
@@ -387,6 +396,9 @@ endif
 
 " For Scons files, use python highlithting
 au BufReadPost SC* set syntax=python
+
+" For json files, use foldmethod with indent
+au BufReadPost *.json set foldmethod=indent
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Text, tab and indent related
@@ -489,7 +501,7 @@ ca w!! w !sudo tee "%"
 
 " Buffer related stuff
 " Show opened buffers and wait for number of buffer to change to
-nnoremap <F5> :buffers<CR>:buffer<Space>
+nnoremap <Leader>l :buffers<CR>:buffer<Space>
 map <C-S-Right> :bnext<CR>
 map <C-S-Left> :bprev<CR>
 map <C-S-H> :bprev<CR>
@@ -501,6 +513,7 @@ nnoremap <S-Up> mm:tabedit %<CR>`m
 nnoremap <S-Down> :tabclose<CR>
 
 
+" Split/edit buffers by number
 command! -nargs=1 Vs :vs <Bar> b<args>
 command! -nargs=1 Sp :sp <Bar> b<args>
 command! -nargs=1 E :edit <Bar> b<args>
@@ -512,6 +525,12 @@ command! GREP :execute 'noautocmd vimgrep /'.expand('<cword>').'/gj '.expand('%'
 
 " Greps in WD for the selection in visual mode
 map <F10> <Esc>:execute "noautocmd vimgrep /" . Get_visual_selection() . "/j **" <Bar> cw<CR>
+
+" Change word under cursor with given word. Asks confirmation
+command! -nargs=1 Reword :execute ChangeCurrentWordTo('<args>')
+
+" Make my json pretty
+command! -nargs=0 Pretty :execute MakeJsonPretty()
 
 "au BufReadPost * call CheckRo()
 
@@ -565,7 +584,7 @@ map tt :TagbarToggle<CR>
 " Don't show the warning from Command-T
 let g:CommandTSuppressMaxFilesWarning=1
 let g:CommandTMaxFiles=2000000
-let g:CommandTWildIgnore=&wildignore . ",result/*, variant-dir/*, aristotle/*, mason_packages/*, externals/*"
+let g:CommandTWildIgnore=&wildignore . ",result/*, variant-dir/*, aristotle/*, mason_packages/*, externals/*, _build/*, _install/*"
 let g:CommandTNeverShowDotFiles=1
 
 map <Leader>b :CommandTBuffer<CR>
