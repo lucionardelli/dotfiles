@@ -10,9 +10,8 @@ export ROBOLOG2_UI_DIR=$HOME/irobot/robolog2-ui/
 export ROBOLOG_PYTHON_API_DIR=$HOME/irobot/rapi/
 
 # Necessary to use brewst-sdk
-export PATH=/opt/irobot/brewst-1.0/bin:$PATH
+export PATH=/opt/irobot/brewst-1.0/bin:/opt/irobot/x86_64-oesdk-linux/usr/bin/arm-oe-linux-gnueabi:$PATH
 export PATH=/opt/ccache/bin:$PATH
-export PATH=/opt/irobot/x86_64-oesdk-linux/usr/bin/arm-oe-linux-gnueabi:$PATH
 
 # Activate icecc
 # export PATH=/usr/lib/icecc/bin/:$PATH # Iceccream + ccace is not working with this?
@@ -34,7 +33,6 @@ alias b='cd '$BREWST_DIR
 alias r='cd '$ROBOLOG_DIR
 alias r2='cd '$ROBOLOG2_DIR
 alias r2u='cd '$ROBOLOG2_UI_DIR
-alias rp='cd '$ROBOLOG_PYTHON_API_DIR
 alias rapi='cd '$ROBOLOG_PYTHON_API_DIR
 alias brewst-dev='cd '$BREWST_DIR
 alias roost-dev='cd '$ROOST_DIR
@@ -55,6 +53,7 @@ alias gdb-cb19='arm-none-eabi-gdb -ex "target extended-remote cb-19:3333" cambot
 alias vpn='sudo $HOME/irobot/vpn/irobot-vpn.sh -c=irobot-gb'
 
 # Compile, compile, compile
+alias icecream='icecc-jobs.sh -s 10.140.33.21'
 alias moblcompile='cd $ROOST_DIR;nice -n15 scons -j5 --verbose lewis'
 alias navlcompile='cd $BREWST_DIR;nice -n15 scons -j5 --os=eLinux --arch=apq8009 --robot=lewis'
 alias erspncomplie='cd $BREWST_DIR;nice -n15 scons -j5 --verbose --ccahce --no-embedded ersp-navigation'
