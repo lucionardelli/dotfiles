@@ -40,19 +40,25 @@ if [[ -n $HELP ]]; then
     exit
 fi
 
+
 if [[ -z $ENABLE ]] && [[ -z $DISABLE ]]; then
     echo "Missing command, either enable or disable. aborting..."
     exit
 else
+    TOUCHPAD=`xinput --list --name-only | grep -i touch` || true
+    if [[ -z $TOUCHPAD ]]; then
+        echo "Couldn't get Touchpad version. Try running xinput and manually editing this file"
+        exit 1
+    fi
     if [[ -n $SLEEP_S ]]; then
         sleep $SLEEP_S
     fi
 
     if [[ -n $ENABLE ]]; then
-        xinput set-prop "SynPS/2 Synaptics TouchPad" "Device Enabled" 1
+        xinput set-prop "$TOUCHPAD" "Device Enabled" 1
     else
-        xinput set-prop "SynPS/2 Synaptics TouchPad" "Device Enabled" 0
+        xinput set-prop "$TOUCHPAD" "Device Enabled" 0
     fi
 fi
 echo "Success!"
-
+exit 0
