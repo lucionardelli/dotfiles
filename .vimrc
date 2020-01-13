@@ -572,6 +572,7 @@ let g:netrw_liststyle = 3
 " search first in current directory then file directory for tag file
 "set tags=.tags;,tags;,./tags;,./.tags;
 " Let fugitive handle it...
+set tags^=./.git/tags;
 
 map <C-f> :sp <CR>:exec("tag ".expand("<cword>"))<CR>
 map <S-f> :vs <CR>:exec("tag ".expand("<cword>"))<CR>
@@ -584,7 +585,7 @@ map tt :TagbarToggle<CR>
 " Don't show the warning from Command-T
 let g:CommandTSuppressMaxFilesWarning=1
 let g:CommandTMaxFiles=2000000
-let g:CommandTWildIgnore=&wildignore . ",result/*, variant-dir/*, aristotle/*, mason_packages/*, externals/*, _build/*, _install/*"
+let g:CommandTWildIgnore=&wildignore . ",*/result/*,*/variant-dir/*,*/aristotle/*,*/mason_packages/*,*/externals/*,*/_build/*,*/_install/*"
 let g:CommandTNeverShowDotFiles=1
 
 map <Leader>b :CommandTBuffer<CR>
