@@ -512,6 +512,8 @@ set hidden
 nnoremap <S-Up> mm:tabedit %<CR>`m
 nnoremap <S-Down> :tabclose<CR>
 
+" Yank entire file
+nnoremap <C-S-y> :%y<CR>
 
 " Split/edit buffers by number
 command! -nargs=1 Vs :vs <Bar> b<args>
