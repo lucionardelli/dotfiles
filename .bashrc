@@ -191,3 +191,6 @@ fi
 
 # Avoid removing everything when using https://github.com/lucionardelli/dotfiles repo
 [ -s ~/.git_clean.sh ] && source ~/.git_clean.sh
+
+# Because vi is great!
+set -o vi
