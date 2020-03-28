@@ -1,13 +1,17 @@
 # PATHs
 export IROBOT_DIR=$HOME/irobot/
-export IROBOT_DOCS_DIR=$HOME/irobot/docs/
-export BREWST_DIR=$HOME/irobot/brewst/
-export BREWST_HOME=$BREWST_DIR
+export BREWST_HOME=$HOME/irobot/brewst/
 export ROOST_DIR=$HOME/irobot/brewst/roost/
 export ROBOLOG_DIR=$HOME/irobot/robolog/
 export ROBOLOG2_DIR=$HOME/irobot/robolog2/
 export ROBOLOG2_UI_DIR=$HOME/irobot/robolog2-ui/
 export ROBOLOG_PYTHON_API_DIR=$HOME/irobot/rapi/
+
+
+# Yet more instances of the brewst code
+export FCD_DIR=$HOME/irobot/floorcare-dev/
+export WIP_FCD_DIR=$HOME/irobot/wip-floorcare-dev/
+export RELEASE_DIR=$HOME/irobot/release-branch/
 
 # Necessary to use brewst-sdk
 export PATH=/opt/irobot/brewst-1.0/bin:/opt/irobot/x86_64-oesdk-linux/usr/bin/arm-oe-linux-gnueabi:$PATH
@@ -26,40 +30,78 @@ if [ -f /opt/irobot/simulator/setup.bash ]; then
 fi
 
 # Quick path aliases
-alias cd-irobot-dir='cd '$IROBOT_DIR
-alias cd-irobot-ddir='cd '$IROBOT_DOCS_DIR
-alias fcd='cd '$HOME/irobot/floorcare-dev
-alias b='cd '$BREWST_DIR
+alias b='cd '$BREWST_HOME
+alias fcd='cd '$FCD_DIR
+alias wip='cd '$WIP_FCD_DIR
+alias rt='cd '$RELEASE_DIR
+
+alias brewst-dev='cd '$BREWST_HOME
+alias roost-dev='cd '$ROOST_DIR
+
 alias r='cd '$ROBOLOG_DIR
 alias r2='cd '$ROBOLOG2_DIR
 alias r2u='cd '$ROBOLOG2_UI_DIR
 alias rapi='cd '$ROBOLOG_PYTHON_API_DIR
-alias brewst-dev='cd '$BREWST_DIR
-alias roost-dev='cd '$ROOST_DIR
 
 # Life's too short, ssh aliases
-alias scb19='ssh pi@cb-19'
-alias kraken='ssh -X lnardelli@kraken'
-alias jabba='ssh -X lnardelli@jabba'
-alias it6237='ssh -X lnardelli@it6237'
+
+# If we have `et`, use it!
+if [ -x "$(command -v et)" ]; then
+    alias kraken='et lnardelli@kraken'
+    alias jabba='et lnardelli@jabba'
+else
+    alias kraken='ssh -X lnardelli@kraken'
+    alias jabba='ssh -X lnardelli@jabba'
+fi
+
 alias cojuda='ssh -X lnardelli@cojuda'
-alias edison='ssh -p 2222 root@edison-051'
 alias smeagol='ssh -X lnardelli@smeagol'
 
+# Remote files? Edit Locally? Mind blown! puuuushh!
+kvim () {
+  vim scp://lnardelli@kraken/~/irobot/brewst/$@
+}
 
-alias gdb-cb19='arm-none-eabi-gdb -ex "target extended-remote cb-19:3333" cambot_d.elf'
+jvim () {
+  vim scp://lnardelli@jabba/~/irobot/brewst/$@
+}
+
+alias int-test='awslogin --role ADFS-ASPEN-ADMINCONSOLE-RO --account 085719883810'
+
 
 # VPN
 alias vpn='sudo $HOME/irobot/vpn/irobot-vpn.sh -c=irobot-gb'
 
 # Compile, compile, compile
 alias icecream='icecc-jobs.sh -s 10.140.33.21'
-alias moblcompile='cd $ROOST_DIR;nice -n15 scons -j5 --verbose lewis'
-alias navlcompile='cd $BREWST_DIR;nice -n15 scons -j5 --os=eLinux --arch=apq8009 --robot=lewis'
-alias erspncomplie='cd $BREWST_DIR;nice -n15 scons -j5 --verbose --ccahce --no-embedded ersp-navigation'
-# alias s='cd $BREWST_DIR;scons --verbose -j$(getconf _NPROCESSORS_ONLN) --enable-ccache --ccache-set-basedir --interactive'
-alias s='cd $BREWST_DIR;scons --verbose -j$(getconf _NPROCESSORS_ONLN) --enable-ccache --ccache-set-basedir --robot=lewis --interactive'
-alias sr='cd $ROOS_DIR;scons --verbose -j$(getconf _NPROCESSORS_ONLN) --enable-ccache --ccache-set-basedir --interactive'
 
-# Add helpful compile alias
-export PATH=${BREWST_HOME}/scripts/bash-scripts:${PATH}
+# Add helpful compile alias when entering one of the repos
+cd () { builtin cd "$@" && checkifbrewst; }
+
+bstp () {
+  export PATH=$1/scripts/bash-scripts:${PATH}
+}
+
+checkifbrewst () {
+  case $PWD/ in
+    $BREWST_HOME | $FCD_DIR | $WIP_FCD_DIR | $RELEASE_DIR)
+	  bstp $PWD/
+      ;;
+    *)
+      ;;
+  esac
+}
+
+# Who are you? I'm...Batman!
+LEWIS4288=10.140.44.41
+LEWISHBCUMBIA=10.140.44.32
+SOHO6182=10.140.44.25
+SOHO6240=10.140.44.20
+SINMARINO=10.140.44.16
+WHITEWALKER=10.140.44.26
+
+# Home robot fleet (?)
+# DOBBY=192.168.0.13
+# DOBBYS=192.168.0.12
+# DOBBY2=192.168.0.12
+# EDISON6108=192.168.0.12
