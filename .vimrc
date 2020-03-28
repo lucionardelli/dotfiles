@@ -35,7 +35,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'KeitaNakamura/neodark.vim'
 Plug 'morhetz/gruvbox'
 Plug 'altercation/vim-colors-solarized'
-Plug 'mhinz/vim-janah'
+
 
 " Use buffers as GUI tabs
 Plug 'jlanzarotta/bufexplorer'
@@ -58,6 +58,9 @@ Plug 'kana/vim-operator-user'
 
 " Format C family code
 Plug 'rhysd/vim-clang-format'
+
+" A collection of language packs for Vim.
+Plug 'sheerun/vim-polyglot'
 
 " C++ Additional syntax Highlighting
 Plug 'octol/vim-cpp-enhanced-highlight'
@@ -92,6 +95,9 @@ Plug 'terryma/vim-expand-region'
 
 " Better commit scren
 Plug 'rhysd/committia.vim'
+
+" Autocomplete with ML powers!
+Plug 'zxqfl/tabnine-vim'
 
 " Initialize plugin system
 call plug#end()
@@ -361,7 +367,6 @@ let g:molokai_original = 1
 let use_neodark = 1
 let use_gruvbox = 0
 let use_gruvbox_light = 0
-let use_janah = 0
 
 if use_gruvbox
     set background=dark
@@ -383,16 +388,11 @@ if use_neodark
     set background=dark
     let g:neodark#background = '#202020'
     let g:neodark#use_256color = 1 " default: 0
+    let g:neodark#terminal_transparent = 0 " default: 0
     let g:neodark#solid_vertsplit = 0 " default: 0
-    let g:neodark#solid_horisplit = 1 " default: 0
     colorscheme neodark
     let g:airline_theme='dark'
 endif
-if use_janah
-    autocmd ColorScheme janah highlight Normal ctermbg=235
-    colorscheme janah
-endif
-
 
 " For Scons files, use python highlithting
 au BufReadPost SC* set syntax=python
@@ -482,6 +482,11 @@ imap <C-Down> <ESC><c-w>j
 """""""""""""""""""""""""""""""""
 " => Custom commands
 """""""""""""""""""""""""""""""""
+" Toggle cursorline (i.e. line highlight)
+nnoremap <Leader>f :set cursorline!<CR>
+
+" Close all buffers but current
+nnoremap <Leader>Q :if confirm('Close all other buffers?', "&Yes\n&No", 1)==1 <Bar> %bd <Bar> e# <Bar> endif<CR><CR>
 
 " Toggle paste/nopaste and show the current state
 set pastetoggle=<F2>
@@ -489,9 +494,9 @@ set pastetoggle=<F2>
 " Extended matching with `%`
 runtime macros/matchit.vim
 
-map <F7> :%s/\s\+$<ENTER>
-map <F8> :g/\s*import pdb;\s*pdb.set_trace()$/d<ENTER>
-map <F9> Oimport pdb; pdb.set_trace()  # noqa: E702,E501<ESC>:w<ENTER>
+nnoremap <F7> :%s/\s\+$<ENTER>
+nnoremap <F8> :g/\s*import pdb;\s*pdb.set_trace()$/d<ENTER>
+nnoremap <F9> Oimport pdb; pdb.set_trace()  # noqa: E702,E501<ESC>:w<ENTER>
 
 " save as sudo
 ca w!! w !sudo tee "%"
@@ -567,6 +572,15 @@ endif
 " => File navigation
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:netrw_liststyle = 3
+let g:netrw_altv = 1
+let g:netrw_browse_split = 4
+let g:netrw_winsize = 15
+
+" Open at the left when entering vim? Only if plays well with startify
+" augroup ProjectDrawer
+"   autocmd!
+"   autocmd VimEnter * :Lexplore
+" augroup END
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Code navigation
@@ -606,7 +620,8 @@ command! Break :let @+="break ".expand('%:p').":".line(".")
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => iRobot specific
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set path+=~/irobot/brewst/**,~/irobot/brewst/*,~/irobot/brewst/
+set path+=/irobot/brewst/**,/irobot/brewst/*,/irobot/brewst/
+set path+=/irobot/floorcare-dev/**,/irobot/floorcare-dev/*,/irobot/floorcare-dev/
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Spellchecking for commit messages
@@ -653,6 +668,10 @@ endfunction
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Trying Vim-Flake8
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+let g:flake8_show_in_file=1
+let g:flake8_show_in_gutter=0
+
 " to use colors defined in the colorscheme
 highlight link Flake8_Error      Error
 highlight link Flake8_Warning    WarningMsg
@@ -661,7 +680,7 @@ highlight link Flake8_Naming     WarningMsg
 highlight link Flake8_PyFlake    WarningMsg
 
 " Automatically call Flake8 on save
-autocmd  BufWritePost *.py :silent call Flake8()
+" autocmd  BufWritePost *.py :silent call Flake8()
 " A la carte call for Flake8
 autocmd FileType python map <buffer> <LocalLeader>F :call Flake8()<CR>
 
@@ -669,7 +688,7 @@ autocmd FileType python map <buffer> <LocalLeader>F :call Flake8()<CR>
 " => Trying AutoPEP8
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:autopep8_disable_show_diff=1
-let g:autopep8_max_line_length=79
+let g:autopep8_max_line_length=89
 let g:autopep8_aggressive=4
 
 
@@ -696,11 +715,13 @@ endfunction
 function! WktToGeogebra()
     " Save cursor position
     let l:save = winsaveview()
+    %s/),(/))\r\POLYGON((/ge
     %s/\(-\)\{0,1}\(\d\+\)\(\.\d\+\)\{0,1} \(-\)\{0,1}\(\d\+\)\(\.\d\+\)\{0,1}/{\1\2\3,\4\5\6}/ge
+    %s/POINT({\(-\)\{0,1}\(\d\+\)\(\.\d\+\)\{0,1},\(-\)\{0,1}\(\d\+\)\(\.\d\+\)\{0,1}})/(\1\2\3,\4\5\6)/ge
     %s/POLYGON((/PolyLine[PointList[{/e
     %s/))/}]]/e
     "%s/),(/}]]\rPolyLine[PointList[{/e
-    %s/LINESTRING({\(\d\+\)\(\.\d\+\)\{0,1},\(\d\+\)\(\.\d\+\)\{0,1}},{\(\d\+\)\(\.\d\+\)\{0,1},\(\d\+\)\(\.\d\+\)\{0,1}})/Segment[(\1\2,\3\4),(\5\6,\7\8)]/e
+    %s/LINESTRING({\(\d\+\)\(\.\d\+\)\{0,1},\(\d\+\)\(\.\d\+\)\{0,1}},{\(\d\+\)\(\.\d\+\)\{0,1},\(\d\+\)\(\.\d\+\)\{0,1}})/Segment[(\1\2,\3\4), (\5\6,\7\8)]/e
     " Move cursor to original position
     call winrestview(l:save)
     echo "Converted :-)"
