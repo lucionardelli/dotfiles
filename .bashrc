@@ -194,3 +194,6 @@ fi
 
 # Because vi is great!
 set -o vi
+# But we still want to be able to clear screen with Crtl+L
+bind -m vi-insert "\C-l":clear-screen
+bind -m vi-command "\C-l":clear-screen
