@@ -345,6 +345,10 @@ if &diff
     hi DiffText   ctermfg=233  ctermbg=yellow  guifg=#000033 guibg=#DDDDFF gui=none cterm=none
 endif
 
+" Quicker commands
+noremap ; :
+
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
 " """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -486,7 +490,7 @@ imap <C-Down> <ESC><c-w>j
 nnoremap <Leader>f :set cursorline!<CR>
 
 " Close all buffers but current
-nnoremap <Leader>Q :if confirm('Close all other buffers?', "&Yes\n&No", 1)==1 <Bar> %bd <Bar> e# <Bar> endif<CR><CR>
+nnoremap <Leader>Q :if confirm('Close all other buffers?', "&Yes\n&No", 1)==1 <Bar> %bd <Bar> e# <Bar> bnext <Bar> bd <Bar> endif<CR><CR>
 
 " Toggle paste/nopaste and show the current state
 set pastetoggle=<F2>
@@ -512,6 +516,8 @@ map <C-S-Left> :bprev<CR>
 map <C-S-H> :bprev<CR>
 map <C-S-L> :bnext<CR>
 set hidden
+" Close current buffer faster
+nnoremap <silent> <Leader>bd :bd<CR>
 
 " Maximize/Minimize buffer
 nnoremap <S-Up> mm:tabedit %<CR>`m
@@ -592,6 +598,10 @@ set tags^=./.git/tags;
 
 map <C-f> :sp <CR>:exec("tag ".expand("<cword>"))<CR>
 map <S-f> :vs <CR>:exec("tag ".expand("<cword>"))<CR>
+"
+" Follow and go back from tags quicker
+noremap <Leader>] <C-]>   " forward
+noremap <Leader>[ <C-T>   " back
 
 " Opne the tagbar browser
 let g:tagbar_autofocus = 1
@@ -616,6 +626,10 @@ command! PBreak :echo "break ".expand('%:p').":".line(".")
 command! PFile :echo expand('%:p')
 command! File :let @+=expand('%:p')
 command! Break :let @+="break ".expand('%:p').":".line(".")
+
+" (Un)Indent selected test in visual mode
+vnoremap <Tab> >gv
+vnoremap <S-Tab> <gv
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => iRobot specific
