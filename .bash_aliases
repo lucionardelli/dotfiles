@@ -48,3 +48,19 @@ alias soohla='ssh oohla@oohla-dev' # DigitalOcen
 alias sroohla='ssh root@oohla-dev' #DigitalOcean
 alias fcoohla='ssh -p 17177 oohlamedia@45.33.18.240' # Fastcomet
 alias kleene='ssh lnardelli@dcc.fceia.unr.edu.ar' # Dcc's Kleene
+
+# FZF
+alias fh='history | fzf --tac --no-sort'
+alias fv='vim `fzf`'
+alias fb='bat `fzf`'
+
+# fkill - kill proces using fzf completion
+fkill() {
+  local pid
+  pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
+
+  if [ "x$pid" != "x" ]
+  then
+    echo $pid | xargs kill -${1:-9}
+  fi
+}
