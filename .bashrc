@@ -200,9 +200,9 @@ bind -m vi-command "\C-l":clear-screen
 
 # FZF config
 FZF_BASIC_OPTS="--no-mouse --height 50% -1 --reverse --multi --inline-info"
-FZF_PREVIEW_OPTS="--preview='[[ \${file --mime {}} =~ binary ]] && echo {} is a binary file || {bat --style=numbers --color=always {} || cat {}} 2> /dev/null | head -300' --preview-window='right:hidden:wrap'"
+FZF_PREVIEW_OPTS="--preview='[[ \$(file --mime {}) =~ binary ]] && echo {} is a binary file || (bat --style=numbers --color=always {} || cat {}) 2> /dev/null | head -300' --preview-window='right:hidden:wrap'"
 FZF_KEY_BIND="--bind 'ctrl-v:execute(vi {+}),ctrl-x:execute(xdg-open {}),ctrl-p:toggle-preview,ctrl-a:select-all+accept'"
-FZF_DEFAULT_OPTS=" ${FZF_BASIC_OPTS} ${FZF_PREVIEW_OPTS} ${FZF_KEY_BIND}"
+FZF_DEFAULT_OPTS="${FZF_BASIC_OPTS} ${FZF_PREVIEW_OPTS} ${FZF_KEY_BIND}"
 
 export FZF_DEFAULT_OPTS
 
