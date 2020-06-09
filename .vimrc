@@ -99,6 +99,13 @@ Plug 'rhysd/committia.vim'
 " Autocomplete with ML powers!
 Plug 'zxqfl/tabnine-vim'
 
+" Use FZF. fzf runs asynchronously so it might be faster than command-T
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
+
+" Recover.vim adds a diff option when Vim finds a swap file
+Plug 'chrisbra/Recover.vim'
+
 " Initialize plugin system
 call plug#end()
 
@@ -108,10 +115,19 @@ endif
 
 " => Airline configuration
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#show_splits = 0
+let g:airline#extensions#tabline#show_close_button = 0
+let g:airline#extensions#tabline#tab_nr_type = 1
+let g:airline#extensions#tabline#show_tab_nr = 1
+let g:airline#extensions#tabline#tab_min_count = 2
+let g:airline#extensions#tabline#tabs_label = 't'
+
+" Disable fancy powerline arrows
 let g:airline#extensions#tabline#left_sep = ''
 let g:airline#extensions#tabline#left_alt_sep = ''
 let g:airline#extensions#tabline#right_sep = ''
 let g:airline#extensions#tabline#right_alt_sep = ''
+
 let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline#extensions#tabline#buffer_nr_format = '[%s]'
 let airline#extensions#tabline#tabs_label = ''
@@ -434,6 +450,9 @@ set viminfo^=%
 """""""""""""""""""""""""""""""""
 " => Status line
 """""""""""""""""""""""""""""""""
+" Show incomplete keywtrokes in status line
+set showcmd
+
 " Always show the status line
 set laststatus=2
 
@@ -486,11 +505,25 @@ imap <C-Down> <ESC><c-w>j
 """""""""""""""""""""""""""""""""
 " => Custom commands
 """""""""""""""""""""""""""""""""
+" Highlight the line with a cursor
+set cursorline
+
+" Disable cursor line highlighting in Insert mode
+augroup aug_cursor_line
+  au!
+  au InsertEnter * setlocal nocursorline
+  au InsertLeave * setlocal cursorline
+augroup END
+
 " Toggle cursorline (i.e. line highlight)
-nnoremap <Leader>f :set cursorline!<CR>
+nnoremap <Leader>h :set cursorline!<CR>
 
 " Close all buffers but current
 nnoremap <Leader>Q :if confirm('Close all other buffers?', "&Yes\n&No", 1)==1 <Bar> %bd <Bar> e# <Bar> bnext <Bar> bd <Bar> endif<CR><CR>
+
+" Additional <ESC> mapping to Ctrl-C, bash style
+noremap <C-c> <ESC>
+xnoremap <C-c> <ESC>
 
 " Toggle paste/nopaste and show the current state
 set pastetoggle=<F2>
@@ -520,8 +553,9 @@ set hidden
 nnoremap <silent> <Leader>bd :bd<CR>
 
 " Maximize/Minimize buffer
-nnoremap <S-Up> mm:tabedit %<CR>`m
-nnoremap <S-Down> :tabclose<CR>
+nnoremap <Leader>tab mm:tabedit %<CR>`m
+nnoremap <Leader>tc :tabclose<CR>
+nnoremap <Leader>td :tabclose<CR>
 
 " Yank entire file
 nnoremap <C-S-y> :%y<CR>
@@ -579,7 +613,7 @@ endif
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:netrw_liststyle = 3
 let g:netrw_altv = 1
-let g:netrw_browse_split = 4
+let g:netrw_browse_split = 0
 let g:netrw_winsize = 15
 
 " Open at the left when entering vim? Only if plays well with startify
@@ -596,9 +630,13 @@ let g:netrw_winsize = 15
 " Let fugitive handle it...
 set tags^=./.git/tags;
 
+" Use 'H' and 'L' keys to move to start/end of the line
+noremap H ^
+noremap L $
+
 map <C-f> :sp <CR>:exec("tag ".expand("<cword>"))<CR>
 map <S-f> :vs <CR>:exec("tag ".expand("<cword>"))<CR>
-"
+
 " Follow and go back from tags quicker
 noremap <Leader>] <C-]>   " forward
 noremap <Leader>[ <C-T>   " back
@@ -606,6 +644,11 @@ noremap <Leader>[ <C-T>   " back
 " Opne the tagbar browser
 let g:tagbar_autofocus = 1
 let g:tagbar_autoclose = 1
+let g:tagbar_compact = 1
+let g:tagbar_foldlevel = 1
+let g:tagbar_indent = 1
+let g:tagbar_iconchars = ['▸', '▾']
+let g:tagbar_silent = 1
 map tt :TagbarToggle<CR>
 
 " Don't show the warning from Command-T
@@ -614,23 +657,30 @@ let g:CommandTMaxFiles=2000000
 let g:CommandTWildIgnore=&wildignore . ",*/result/*,*/variant-dir/*,*/aristotle/*,*/mason_packages/*,*/externals/*,*/_build/*,*/_install/*"
 let g:CommandTNeverShowDotFiles=1
 
-map <Leader>b :CommandTBuffer<CR>
-"map tf :CommandT<CR> " This is done with <Leader>t
+nnoremap <Leader>b :CommandTBuffer<CR>
+nnoremap <Leader>f :CommandT<CR>
 "map ts :CommandTLine<CR>
 
 " Make fold ignore blocks of less than 15 lines
 set foldminlines=8
 
 "command! File :echo expand('%:p')
-command! PBreak :echo "break ".expand('%:p').":".line(".")
-command! PFile :echo expand('%:p')
-command! File :let @+=expand('%:p')
-command! Break :let @+="break ".expand('%:p').":".line(".")
+command! -nargs=0 PBreak :echo "break ".expand('%:p').":".line(".")
+command! -nargs=0 PFile :echo expand('%:p')
+command! -nargs=0 File :let @+=expand('%:p') | echo 'Copied to clipboard: ' . @+
+command! -nargs=0 Break :let @+="break ".expand('%:p').":".line(".") | echo 'Copied to clipboard: ' . @+
 
 " (Un)Indent selected test in visual mode
 vnoremap <Tab> >gv
 vnoremap <S-Tab> <gv
 
+" Mappings to move lines
+nnoremap <S-down> :m .+1<CR>==
+nnoremap <S-up> :m .-2<CR>==
+inoremap <S-down> <Esc>:m .+1<CR>==gi
+inoremap <S-up> <Esc>:m .-2<CR>==gi
+vnoremap <S-up> :m '<-2<CR>gv=gv
+vnoremap <S-down> :m '>+1<CR>gv=gv
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => iRobot specific
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -732,7 +782,7 @@ function! WktToGeogebra()
     %s/),(/))\r\POLYGON((/ge
     %s/\(-\)\{0,1}\(\d\+\)\(\.\d\+\)\{0,1} \(-\)\{0,1}\(\d\+\)\(\.\d\+\)\{0,1}/{\1\2\3,\4\5\6}/ge
     %s/POINT({\(-\)\{0,1}\(\d\+\)\(\.\d\+\)\{0,1},\(-\)\{0,1}\(\d\+\)\(\.\d\+\)\{0,1}})/(\1\2\3,\4\5\6)/ge
-    %s/POLYGON((/PolyLine[PointList[{/e
+    %s/POLYGON((/Polygon[PointList[{/e
     %s/))/}]]/e
     "%s/),(/}]]\rPolyLine[PointList[{/e
     %s/LINESTRING({\(\d\+\)\(\.\d\+\)\{0,1},\(\d\+\)\(\.\d\+\)\{0,1}},{\(\d\+\)\(\.\d\+\)\{0,1},\(\d\+\)\(\.\d\+\)\{0,1}})/Segment[(\1\2,\3\4), (\5\6,\7\8)]/e
