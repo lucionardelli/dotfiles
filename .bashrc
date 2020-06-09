@@ -204,6 +204,9 @@ FZF_PREVIEW_OPTS="--preview='[[ \$(file --mime {}) =~ binary ]] && echo {} is a 
 FZF_KEY_BIND="--bind 'ctrl-v:execute(vi {+}),ctrl-x:execute(xdg-open {}),ctrl-p:toggle-preview,ctrl-a:select-all+accept,alt-j:down,alt-k:up'"
 FZF_DEFAULT_OPTS="${FZF_BASIC_OPTS} ${FZF_PREVIEW_OPTS} ${FZF_KEY_BIND}"
 
+# Default command is applied to all files in git repository if in a git repository, to all non-hidden files otherwise
+FZF_DEFAULT_COMMAND="git ls-files --cached --others --exclude-standard || find . -not -path '*/\.*'"
+
 export FZF_DEFAULT_OPTS
 
 # Defines the following keybingings
@@ -211,3 +214,6 @@ export FZF_DEFAULT_OPTS
 #   CTRL-R - Paste the selected command from history into the command line
 #   ALT-C - cd into the selected directory
 [ -s ~/.fzf.bash ] && source ~/.fzf.bash
+
+# [ -s ~/.fzf_completion.bash ] && source ~/.fzf_completion.bash
+
