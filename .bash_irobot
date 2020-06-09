@@ -17,10 +17,6 @@ export RELEASE_DIR=$HOME/irobot/release-branch/
 export PATH=/opt/irobot/brewst-1.0/bin:/opt/irobot/x86_64-oesdk-linux/usr/bin/arm-oe-linux-gnueabi:$PATH
 export PATH=/opt/ccache/bin:$PATH
 
-# Activate icecc
-# export PATH=/usr/lib/icecc/bin/:$PATH # Iceccream + ccace is not working with this?
-# export CCACHE_PREFIX=icecc
-
 # Simulator
 if [ -f /opt/ros/lunar/setup.bash ]; then
     source /opt/ros/lunar/setup.bash
@@ -66,7 +62,8 @@ jvim () {
   vim scp://lnardelli@jabba/~/irobot/brewst/$@
 }
 
-alias int-test='awslogin --role ADFS-ASPEN-ADMINCONSOLE-RO --account 085719883810'
+alias aws-int-test='awslogin --role ADFS-ASPEN-ADMINCONSOLE-RO --account 085719883810'
+alias aws-robolog='awslogin --role  ADFS-ROBOLOG-USER --account 431799387985'
 
 
 # VPN
@@ -101,7 +98,7 @@ SINMARINO=10.140.44.16
 WHITEWALKER=10.140.44.26
 
 # Home robot fleet (?)
-# DOBBY=192.168.0.13
-# DOBBYS=192.168.0.12
-# DOBBY2=192.168.0.12
-# EDISON6108=192.168.0.12
+DOBBY=192.168.0.12
+DOBBYS=192.168.0.13
+DOBBY2=192.168.0.13
+EDISON6108=192.168.0.14
