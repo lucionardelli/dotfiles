@@ -1,6 +1,3 @@
-[com/ubuntu/update-notifier]
-regular-auto-launch-interval=7
-
 [system/locale]
 region='es_AR.UTF-8'
 
@@ -37,11 +34,6 @@ binding='Print'
 command='gnome-screenshot'
 name='Save a screenshot'
 
-[org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4]
-binding='<Super>r'
-command='/home/<YOUR_USERNAME>/irobot/brewst/result/debug/bin/robo-scope'
-name='Roboscope'
-
 [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0]
 binding='<Super>t'
 command='gnome-terminal'
@@ -64,7 +56,6 @@ focus-active-notification=@as []
 
 [org/gnome/shell]
 enabled-extensions=['alternate-tab@gnome-shell-extensions.gcampax.github.com', 'dash-to-dock@micxgx.gmail.com', 'drop-down-terminal@gs-extensions.zzrough.org', 'Hide_Activities@shay.shayel.org', 'launch-new-instance@gnome-shell-extensions.gcampax.github.com', 'native-window-placement@gnome-shell-extensions.gcampax.github.com', 'noannoyance@sindex.com', 'openweather-extension@jenslody.de', 'world_clock_lite@ailin.nemui', 'drive-menu@gnome-shell-extensions.gcampax.github.com', 'remove-dropdown-arrows@mpdeimos.com', 'status-area-horizontal-spacing@mathematical.coffee.gmail.com', 'TopIcons@phocean.net', 'workspace-indicator@gnome-shell-extensions.gcampax.github.com', 'windowsNavigator@gnome-shell-extensions.gcampax.github.com', 'caffeine@patapon.info']
-command-history=['vpn', 'geogebra', 'r', 'gconf-editor', 'xterm', 'gnome-terminal', 'sudo gedit', 'sudo gvim', 'gvim', 'robo-scope', 'r', 'icemon', 'robo-scope', 'roboscope', 'robo-scope', 'robot-scope', 'robo-scope', 'r', 'robo-scope', 'r', 'robo-scope', 'r', 'robo-scope', 'firefox', 'robo-scope', 'zoom', 'r', 'xkill', 'slack', 'xkill', 'r', 'robo-scope', 'r', 'robo-scope']
 favorite-apps=['google-chrome.desktop', 'firefox.desktop', 'gnome-terminal.desktop', 'org.gnome.Nautilus.desktop']
 
 [org/gnome/shell/app-switcher]
@@ -77,11 +68,6 @@ workspaces-only-on-primary=false
 [org/gnome/shell/window-switcher]
 current-workspace-only=true
 app-icon-mode='both'
-
-[org/gnome/shell/extensions/redshift]
-active=true
-temperature-nighttime=3540
-location-provider='gnome-clock'
 
 [org/gnome/shell/extensions/status-area-horizontal-spacing]
 hpadding=5
@@ -134,32 +120,6 @@ icon-opacity=186
 tray-order=0
 icon-spacing=10
 
-[org/gnome/shell/extensions/dash-to-dock]
-autohide-in-fullscreen=false
-preferred-monitor=0
-transparency-mode='FIXED'
-extend-height=false
-dock-fixed=false
-intellihide=false
-intellihide-mode='FOCUS_APPLICATION_WINDOWS'
-animation-time=0.10000000000000002
-multi-monitor=false
-hide-delay=0.10000000000000002
-custom-theme-customize-running-dots=false
-autohide=true
-apply-custom-theme=false
-pressure-threshold=200.0
-custom-theme-running-dots=true
-isolate-monitors=false
-dock-position='BOTTOM'
-custom-theme-shrink=false
-background-opacity=0.35999999999999999
-height-fraction=0.35999999999999999
-dash-max-icon-size=29
-require-pressure-to-show=true
-icon-size-fixed=true
-isolate-workspaces=true
-
 [org/gnome/clocks/state/window]
 size=(879, 690)
 state=128
@@ -195,89 +155,12 @@ text-scaling-factor=1
 cursor-blink=true
 toolkit-accessibility=false
 
-[org/gnome/desktop/notifications]
-application-children=['org-gnome-chromegnomeshell', 'org-gnome-nautilus', 'deja-dup', 'thunderbird', 'transmission-gtk', 'nautilus', 'gnome-network-panel', 'google-chrome', 'chrome-cnciopoikihiagdjbjpnocolokfelagl-default', 'org-gnome-software', 'file-roller', 'firefox', 'slack', 'skypeforlinux']
-show-banners=true
-show-in-lock-screen=true
-
-[org/gnome/desktop/notifications/application/org-gnome-nautilus]
-application-id='org.gnome.Nautilus.desktop'
-
-[org/gnome/desktop/notifications/application/google-chrome]
-application-id='google-chrome.desktop'
-
-[org/gnome/desktop/notifications/application/firefox]
-application-id='firefox.desktop'
-
-[org/gnome/desktop/notifications/application/skypeforlinux]
-application-id='skypeforlinux.desktop'
-
-[org/gnome/desktop/notifications/application/nautilus]
-application-id='nautilus.desktop'
-
-[org/gnome/desktop/notifications/application/file-roller]
-application-id='file-roller.desktop'
-
-[org/gnome/desktop/notifications/application/deja-dup]
-application-id='deja-dup.desktop'
-
-[org/gnome/desktop/notifications/application/transmission-gtk]
-application-id='transmission-gtk.desktop'
-
-[org/gnome/desktop/notifications/application/gnome-network-panel]
-application-id='gnome-network-panel.desktop'
-
-[org/gnome/desktop/notifications/application/org-gnome-software]
-application-id='org.gnome.Software.desktop'
-
-[org/gnome/desktop/notifications/application/org-gnome-chromegnomeshell]
-application-id='org.gnome.ChromeGnomeShell.desktop'
-
-[org/gnome/desktop/notifications/application/chrome-cnciopoikihiagdjbjpnocolokfelagl-default]
-application-id='chrome-cnciopoikihiagdjbjpnocolokfelagl-Default.desktop'
-
-[org/gnome/desktop/notifications/application/thunderbird]
-application-id='thunderbird.desktop'
-
-[org/gnome/desktop/notifications/application/slack]
-application-id='slack.desktop'
-
-[org/gnome/desktop/app-folders]
-folder-children=['Utilities', 'Sundry']
-
-[org/gnome/desktop/app-folders/folders/Utilities]
-translate=true
-categories=['X-GNOME-Utilities']
-apps=['org.gnome.baobab.desktop', 'deja-dup-preferences.desktop', 'eog.desktop', 'evince.desktop', 'org.gnome.FileRoller.desktop', 'gnome-calculator.desktop', 'gnome-dictionary.desktop', 'org.gnome.Characters.desktop', 'org.gnome.DiskUtility.desktop', 'org.gnome.font-viewer.desktop', 'org.gnome.Terminal.desktop', 'org.gnome.Screenshot.desktop', 'gnome-system-log.desktop', 'gnome-system-monitor.desktop', 'gnome-tweak-tool.desktop', 'gucharmap.desktop', 'seahorse.desktop', 'vinagre.desktop', 'yelp.desktop']
-name='X-GNOME-Utilities.directory'
-
-[org/gnome/desktop/app-folders/folders/Sundry]
-translate=true
-categories=['X-GNOME-Sundry']
-apps=['alacarte.desktop', 'authconfig.desktop', 'ca.desrt.dconf-editor.desktop', 'fedora-release-notes.desktop', 'firewall-config.desktop', 'flash-player-properties.desktop', 'gconf-editor.desktop', 'gnome-abrt.desktop', 'gnome-power-statistics.desktop', 'ibus-setup-anthy.desktop', 'ibus-setup.desktop', 'ibus-setup-hangul.desktop', 'ibus-setup-libbopomofo.desktop', 'ibus-setup-libpinyin.desktop', 'ibus-setup-m17n.desktop', 'ibus-setup-typing-booster.desktop', 'im-chooser.desktop', 'itweb-settings.desktop', 'jhbuild.desktop', 'javaws.desktop', 'java-1.7.0-openjdk-jconsole.desktop', 'java-1.7.0-openjdk-policytool.desktop', 'log4j-chainsaw.desktop', 'log4j-logfactor5.desktop', 'nm-connection-editor.desktop', 'orca.desktop', 'setroubleshoot.desktop', 'system-config-date.desktop', 'system-config-firewall.desktop', 'system-config-keyboard.desktop', 'system-config-language.desktop', 'system-config-printer.desktop', 'system-config-users.desktop', 'vino-preferences.desktop']
-name='X-GNOME-Sundry.directory'
-
 [org/gnome/desktop/screensaver]
 picture-uri='file:///home/<YOUR_USERNAME>/Pictures/xkcd3.png'
 color-shading-type='solid'
 primary-color='#000000000000'
 picture-options='zoom'
 secondary-color='#000000000000'
-
-[org/gnome/desktop/peripherals/touchpad]
-click-method='areas'
-speed=0.78761061946902644
-tap-to-click=true
-send-events='enabled'
-
-[org/gnome/desktop/peripherals/mouse]
-speed=0.0
-
-[org/gnome/desktop/search-providers]
-sort-order=['gnome-contacts.desktop', 'gnome-documents.desktop', 'nautilus.desktop']
-
-[org/gnome/desktop/session]
-idle-delay=uint32 900
 
 [org/gnome/desktop/wm/keybindings]
 maximize=['<Super>Up', '<Super>Up', '<Primary><Alt>KP_5']
@@ -292,19 +175,6 @@ switch-group-backward=['<Shift><Alt>grave', '<Shift><Alt>Above_Tab']
 switch-group=['<Alt>grave', '<Alt>Above_Tab']
 switch-windows=@as []
 maximize-horizontally=['<Super>h']
-
-[org/gnome/desktop/a11y/magnifier]
-mag-factor=1.5
-
-[org/gnome/desktop/a11y/applications]
-screen-magnifier-enabled=false
-
-[org/gnome/desktop/sound]
-theme-name='freedesktop'
-event-sounds=true
-
-[org/gnome/desktop/datetime]
-automatic-timezone=true
 
 [org/gnome/desktop/background]
 picture-uri='file:///home/<YOUR_USERNAME>/Pictures/xkcd1.jpg'
