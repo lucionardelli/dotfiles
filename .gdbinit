@@ -37,6 +37,7 @@ set history save
 # These make gdb never pause in its output
 set height 0
 set width 0
+set pagination off
 
 set $SHOW_CONTEXT = 1
 set $SHOW_NEST_INSN = 0

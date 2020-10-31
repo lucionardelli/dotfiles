@@ -28,7 +28,8 @@ source ~/.bashrc
 
 ```sh
 cd ~
-sudo bash .setup_computer.sh
+sudo echo # "Enter your pass to have "sudo privileges" when needed."
+bash .setup_computer.sh
 ```
 
 

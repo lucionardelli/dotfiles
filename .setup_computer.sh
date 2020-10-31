@@ -22,21 +22,25 @@ cp -r .dotfile-gitinfo .git/info
 # Install basic things
 sudo apt update -y
 sudo apt upgrade -y
-sudo apt install -y vim-gnome curl openssh-server
+# sudo apt install -y vim-gnome curl openssh-server
+sudo apt install -y vim-gtk curl openssh-server
 
 # Set vim as default editor
-sudo update-alternatives --set editor /usr/bin/vim.gnome
+# sudo update-alternatives --set editor /usr/bin/vim.gnome
+sudo update-alternatives --set editor /usr/bin/vim-gtk3
 
 # Install basic development packages
 sudo apt install -y build-essential python-dev python3-dev
-sudo apt install -y python-pip python3-pip python3-setuptools
-sudo pip install --upgrade pip
+sudo apt install -y python3-pip python3-setuptools
 sudo pip3 install --upgrade pip
-pip install --user --upgrade virtualenv virtualenvwrapper
 pip3 install --user --upgrade virtualenv virtualenvwrapper
 
+# Install gnome-tweak-tools
+sudo add-apt-repository universe
+sudo apt install -y gnome-tweak-tool chrome-gnome-shell gnome-shell-extension-prefs
 
-# Make VIM ASF
+
+# Make VIM AASF
 sudo apt install -y ruby-dev cowsay
 vim -c "PlugInstall|qa" > /dev/null 2>&1
 
@@ -45,7 +49,7 @@ wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -
 sudo dpkg -i /tmp/google-chrome-stable_current_amd64.deb
 
 # Install useful stuff (continue if some package cannot be found)
-for pkg in vlc gnome-clocks meld xclip silversearcher-ag exuberant-ctags htop tig flake8 python-flake8 python3-flake8 clang-7 fzf; do
+for pkg in vlc gnome-clocks meld xclip silversearcher-ag exuberant-ctags htop tig flake8 python-flake8 python3-flake8 clang-7 fzf bat; do
     sudo apt -y install $pkg
 done
 

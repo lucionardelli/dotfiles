@@ -97,7 +97,7 @@ Plug 'terryma/vim-expand-region'
 Plug 'rhysd/committia.vim'
 
 " Autocomplete with ML powers!
-Plug 'zxqfl/tabnine-vim'
+" Plug 'zxqfl/tabnine-vim'   Consumes A LOT of memory. Take it out
 
 " Use FZF. fzf runs asynchronously so it might be faster than command-T
 Plug 'junegunn/fzf'
@@ -634,8 +634,34 @@ set tags^=./.git/tags;
 noremap H ^
 noremap L $
 
+" Open fist matched tag in horizontal split
 map <C-f> :sp <CR>:exec("tag ".expand("<cword>"))<CR>
-map <S-f> :vs <CR>:exec("tag ".expand("<cword>"))<CR>
+
+function! AddGitDirToPath()
+    " Change working dir to the current file
+    cd %:p:h
+    " Set 'gitdir' to be the folder containing .git
+    let gitdir=system("git rev-parse --show-toplevel | tr -d '\\n'")
+    " See if the command output starts with 'fatal' (if it does, not in a git repo)
+    let isgitdir=empty(matchstr(gitdir, '^fatal:.*'))
+
+    " If it empty, there was no error. Let's cd
+    if isgitdir
+		let &path.=gitdir."/**".",./**"
+    endif
+endfunction
+" autocmd! BufEnter * call AddGitDirToPath()
+
+
+" Until I fix the `path`, it is excruciatingly slow to use autocomplete
+" scanning tags  on included files. Don't do it.
+set complete-=i
+
+" Enable mouse for scrolling, split resizing, goto tags and more!
+set mouse=a
+
+" Set the window’s title, reflecting the file currently being edited.
+set title
 
 " Follow and go back from tags quicker
 noremap <Leader>] <C-]>   " forward
@@ -681,11 +707,6 @@ inoremap <S-down> <Esc>:m .+1<CR>==gi
 inoremap <S-up> <Esc>:m .-2<CR>==gi
 vnoremap <S-up> :m '<-2<CR>gv=gv
 vnoremap <S-down> :m '>+1<CR>gv=gv
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => iRobot specific
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set path+=/irobot/brewst/**,/irobot/brewst/*,/irobot/brewst/
-set path+=/irobot/floorcare-dev/**,/irobot/floorcare-dev/*,/irobot/floorcare-dev/
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Spellchecking for commit messages
