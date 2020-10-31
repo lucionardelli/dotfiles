@@ -13,17 +13,44 @@ export FCD_DIR=$HOME/irobot/floorcare-dev/
 export WIP_FCD_DIR=$HOME/irobot/wip-floorcare-dev/
 export RELEASE_DIR=$HOME/irobot/release-branch/
 
+# Actual location of brewst code in local machine. Needed for `checkifbrewst`
+# function to work when openning new tab.
+export BREWST_HOME_MELMAC=/irobot/brewst/
+export FCD_DIR_MELMAC=/irobot/floorcare-dev/
+export WIP_FCD_DIR_MELMAC=/irobot/wip-floorcare-dev/
+export RELEASE_DIR_MELMAC=/irobot/release-branch/
+
 # Necessary to use brewst-sdk
 export PATH=/opt/irobot/brewst-1.0/bin:/opt/irobot/x86_64-oesdk-linux/usr/bin/arm-oe-linux-gnueabi:$PATH
 export PATH=/opt/ccache/bin:$PATH
 
 # Simulator
-if [ -f /opt/ros/lunar/setup.bash ]; then
-    source /opt/ros/lunar/setup.bash
-fi
-if [ -f /opt/irobot/simulator/setup.bash ]; then
+sim-activate() {
+    source /opt/ros/kinetic/setup.bash
     source /opt/irobot/simulator/setup.bash
-fi
+}
+
+bstp () {
+  export PATH=$1/scripts/bash-scripts:${PATH}
+}
+
+checkifbrewst () {
+  case $PWD/ in
+    $BREWST_HOME | $FCD_DIR | $WIP_FCD_DIR | $RELEASE_DIR | $BREWST_HOME_MELMAC | $FCD_DIR_MELMAC | $WIP_FCD_DIR_MELMAC | $RELEASE_DIR_MELMAC)
+	  bstp $PWD/
+      ;;
+    *)
+      ;;
+  esac
+}
+
+# Add helpful compile alias when entering one of the repos
+cd () {
+    builtin cd "$@" && checkifbrewst;
+}
+
+# Manually call this when a new terminal/tab is opened
+checkifbrewst
 
 # Quick path aliases
 alias b='cd '$BREWST_HOME
@@ -64,6 +91,7 @@ jvim () {
 
 alias aws-int-test='awslogin --role ADFS-ASPEN-ADMINCONSOLE-RO --account 085719883810'
 alias aws-robolog='awslogin --role  ADFS-ROBOLOG-USER --account 431799387985'
+alias aws-robomaker='awslogin --role  ADFS-ENG-READONLY --account 188125624937'
 
 
 # VPN
@@ -71,23 +99,6 @@ alias vpn='sudo $HOME/irobot/vpn/irobot-vpn.sh -c=irobot-gb'
 
 # Compile, compile, compile
 alias icecream='icecc-jobs.sh -s 10.140.33.21'
-
-# Add helpful compile alias when entering one of the repos
-cd () { builtin cd "$@" && checkifbrewst; }
-
-bstp () {
-  export PATH=$1/scripts/bash-scripts:${PATH}
-}
-
-checkifbrewst () {
-  case $PWD/ in
-    $BREWST_HOME | $FCD_DIR | $WIP_FCD_DIR | $RELEASE_DIR)
-	  bstp $PWD/
-      ;;
-    *)
-      ;;
-  esac
-}
 
 # Who are you? I'm...Batman!
 LEWIS4288=10.140.44.41
@@ -98,7 +109,20 @@ SINMARINO=10.140.44.16
 WHITEWALKER=10.140.44.26
 
 # Home robot fleet (?)
-DOBBY=192.168.0.12
-DOBBYS=192.168.0.13
-DOBBY2=192.168.0.13
-EDISON6108=192.168.0.14
+
+# Lewis
+DOBBY=192.168.0.11
+DDART=192.168.0.15
+LDART=192.168.0.15
+
+# Soho
+DOBBYS=192.168.0.12
+DOBBY2=192.168.0.12
+
+# Sapphire
+PITUFINA=192.168.0.14
+SAPPHIRE=192.168.0.14
+PDART=192.168.0.20
+PDDB=192.168.0.20
+SDART=192.168.0.20
+SDDB=192.168.0.20
