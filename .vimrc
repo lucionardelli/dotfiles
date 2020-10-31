@@ -634,8 +634,23 @@ set tags^=./.git/tags;
 noremap H ^
 noremap L $
 
+" Open fist matched tag in horizontal split
 map <C-f> :sp <CR>:exec("tag ".expand("<cword>"))<CR>
-map <S-f> :vs <CR>:exec("tag ".expand("<cword>"))<CR>
+
+function! AddGitDirToPath()
+    " Change working dir to the current file
+    cd %:p:h
+    " Set 'gitdir' to be the folder containing .git
+    let gitdir=system("git rev-parse --show-toplevel | tr -d '\\n'")
+    " See if the command output starts with 'fatal' (if it does, not in a git repo)
+    let isgitdir=empty(matchstr(gitdir, '^fatal:.*'))
+
+    " If it empty, there was no error. Let's cd
+    if isgitdir
+		let &path.=gitdir."/**".",./**"
+    endif
+endfunction
+" autocmd! BufEnter * call AddGitDirToPath()
 
 " Follow and go back from tags quicker
 noremap <Leader>] <C-]>   " forward
@@ -681,11 +696,6 @@ inoremap <S-down> <Esc>:m .+1<CR>==gi
 inoremap <S-up> <Esc>:m .-2<CR>==gi
 vnoremap <S-up> :m '<-2<CR>gv=gv
 vnoremap <S-down> :m '>+1<CR>gv=gv
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => iRobot specific
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set path+=/irobot/brewst/**,/irobot/brewst/*,/irobot/brewst/
-set path+=/irobot/floorcare-dev/**,/irobot/floorcare-dev/*,/irobot/floorcare-dev/
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Spellchecking for commit messages
