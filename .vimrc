@@ -97,7 +97,7 @@ Plug 'terryma/vim-expand-region'
 Plug 'rhysd/committia.vim'
 
 " Autocomplete with ML powers!
-Plug 'zxqfl/tabnine-vim'
+" Plug 'zxqfl/tabnine-vim'   Consumes A LOT of memory. Take it out
 
 " Use FZF. fzf runs asynchronously so it might be faster than command-T
 Plug 'junegunn/fzf'
