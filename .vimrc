@@ -652,6 +652,17 @@ function! AddGitDirToPath()
 endfunction
 " autocmd! BufEnter * call AddGitDirToPath()
 
+
+" Until I fix the `path`, it is excruciatingly slow to use autocomplete
+" scanning tags  on included files. Don't do it.
+set complete-=i
+
+" Enable mouse for scrolling, split resizing, goto tags and more!
+set mouse=a
+
+" Set the window’s title, reflecting the file currently being edited.
+set title
+
 " Follow and go back from tags quicker
 noremap <Leader>] <C-]>   " forward
 noremap <Leader>[ <C-T>   " back
