@@ -311,6 +311,8 @@ set ignorecase
 set smartcase
 " Highlight search pattern on match
 nnoremap <Leader>/ :set hlsearch!<CR>
+" But disable incremental search
+set noincsearch
 
 " No annoying sound on errors
 set noerrorbells

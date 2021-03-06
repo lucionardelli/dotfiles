@@ -22,15 +22,15 @@ cp -r .dotfile-gitinfo .git/info
 # Install basic things
 sudo apt update -y
 sudo apt upgrade -y
-# sudo apt install -y vim-gnome curl openssh-server
-sudo apt install -y vim-gtk curl openssh-server
+sudo apt install -y vim-gnome curl openssh-server
+# sudo apt install -y vim-gtk curl openssh-server
 
 # Set vim as default editor
-# sudo update-alternatives --set editor /usr/bin/vim.gnome
-sudo update-alternatives --set editor /usr/bin/vim-gtk3
+sudo update-alternatives --set editor /usr/bin/vim.gnome
+# sudo update-alternatives --set editor /usr/bin/vim-gtk3
 
 # Install basic development packages
-sudo apt install -y build-essential python-dev python3-dev
+sudo apt install -y build-essential python3-dev
 sudo apt install -y python3-pip python3-setuptools
 sudo pip3 install --upgrade pip
 pip3 install --user --upgrade virtualenv virtualenvwrapper
