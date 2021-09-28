@@ -106,6 +106,9 @@ Plug 'junegunn/fzf.vim'
 " Recover.vim adds a diff option when Vim finds a swap file
 Plug 'chrisbra/Recover.vim'
 
+" Navigate to the window using overlay numbers/letters
+Plug 't9md/vim-choosewin'
+
 " Initialize plugin system
 call plug#end()
 
@@ -249,7 +252,9 @@ endfunction
 
 function! MakeJsonPretty()
     execute "%!python -m json.tool"
-    execute "w"
+    set filetype=json
+    set foldmethod=indent
+    silent w
 endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -353,8 +358,8 @@ if &diff
     command! GIgnore :qall
     command! GAdd :Gwrite | w! | qall
 
-    nnoremap <C-a> :GAdd <CR>
-    nnoremap <C-i> :GIgnore <CR>
+    nnoremap <Leader>a :GAdd <CR>
+    nnoremap <Leader>i :GIgnore <CR>
     set cursorline
     map ] ]c
     map [ [c
@@ -504,9 +509,19 @@ imap <C-Left> <ESC><c-w>h
 imap <C-Up> <ESC><c-w>k
 imap <C-Down> <ESC><c-w>j
 
+" invoke choosewin plugin
+nmap  <Leader>w  <Plug>(choosewin)
+"Use overlay feature for choosewin
+let g:choosewin_overlay_enable = 1
+let g:choosewin_statusline_replace = 0
+let g:choosewin_return_on_single_win = 1
+
 """""""""""""""""""""""""""""""""
 " => Custom commands
 """""""""""""""""""""""""""""""""
+" Quickly open a terminal
+map <S-t> <ESC>:terminal<cr>
+
 " Highlight the line with a cursor
 set cursorline
 
@@ -637,7 +652,7 @@ noremap H ^
 noremap L $
 
 " Open fist matched tag in horizontal split
-map <C-f> :sp <CR>:exec("tag ".expand("<cword>"))<CR>
+map <C-g> :sp <CR>:exec("tag ".expand("<cword>"))<CR>
 
 function! AddGitDirToPath()
     " Change working dir to the current file
@@ -685,9 +700,13 @@ let g:CommandTMaxFiles=2000000
 let g:CommandTWildIgnore=&wildignore . ",*/result/*,*/variant-dir/*,*/aristotle/*,*/mason_packages/*,*/externals/*,*/_build/*,*/_install/*"
 let g:CommandTNeverShowDotFiles=1
 
+" Open CommandT to look for open buffers
 nnoremap <Leader>b :CommandTBuffer<CR>
+" Open CommandT to look for files in current directory recursively
 nnoremap <Leader>f :CommandT<CR>
-"map ts :CommandTLine<CR>
+" Open CommandT to look for words in current file
+nnoremap <C-f> :CommandTLine<CR>
+
 
 " Make fold ignore blocks of less than 15 lines
 set foldminlines=8
