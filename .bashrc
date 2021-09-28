@@ -152,10 +152,12 @@ then
 fi
 
 
-if [ -e /usr/local/bin/virtualenvwrapper_lazy.sh ]
+if [ -e ~/.local/bin/virtualenvwrapper_lazy.sh ]
 then
     export WORKON_HOME=$HOME/.virtualenvs
-    source /usr/local/bin/virtualenvwrapper_lazy.sh
+    export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+    export VIRTUALENVWRAPPER_VIRTUALENV=/home/lnardelli/.local/bin/virtualenv
+    source ~/.local/bin/virtualenvwrapper_lazy.sh
 fi
 
 # Change directories without cd
@@ -201,7 +203,7 @@ bind -m vi-command "\C-l":clear-screen
 # FZF config
 FZF_BASIC_OPTS="--no-mouse --height 50% -1 --reverse --multi --inline-info"
 FZF_PREVIEW_OPTS="--preview='[[ \$(file --mime {}) =~ binary ]] && echo {} is a binary file || (bat --style=numbers --color=always {} || cat {}) 2> /dev/null | head -300' --preview-window='right:hidden:wrap'"
-FZF_KEY_BIND="--bind 'ctrl-v:execute(vi {+}),ctrl-x:execute(xdg-open {}),ctrl-p:toggle-preview,ctrl-a:select-all+accept,alt-j:down,alt-k:up'"
+FZF_KEY_BIND="--bind 'ctrl-x:execute(xdg-open {}),ctrl-p:toggle-preview,ctrl-a:select-all+accept,alt-j:down,alt-k:up'"
 FZF_DEFAULT_OPTS="${FZF_BASIC_OPTS} ${FZF_PREVIEW_OPTS} ${FZF_KEY_BIND}"
 
 # Default command is applied to all files in git repository if in a git repository, to all non-hidden files otherwise
