@@ -1,6 +1,5 @@
 # PATHs
 export IROBOT_DIR=$HOME/irobot/
-export BREWST_HOME=$HOME/irobot/brewst/
 export ROOST_DIR=$HOME/irobot/brewst/roost/
 export ROBOLOG_DIR=$HOME/irobot/robolog/
 export ROBOLOG2_DIR=$HOME/irobot/robolog2/
@@ -9,6 +8,7 @@ export ROBOLOG_PYTHON_API_DIR=$HOME/irobot/rapi/
 
 
 # Yet more instances of the brewst code
+export DEFAULT_BREWST_HOME=$HOME/irobot/brewst/
 export FCD_DIR=$HOME/irobot/floorcare-dev/
 export WIP_FCD_DIR=$HOME/irobot/wip-floorcare-dev/
 export RELEASE_DIR=$HOME/irobot/release-branch/
@@ -24,20 +24,26 @@ export RELEASE_DIR_MELMAC=/irobot/release-branch/
 export PATH=/opt/irobot/brewst-1.0/bin:/opt/irobot/x86_64-oesdk-linux/usr/bin/arm-oe-linux-gnueabi:$PATH
 export PATH=/opt/ccache/bin:$PATH
 
+# We don't want to use remote cache. At least not from Arg...
+export BREWST_NO_REMOTE_CACHE=1
+
 # Simulator
 sim-activate() {
     source /opt/ros/kinetic/setup.bash
     source /opt/irobot/simulator/setup.bash
 }
 
-bstp () {
-  export PATH=$1/scripts/bash-scripts:${PATH}
+set_irobot_paths () {
+  export BREWST_HOME=$1
+  export PATH=${BREWST_HOME}/scripts/bash-scripts:${PATH}
+  export PYTHONPATH=$PYTHONPATH:${BREWST_HOME}/_build/x86_64/slam-tools/vslam-profiler/python3
+  alias vsp=./_build/x86_64/slam-tools/vslam-profiler/gui/vslam-profiler-gui
 }
 
 checkifbrewst () {
   case $PWD/ in
-    $BREWST_HOME | $FCD_DIR | $WIP_FCD_DIR | $RELEASE_DIR | $BREWST_HOME_MELMAC | $FCD_DIR_MELMAC | $WIP_FCD_DIR_MELMAC | $RELEASE_DIR_MELMAC)
-	  bstp $PWD/
+    $DEFAULT_BREWST_HOME | $FCD_DIR | $WIP_FCD_DIR | $RELEASE_DIR | $BREWST_HOME_MELMAC | $FCD_DIR_MELMAC | $WIP_FCD_DIR_MELMAC | $RELEASE_DIR_MELMAC)
+	  set_irobot_paths $PWD/
       ;;
     *)
       ;;
@@ -53,12 +59,12 @@ cd () {
 checkifbrewst
 
 # Quick path aliases
-alias b='cd '$BREWST_HOME
+alias b='cd '$DEFAULT_BREWST_HOME
 alias fcd='cd '$FCD_DIR
 alias wip='cd '$WIP_FCD_DIR
 alias rt='cd '$RELEASE_DIR
 
-alias brewst-dev='cd '$BREWST_HOME
+alias brewst-dev='cd '$DEFAULT_BREWST_HOME
 alias roost-dev='cd '$ROOST_DIR
 
 alias r='cd '$ROBOLOG_DIR
@@ -73,12 +79,12 @@ if [ -x "$(command -v et)" ]; then
     alias kraken='et lnardelli@kraken'
     alias jabba='et lnardelli@jabba'
 else
-    alias kraken='ssh -X lnardelli@kraken'
-    alias jabba='ssh -X lnardelli@jabba'
+    alias kraken='ssh lnardelli@kraken'
+    alias jabba='ssh lnardelli@jabba'
 fi
 
 alias cojuda='ssh -X lnardelli@cojuda'
-alias smeagol='ssh -X lnardelli@smeagol'
+alias smeagol='ssh lnardelli@smeagol'
 
 # Remote files? Edit Locally? Mind blown! puuuushh!
 kvim () {
@@ -90,12 +96,80 @@ jvim () {
 }
 
 alias aws-int-test='awslogin --role ADFS-ASPEN-ADMINCONSOLE-RO --account 085719883810'
+alias aws-pmapss3='awslogin --role  ADFS-PMAPS-ANALYSIS-RO --account 850732618658'
 alias aws-robolog='awslogin --role  ADFS-ROBOLOG-USER --account 431799387985'
 alias aws-robomaker='awslogin --role  ADFS-ENG-READONLY --account 188125624937'
 
 
 # VPN
-alias vpn='sudo $HOME/irobot/vpn/irobot-vpn.sh -c=irobot-gb'
+# alias vpn='sudo $HOME/irobot/vpn/irobot-vpn.sh -c=irobot-gb' # OLD Vpn script. Miss ya!
+vpn () {
+    DISCONNECT=
+    DEFAULT_VPN=
+
+    while [ $# -gt 0 ]; do
+    case $1 in
+        -d|--disconnect)
+            echo "disconnecting"
+            DISCONNECT=1
+            shift # past argument
+            ;;
+        -i|--irobot|-u|--usa)
+            echo "defaulting"
+            DEFAULT_VPN=1
+            shift # past argument
+            ;;
+        *)
+            echo "Unrecognized option"
+            return 1
+            ;;
+    esac
+    done
+
+    if [ -z $DISCONNECT ]; then
+        echo "********************************************"
+        echo "*            Connectng to VPN              *"
+        if [ -z $DEFAULT_VPN ]; then
+            IP=201.216.239.190
+            echo "*       o====Rosario tunneling=====o       *"
+        else
+            IP="vpn.irobot.com/cli"
+            echo "*       o===========USA============o       *"
+        fi
+        SUPER_SECRET_FILE=/tmp/.VconPfigN
+        if [ -f "$SUPER_SECRET_FILE" ]; then
+            echo "*          using top secret file           *"
+            echo
+        else
+            echo "*             interactively                *"
+            echo -n "* Email: "
+            read email
+            echo -n "* Password: "
+            read -s super_secret
+            echo
+            echo "y"$'\n'"${email}"$'\n'"${super_secret}" | base64 > $SUPER_SECRET_FILE
+        fi
+        echo "********************************************"
+        echo
+        temp_file=$(mktemp)
+        base64 --decode $SUPER_SECRET_FILE > $temp_file
+
+        if [ -n "$DEFAULT_VPN" ]; then
+            # When connecting to the default vpn, remove the "y". It's secure.
+            echo "$(tail -n +2 ${temp_file})" > $temp_file
+        fi
+        /opt/cisco/anyconnect/bin/vpn connect ${IP} -s < ${temp_file}
+        rm $temp_file
+    else
+        echo "****************************"
+        echo "* Disconnectng from VPN... *"
+        echo "****************************"
+        echo
+        /opt/cisco/anyconnect/bin/vpn disconnect
+    fi
+    return 0
+}
+
 
 # Compile, compile, compile
 alias icecream='icecc-jobs.sh -s 10.140.33.21'
@@ -111,18 +185,27 @@ WHITEWALKER=10.140.44.26
 # Home robot fleet (?)
 
 # Lewis
-DOBBY=192.168.0.11
-DDART=192.168.0.15
-LDART=192.168.0.15
+DOBBY=192.168.0.12
+# Lewis Dart (DDB-3792c8)
+LEWIS=DDB-3792c8.local
+LDART=DDB-3792c8.local
+LDDB=DDB-3792c8.local
 
 # Soho
-DOBBYS=192.168.0.12
-DOBBY2=192.168.0.12
+DOBBYS=192.168.0.19
+DOBBY2=192.168.0.19
+# Soho Edison (edison-6108)
+SOHO=edison-6108.local
+SEDISON=edison-6108.local
+DEDISON=edison-6108.local
 
 # Sapphire
-PITUFINA=192.168.0.14
-SAPPHIRE=192.168.0.14
-PDART=192.168.0.20
-PDDB=192.168.0.20
-SDART=192.168.0.20
-SDDB=192.168.0.20
+PITUFINA=192.168.0.11
+SAPPHIRE=192.168.0.11
+# Sapphire Dart (DDB-4ff45c)
+SAPPHIRE=DDB-4ff45c.local
+PDART=DDB-4ff45c.local
+PDDB=DDB-4ff45c.local
+
+
+#vim: set syntax=sh
