@@ -95,11 +95,14 @@ jvim () {
   vim scp://lnardelli@jabba/~/irobot/brewst/$@
 }
 
-alias aws-int-test='awslogin --role ADFS-ASPEN-ADMINCONSOLE-RO --account 085719883810'
-alias aws-pmapss3='awslogin --role  ADFS-PMAPS-ANALYSIS-RO --account 850732618658'
-alias aws-robolog='awslogin --role  ADFS-ROBOLOG-USER --account 431799387985'
-alias aws-robomaker='awslogin --role  ADFS-ENG-READONLY --account 188125624937'
+# We are not using awslogin anymore!
+# alias aws-int-test='awslogin --role ADFS-ASPEN-ADMINCONSOLE-RO --account 085719883810'
+# alias aws-pmapss3='awslogin --role  ADFS-PMAPS-ANALYSIS-RO --account 850732618658'
+# alias aws-robolog='awslogin --role  ADFS-ROBOLOG-USER --account 431799387985'
+# alias aws-robomaker='awslogin --role  ADFS-ENG-READONLY --account 188125624937'
 
+export AWS_DEFAULT_SSO_START_URL=https://irobot.awsapps.com/start
+export AWS_DEFAULT_SSO_REGION=us-east-1
 
 # VPN
 # alias vpn='sudo $HOME/irobot/vpn/irobot-vpn.sh -c=irobot-gb' # OLD Vpn script. Miss ya!
