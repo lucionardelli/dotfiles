@@ -79,12 +79,12 @@ if [ -x "$(command -v et)" ]; then
     alias kraken='et lnardelli@kraken'
     alias jabba='et lnardelli@jabba'
 else
-    alias kraken='ssh lnardelli@kraken'
-    alias jabba='ssh lnardelli@jabba'
+    alias kraken='ssh -X lnardelli@kraken'
+    alias jabba='ssh -X lnardelli@jabba'
 fi
 
 alias cojuda='ssh -X lnardelli@cojuda'
-alias smeagol='ssh lnardelli@smeagol'
+alias smeagol='ssh -X lnardelli@smeagol'
 
 # Remote files? Edit Locally? Mind blown! puuuushh!
 kvim () {
@@ -133,10 +133,10 @@ vpn () {
         echo "********************************************"
         echo "*            Connectng to VPN              *"
         if [ -z $DEFAULT_VPN ]; then
-            IP=201.216.239.190
+            IP=###.###.###.###
             echo "*       o====Rosario tunneling=====o       *"
         else
-            IP="vpn.irobot.com/cli"
+            IP="irobot-vppn-url/connect"
             echo "*       o===========USA============o       *"
         fi
         SUPER_SECRET_FILE=/tmp/.VconPfigN
