@@ -38,6 +38,9 @@ alias gts='xset dpms force off'
 # Open Vim twice as fast!
 alias v='vi'
 
+# Get weather report in Rosario
+alias clima='curl https://wttr.in/Rosario\?lang\=es'
+
 # Master key to open visual things
 alias xopen='xdg-open'
 

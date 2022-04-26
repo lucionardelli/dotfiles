@@ -575,12 +575,12 @@ nnoremap <Leader>tc :tabclose<CR>
 nnoremap <Leader>td :tabclose<CR>
 
 " Yank entire file
-nnoremap <C-S-y> :%y<CR>
+nnoremap <Leader>Y :%y<CR>
 
 " Split/edit buffers by number
 command! -nargs=1 Vs :vs <Bar> b<args>
 command! -nargs=1 Sp :sp <Bar> b<args>
-command! -nargs=1 E :edit <Bar> b<args>
+command! -nargs=1 E :b<args>
 
 " Grep related
 " Grep in WD for the word under the cursor
@@ -670,9 +670,19 @@ endfunction
 " autocmd! BufEnter * call AddGitDirToPath()
 
 
-" Until I fix the `path`, it is excruciatingly slow to use autocomplete
-" scanning tags  on included files. Don't do it.
-set complete-=i
+" Until I fix the `path`, it is excruciatingly slow to use autocomplete scanning tags  on included files.
+" Don't do it (i.e. exclude option `i` from the `complete` setting
+set complete=.,w,u,kspell,]
+
+" Show the automcomplete menu even when there's only one option and auto select the longest match
+set completeopt=menuone,preview
+
+" Disable showing menu info about automcomplete
+set shortmess+=c
+
+" Use j,k to scroll trhough autocomplet options.
+inoremap <expr> j ((pumvisible())?("\<C-n>"):("j"))
+inoremap <expr> k ((pumvisible())?("\<C-p>"):("k"))
 
 " Enable mouse for scrolling, split resizing, goto tags and more!
 set mouse=a
@@ -833,4 +843,7 @@ function! WktToGeogebra()
     echo "Converted :-)"
 endfunction
 
+nnoremap <C-U> :GundoToggle<CR>
 
+ca wttr vertical term curl https://wttr.in/Rosario\?lang\=es
+ca clima vertical term curl https://wttr.in/Rosario\?lang\=es
