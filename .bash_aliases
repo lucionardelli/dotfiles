@@ -67,3 +67,6 @@ fkill() {
     echo $pid | xargs kill -${1:-9}
   fi
 }
+
+mkcd() { mkdir -p "$1" && cd "$1"; }
+
