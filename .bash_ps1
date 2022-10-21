@@ -28,8 +28,8 @@ DEFAULT='\[\033[0m\]'
 # User Configuration
 #=========================================================
 # Colors
-cLINES=$GRAY #Lines and Arrow
-cBRACKETS=$GRAY # Brackets around each data item
+cLINES=$WHITE #Lines and Arrow
+cBRACKETS=$WHITE # Brackets around each data item
 cERROR=$LIGHTRED # Error block when previous command did not return 0
 cTIME=$LIGHTGRAY # The current time
 cMPX1=$YELLOW # Color for terminal multiplexer threshold 1

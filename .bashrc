@@ -8,6 +8,17 @@ case $- in
       *) return;;
 esac
 
+
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/bin" ] ; then
+    PATH="$HOME/bin:$PATH"
+fi
+
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/.local/bin" ] ; then
+    PATH="$HOME/.local/bin:$PATH"
+fi
+
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
@@ -136,6 +147,9 @@ export LSCOLORS=Exfxcxdxbxegedabagacad
 # Necessary to use brewst-sdk
 if [ -f ~/.bash_irobot ]; then
     source ~/.bash_irobot
+fi
+if [ -f ~/.bash_ahs ]; then
+    source ~/.bash_ahs
 fi
 
 export EDITOR=vim

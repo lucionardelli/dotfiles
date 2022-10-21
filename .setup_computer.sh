@@ -22,11 +22,11 @@ cp -r .dotfile-gitinfo .git/info
 # Install basic things
 sudo apt update -y
 sudo apt upgrade -y
-sudo apt install -y vim-gnome curl openssh-server
+sudo apt install -y vim curl openssh-server
 # sudo apt install -y vim-gtk curl openssh-server
 
 # Set vim as default editor
-sudo update-alternatives --set editor /usr/bin/vim.gnome
+sudo update-alternatives --set editor /usr/bin/vim
 # sudo update-alternatives --set editor /usr/bin/vim-gtk3
 
 # Install basic development packages
@@ -34,10 +34,12 @@ sudo apt install -y build-essential python3-dev
 sudo apt install -y python3-pip python3-setuptools
 sudo pip3 install --upgrade pip
 pip3 install --user --upgrade virtualenv virtualenvwrapper
+# Install Poetry
+curl -sSL https://install.python-poetry.org | python3 -
 
 # Install gnome-tweak-tools
 sudo add-apt-repository universe
-sudo apt install -y gnome-tweak-tool chrome-gnome-shell gnome-shell-extension-prefs
+sudo apt install -y gnome-tweaks chrome-gnome-shell gnome-shell-extension gnome-shell-extension-prefs
 
 
 # Make VIM AASF
