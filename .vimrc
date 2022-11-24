@@ -76,10 +76,10 @@ Plug 'chemzqm/vim-jsx-improve'
 " Browse the tags of the current file
 Plug 'majutsushi/tagbar'
 
-" Plug Command-T and try to make it work
- Plug 'wincent/command-t', {
-     \   'do': 'cd ruby/command-t/ext/command-t && ruby extconf.rb && make'
-     \ }
+" Command-T and try to make it work - nice plugin but we are using fzf now!
+"  Plug 'wincent/command-t', {
+"      \   'do': 'cd ruby/command-t/ext/command-t && ruby extconf.rb && make'
+"      \ }
 
 " Flake8 integration (static syntax and style checker for Python)
 Plug 'nvie/vim-flake8'
@@ -100,7 +100,7 @@ Plug 'rhysd/committia.vim'
 " Plug 'zxqfl/tabnine-vim'   Consumes A LOT of memory. Take it out
 
 " Use FZF. fzf runs asynchronously so it might be faster than command-T
-Plug 'junegunn/fzf'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
 " Recover.vim adds a diff option when Vim finds a swap file
@@ -705,17 +705,26 @@ let g:tagbar_silent = 1
 map tt :TagbarToggle<CR>
 
 " Don't show the warning from Command-T
-let g:CommandTSuppressMaxFilesWarning=1
-let g:CommandTMaxFiles=2000000
-let g:CommandTWildIgnore=&wildignore . ",*/result/*,*/variant-dir/*,*/aristotle/*,*/mason_packages/*,*/externals/*,*/_build/*,*/_install/*"
-let g:CommandTNeverShowDotFiles=1
+" let g:CommandTSuppressMaxFilesWarning=1
+" let g:CommandTMaxFiles=2000000
+" let g:CommandTWildIgnore=&wildignore . ",*/result/*,*/variant-dir/*,*/aristotle/*,*/mason_packages/*,*/externals/*,*/_build/*,*/_install/*"
+" let g:CommandTNeverShowDotFiles=1
 
 " Open CommandT to look for open buffers
-nnoremap <Leader>b :CommandTBuffer<CR>
+" nnoremap <Leader>b :CommandTBuffer<CR>
 " Open CommandT to look for files in current directory recursively
-nnoremap <Leader>f :CommandT<CR>
+" nnoremap <Leader>f :CommandTSearch<CR>
 " Open CommandT to look for words in current file
-nnoremap <C-f> :CommandTLine<CR>
+" nnoremap <C-f> :CommandTLine<CR>
+
+" Open fzf to look for open buffers
+nnoremap <Leader>b :Buffers<CR>
+" Open fzf to look for files in current directory recursively
+nnoremap <Leader>f :Files<CR>
+" Open fzf to look for words in current file
+nnoremap <C-f> :BLines<CR>
+" Look for tags (ctags)
+nnoremap <Leader><S-f> :Tags<CR>
 
 
 " Make fold ignore blocks of less than 15 lines

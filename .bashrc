@@ -218,9 +218,7 @@ bind -m vi-command "\C-l":clear-screen
 #   CTRL-T - Paste the selected file path into the command line
 #   CTRL-R - Paste the selected command from history into the command line
 #   ALT-C - cd into the selected directory
-[ -s ~/.fzf.bash ] && source ~/.fzf.bash
-
-# [ -s ~/.fzf_completion.bash ] && source ~/.fzf_completion.bash
+[ -s ~/.fzf/fzfrc ] && source ~/.fzf/fzfrc
 
 
 # Add GO to the User's path
