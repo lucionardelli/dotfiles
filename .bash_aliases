@@ -18,6 +18,13 @@ alias ggdjango="ag -l --ignore={'*migrations*',}"
 alias gg='ag --python --cpp --js -l'
 alias ggn='ag --python --cpp --js'
 
+
+# Open all references to the given term
+vag() {
+    echo $1 | xclip -rmlastnl
+    vi $(ag -l "$@");
+}
+
 # Open the result of last command in vim
 # (Basically used to open files grepped with
 # previus aliases)
