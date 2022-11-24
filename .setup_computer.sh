@@ -22,7 +22,7 @@ cp -r .dotfile-gitinfo .git/info
 # Install basic things
 sudo apt update -y
 sudo apt upgrade -y
-sudo apt install -y vim curl openssh-server
+sudo apt install -y vim curl openssh-server zsh
 # sudo apt install -y vim-gtk curl openssh-server
 
 # Set vim as default editor
@@ -58,11 +58,10 @@ done
 # Improve wrong password messages
 sudo sed -i 's/#\s*Defaults\s\+insults/Defaults\tinsults/' /etc/sudoers
 
-# Config gnome things
-cp .dconf.bak /tmp/dconf.bak
-sed -i "s/<YOUR_USERNAME>/$USER/" /tmp/dconf.bak
-dconf reset -f /
-dconf load / < /tmp/dconf.bak
+
+# I yield...use oh my zsh
+sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
 
 # Reboot. But first...cleaning up my closet!
 sudo apt autoremove
