@@ -223,3 +223,6 @@ bind -m vi-command "\C-l":clear-screen
 
 # Add GO to the User's path
 export PATH=$PATH:/usr/local/go/bin
+
+# Avoid opening less for "short" outputs
+export LESS=eFRX
