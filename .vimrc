@@ -90,6 +90,9 @@ Plug 'kh3phr3n/python-syntax'
 " Only for simple cases...you MUST write good code yourself
 Plug 'tell-k/vim-autopep8'
 
+" Black intregration for better python formatting
+Plug 'psf/black', { 'branch': 'stable' }
+
 " Visually select increasingly larger regions of text
 Plug 'terryma/vim-expand-region'
 
@@ -108,6 +111,9 @@ Plug 'chrisbra/Recover.vim'
 
 " Navigate to the window using overlay numbers/letters
 Plug 't9md/vim-choosewin'
+
+" Change working dir automagically
+Plug 'airblade/vim-rooter'
 
 " Initialize plugin system
 call plug#end()
@@ -151,6 +157,7 @@ let g:startify_change_to_vcs_root     = 1
 
 let g:startify_bookmarks = [
             \ {'vrc': '~/.vimrc'},
+            \ {'zrc': '~/.zshrc'},
             \ {'brc': '~/.bashrc'},
             \ {'git': '~/.gitignore'},
             \ ]
@@ -189,7 +196,7 @@ endif
 nnoremap <C-U> :GundoToggle<CR>
 
 "=> Copy things from VI to clipboard
-set clipboard=unnamedplus
+set clipboard^=unnamed,unnamedplus
 
 hi TabLine      ctermfg=Black  ctermbg=Green     cterm=NONE
 hi TabLineFill  ctermfg=Black  ctermbg=Green     cterm=NONE
@@ -251,7 +258,7 @@ endfunction
 "endfunction
 
 function! MakeJsonPretty()
-    execute "%!python -m json.tool"
+    execute "%!python3 -m json.tool"
     set filetype=json
     set foldmethod=indent
     silent w
@@ -486,7 +493,7 @@ autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 autocmd InsertLeave * match ExtraWhitespace /\s\+$/
 autocmd BufWinLeave * call clearmatches()
 
-au FileType python      set smartindent sw=4 ts=4 et sts=4 et
+au FileType python      set smartindent sw=4 ts=8 et sts=4 et
 au FileType c           set smartindent sw=4 ts=4 et sts=4 et
 au FileType c++         set smartindent sw=4 ts=4 et sts=4 et
 au FileType css         set smartindent sw=2 ts=2 et sts=2 et
@@ -570,7 +577,10 @@ set hidden
 nnoremap <silent> <Leader>bd :bd<CR>
 
 " Maximize/Minimize buffer
+nnoremap <Leader>m mm:tabedit %<CR>`m
+nnoremap <Leader>tm mm:tabedit %<CR>`m
 nnoremap <Leader>tab mm:tabedit %<CR>`m
+nnoremap <Leader>q :tabclose<CR>
 nnoremap <Leader>tc :tabclose<CR>
 nnoremap <Leader>td :tabclose<CR>
 
@@ -807,13 +817,13 @@ highlight link Flake8_PyFlake    WarningMsg
 " Automatically call Flake8 on save
 " autocmd  BufWritePost *.py :silent call Flake8()
 " A la carte call for Flake8
-autocmd FileType python map <buffer> <LocalLeader>F :call Flake8()<CR>
+autocmd FileType python map <buffer> <LocalLeader>p :call Flake8()<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Trying AutoPEP8
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:autopep8_disable_show_diff=1
-let g:autopep8_max_line_length=89
+let g:autopep8_max_line_length=120
 let g:autopep8_aggressive=4
 
 
@@ -856,3 +866,11 @@ nnoremap <C-U> :GundoToggle<CR>
 
 ca wttr vertical term curl https://wttr.in/Rosario\?lang\=es
 ca clima vertical term curl https://wttr.in/Rosario\?lang\=es
+
+""""""""""""""""""""""""""""""""""""""""""
+" => Helpful commands for working with CSV
+""""""""""""""""""""""""""""""""""""""""""
+command! -nargs=0 CSVPretty :%ArrangeColumn
+command! -nargs=0 CSVUgly :%UnArrangeColumn
+
+
