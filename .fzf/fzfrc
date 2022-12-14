@@ -8,8 +8,7 @@ FZF_KEY_BIND="--bind 'ctrl-x:execute(xdg-open {}),ctrl-p:toggle-preview,ctrl-a:s
 FZF_DEFAULT_OPTS="${FZF_BASIC_OPTS} ${FZF_PREVIEW_OPTS} ${FZF_KEY_BIND}"
 
 # Default command is applied to all files in git repository if in a git repository, to all non-hidden files otherwise
-FZF_DEFAULT_COMMAND="git ls-files --cached --others --exclude-standard || find . -not -path '*/\.*'"
-FZF_DEFAULT_COMMAND="ag -l --path-to-ignore ~/.ignore --nocolor --hidden -g"
+FZF_DEFAULT_COMMAND="ag -l --path-to-ignore ~/.agignore --nocolor --hidden -g . || git ls-files --cached --others --exclude-standard || find . -not -path '*/\.*'"
 export FZF_DEFAULT_COMMAND
 export FZF_DEFAULT_OPTS
 
