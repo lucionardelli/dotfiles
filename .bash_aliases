@@ -26,7 +26,9 @@ vag() {
     echo "$1" | xclip -rmlastnl
     files=()
     ag -l "$@" | while read filename; do files+=(${filename}); done
-    vi "${files[@]}"
+    if [ -n "$files" ]; then
+        vi "${files[@]}";
+    fi
 }
 
 # Open the result of last command in vim
