@@ -62,6 +62,7 @@ ZSH_THEME="robbyrussell"
 # see 'man strftime' for details.
 # HIST_STAMPS="mm/dd/yyyy"
 
+
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
@@ -155,3 +156,11 @@ export NVM_DIR="$HOME/.nvm"
 
 # Avoid opening less for "short" outputs
 export LESS=eFRX
+
+
+# Better command history config
+setopt hist_ignore_dups       # ignore duplicated commands history list
+setopt hist_ignore_space      # ignore commands that start with space
+setopt hist_verify            # show command with history expansion to user before running it
+# setopt share_history          # share command history data
+unsetopt share_history          # do not share command history data
