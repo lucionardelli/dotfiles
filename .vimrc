@@ -704,6 +704,11 @@ set title
 noremap <Leader>] <C-]>   " forward
 noremap <Leader>[ <C-T>   " back
 
+" Configure how fzf should look like
+let g:fzf_layout = { 'right': '~20%' }
+let g:fzf_layout = { 'down': '~40%' }
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.4, 'highlight': 'Normal' } }
+
 " Opne the tagbar browser
 let g:tagbar_autofocus = 1
 let g:tagbar_autoclose = 1
