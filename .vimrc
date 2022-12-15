@@ -751,11 +751,17 @@ nnoremap <silent><Leader><S-f> :Tags <C-R><C-W><CR>
 " Make fold ignore blocks of less than 15 lines
 set foldminlines=8
 
-"command! File :echo expand('%:p')
-command! -nargs=0 PBreak :echo "break ".expand('%:p').":".line(".")
-command! -nargs=0 PFile :echo expand('%:p')
-command! -nargs=0 File :let @+=expand('%:p') | echo 'Copied to clipboard: ' . @+
-command! -nargs=0 Break :let @+="break ".expand('%:p').":".line(".") | echo 'Copied to clipboard: ' . @+
+" Copy/print breakpoint in current location (pdb/gdb style) (short and full path versions)
+command! -nargs=0 PBreak :echo "break ".expand('%').":".line(".")
+command! -nargs=0 Break :let @+="break ".expand('%').":".line(".") | echo 'Copied to clipboard: ' . @+
+command! -nargs=0 PFBreak :echo "break ".expand('%:p').":".line(".")
+command! -nargs=0 FBreak :let @+="break ".expand('%:p').":".line(".") | echo 'Copied to clipboard: ' . @+
+
+" Copy/print file path (short and full path versions)
+command! -nargs=0 PFFile :echo expand('%:p')
+command! -nargs=0 FFile :let @+=expand('%:p') | echo 'Copied to clipboard: ' . @+
+command! -nargs=0 PFile :echo expand('%')
+command! -nargs=0 File :let @+=expand('%') | echo 'Copied to clipboard: ' . @+
 
 " (Un)Indent selected test in visual mode
 vnoremap <Tab> >gv
