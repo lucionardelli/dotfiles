@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Grep aliases
 alias gga='ag -l'
 alias ggan='ag'
@@ -21,8 +23,10 @@ alias ggn='ag --python --cpp --js'
 
 # Open all references to the given term
 vag() {
-    echo $1 | xclip -rmlastnl
-    vi $(ag -l "$@");
+    echo "$1" | xclip -rmlastnl
+    files=()
+    ag -l "$@" | while read filename; do files+=(${filename}); done
+    vi "${files[@]}"
 }
 
 # Open the result of last command in vim
