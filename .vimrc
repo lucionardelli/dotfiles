@@ -661,9 +661,6 @@ set tags^=./.git/tags;
 noremap H ^
 noremap L $
 
-" Open fist matched tag in horizontal split
-map <C-g> :sp <CR>:exec("tag ".expand("<cword>"))<CR>
-
 function! AddGitDirToPath()
     " Change working dir to the current file
     cd %:p:h
@@ -738,9 +735,18 @@ nnoremap <Leader>b :Buffers<CR>
 nnoremap <Leader>f :Files<CR>
 " Open fzf to look for words in current file
 nnoremap <C-f> :BLines<CR>
-" Look for tags (ctags)
-nnoremap <Leader><S-f> :Tags<CR>
-
+" Look for tags (ctags) for word under cursor
+function! FzfTagsCurrentWord()
+  let l:word = expand('<cword>')
+  let l:list = taglist(l:word)
+  if len(l:list) == 1
+    execute ':tag ' . l:word
+  else
+    call fzf#vim#tags(l:word, {'options': '--no-preview'})
+  endif
+endfunction
+noremap <silent><Leader>] :call FzfTagsCurrentWord()<cr>
+nnoremap <silent><Leader><S-f> :Tags <C-R><C-W><CR>
 
 " Make fold ignore blocks of less than 15 lines
 set foldminlines=8
