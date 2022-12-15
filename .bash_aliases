@@ -25,8 +25,8 @@ alias ggn='ag --python --cpp --js'
 vag() {
     echo "$1" | xclip -rmlastnl
     files=()
-    ag -l "$@" | while read filename; do files+=(${filename}); done
-    if [ -n "$files" ]; then
+    while read -r  filename; do files+=("${filename}"); done < <(ag -l "$@")
+    if [ ${#files[@]} -ne 0 ]; then
         vi "${files[@]}";
     fi
 }
