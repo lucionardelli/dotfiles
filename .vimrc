@@ -517,9 +517,10 @@ imap <C-Up> <ESC><c-w>k
 imap <C-Down> <ESC><c-w>j
 
 " invoke choosewin plugin
-nmap  <Leader>w  <Plug>(choosewin)
-nmap  <Leader><tab>  <Plug>(choosewin) " I seem to remember there's a reason I didn't want this.
-                                       " but I can't remember it, so....
+nmap <Leader>w  <Plug>(choosewin)
+" I seem to remember there's a reason I didn't want this. But I can't remember it now, so....
+nmap <Leader><tab> <Plug>(choosewin)
+
 "Use overlay feature for choosewin
 let g:choosewin_overlay_enable = 1
 let g:choosewin_statusline_replace = 0
