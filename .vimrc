@@ -739,17 +739,34 @@ nnoremap <Leader>f :Files<CR>
 " Open fzf to look for words in current file
 nnoremap <C-f> :BLines<CR>
 " Look for tags (ctags) for word under cursor
-function! FzfTagsCurrentWord()
+function! FzfCurrentWord(action)
   let l:word = expand('<cword>')
-  let l:list = taglist(l:word)
-  if len(l:list) == 1
-    execute ':tag ' . l:word
+  if len(l:word) == 0
+    if a:action == "tag"
+      execute ':Tags'
+    elseif a:action == "ag"
+      execute ':Ag'
+    endif
   else
-    call fzf#vim#tags(l:word, {'options': '--no-preview'})
+      let l:list = taglist(l:word)
+      if a:action == "tag"
+        if len(l:list) == 1
+          execute ':tag ' . l:word
+        else
+          call fzf#vim#tags(l:word, {'options': '--no-preview'})
+        endif
+      elseif a:action == "ag"
+        call fzf#vim#ag(l:word)
+      endif
   endif
 endfunction
-noremap <silent><Leader>] :call FzfTagsCurrentWord()<cr>
-nnoremap <silent><Leader><S-f> :Tags <C-R><C-W><CR>
+nnoremap <silent><Leader>] :call FzfCurrentWord("tag")<cr>
+nnoremap <silent><Leader><S-f> :call FzfCurrentWord("tag")<cr>
+
+
+" Search selected word using Ag
+nnoremap <silent><Leader>ag :call FzfCurrentWord("ag")<cr>
+
 
 " Make fold ignore blocks of less than 15 lines
 set foldminlines=8
