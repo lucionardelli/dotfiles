@@ -115,6 +115,9 @@ Plug 't9md/vim-choosewin'
 " Change working dir automagically
 Plug 'airblade/vim-rooter'
 
+" Generate doxygen documentation
+Plug 'vim-scripts/DoxygenToolkit.vim'
+
 " Initialize plugin system
 call plug#end()
 
@@ -375,6 +378,10 @@ if &diff
     hi DiffText   ctermfg=233  ctermbg=yellow  guifg=#000033 guibg=#DDDDFF gui=none cterm=none
 endif
 
+" I actually liked this and I'm used to them. Bring them back :)
+command Gblame Git blame
+command Gdiff Gvdiffsplit
+
 " Quicker commands
 noremap ; :
 
@@ -428,12 +435,6 @@ if use_neodark
     let g:airline_theme='dark'
 endif
 
-" For Scons files, use python highlithting
-au BufReadPost SC* set syntax=python
-
-" For json files, use foldmethod with indent
-au BufReadPost *.json set foldmethod=indent
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Text, tab and indent related
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -464,7 +465,7 @@ set viminfo^=%
 """""""""""""""""""""""""""""""""
 " => Status line
 """""""""""""""""""""""""""""""""
-" Show incomplete keywtrokes in status line
+" Show incomplete keystrokes in status line
 set showcmd
 
 " Always show the status line
@@ -493,13 +494,27 @@ autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 autocmd InsertLeave * match ExtraWhitespace /\s\+$/
 autocmd BufWinLeave * call clearmatches()
 
-au FileType python      set smartindent sw=4 ts=8 et sts=4 et
-au FileType c           set smartindent sw=4 ts=4 et sts=4 et
-au FileType c++         set smartindent sw=4 ts=4 et sts=4 et
-au FileType css         set smartindent sw=2 ts=2 et sts=2 et
-au FileType yaml        set smartindent sw=2 ts=2 et sts=2 et
-au FileType html        set smartindent sw=2 ts=2 et sts=2 et
-au FileType javascript  set smartindent sw=2 ts=2 et sts=2 et
+au BufNewFile,BufRead python    setf python
+au BufNewFile,BufRead *.tsx		setf typescriptreact
+au BufNewFile,BufRead *.jsx		setf javascriptreact
+
+" For Scons files, use python highlithting
+au BufReadPost SC* set syntax=python
+
+" For json files, use foldmethod with indent
+au BufReadPost *.json set foldmethod=indent
+au BufWinLeave *.json set foldmethod=manual
+
+
+au FileType python          set smartindent sw=4 ts=8 et sts=4 et
+au FileType c               set smartindent sw=4 ts=4 et sts=4 et
+au FileType c++             set smartindent sw=4 ts=4 et sts=4 et
+au FileType css             set smartindent sw=2 ts=2 et sts=2 et
+au FileType yaml            set smartindent sw=2 ts=2 et sts=2 et
+au FileType html            set smartindent sw=2 ts=2 et sts=2 et
+au FileType javascript      set smartindent sw=2 ts=2 et sts=2 et
+au FileType typescriptreact set smartindent sw=2 ts=2 et sts=2 et
+au FileType javascriptreact set smartindent sw=2 ts=2 et sts=2 et
 au FileType xml         set smartindent sw=2 ts=2 et sts=2 et
 au FileType rml         set smartindent sw=2 ts=2 et sts=2 et
 
@@ -560,7 +575,7 @@ runtime macros/matchit.vim
 
 nnoremap <F7> :%s/\s\+$<ENTER>
 nnoremap <F8> :g/\s*import pdb;\s*pdb.set_trace()$/d<ENTER>
-nnoremap <F9> Oimport pdb; pdb.set_trace()  # noqa: E702,E501<ESC>:w<ENTER>
+nnoremap <F9> Oimport pdb; pdb.set_trace()  # fmt: skip<ESC>:w<ENTER>
 
 " save as sudo
 ca w!! w !sudo tee "%"
@@ -911,3 +926,24 @@ command! -nargs=0 CSVPretty :%ArrangeColumn
 command! -nargs=0 CSVUgly :%UnArrangeColumn
 
 
+
+""""""""""""""""""""""""""""""""""""""""""""""
+" => Hack for AHS development. Ignore dir webui
+""""""""""""""""""""""""""""""""""""""""""""""
+let g:rooter_patterns = ['!=webui', '.git', '_darcs', '.hg', '.bzr', '.svn', 'Makefile', 'package.json']
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""
+" => Print SQLAlchemy query with expanded params
+"""""""""""""""""""""""""""""""""""""""""""""""""
+function! DebugQuery()
+    " Save cursor position
+    let l:save = winsaveview()
+    let importStatement = 'from sqlalchemy.dialects import postgresql'
+    let queryVariable = expand('<cword>')
+    let debugStatement = "print(f\"\\n\\n{" . queryVariable . ".statement.compile(dialect=postgresql.dialect(), compile_kwargs={'literal_binds': True})}\\n\\n\")"
+
+    execute "normal! o" . importStatement . "\<Esc>"
+    execute "normal! o" . debugStatement . "\<Esc>"
+    call winrestview(l:save)
+endfunction
