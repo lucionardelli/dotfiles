@@ -20,6 +20,8 @@ alias ggdjango="ag -l --ignore={'*migrations*',}"
 alias gg='ag --python --cpp --js -l'
 alias ggn='ag --python --cpp --js'
 
+# Batcat is too long!
+alias bat="batcat"
 
 # Open all references to the given term
 vag() {

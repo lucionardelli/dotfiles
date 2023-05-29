@@ -35,6 +35,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'KeitaNakamura/neodark.vim'
 Plug 'morhetz/gruvbox'
 Plug 'altercation/vim-colors-solarized'
+Plug 'Lokaltog/vim-distinguished'
 
 
 " Use buffers as GUI tabs
@@ -118,6 +119,14 @@ Plug 'airblade/vim-rooter'
 " Generate doxygen documentation
 Plug 'vim-scripts/DoxygenToolkit.vim'
 
+" NEOVIM specific setup
+if has('nvim')
+    " Colors for neovim
+    Plug 'eddyekofo94/gruvbox-flat.nvim'
+    " Github Copilot
+    Plug 'github/copilot.vim'
+endif
+
 " Initialize plugin system
 call plug#end()
 
@@ -160,6 +169,7 @@ let g:startify_change_to_vcs_root     = 1
 
 let g:startify_bookmarks = [
             \ {'vrc': '~/.vimrc'},
+            \ {'vrc': '~/.config/nvim/init.vim'},
             \ {'zrc': '~/.zshrc'},
             \ {'brc': '~/.bashrc'},
             \ {'git': '~/.gitignore'},
@@ -267,12 +277,33 @@ function! MakeJsonPretty()
     silent w
 endfunction
 
+function! MakeSQLPretty()
+    execute "%!sqlformat --reindent --indent_columns --keywords upper --identifiers lower -"
+    set filetype=sql
+    silent w
+endfunction
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 syntax on
 filetype plugin on
+
+" set number
+" turn hybrid line numbers on
+" set number relativenumber
+
 set number
+
+augroup numbertoggle
+  " Absolute and relative line numbers are enabled by default,
+  " which produces “hybrid” line numbers. When entering/leaving insert mode,
+  " relative line numbers are turned off/on, leaving absolute line numbers turned on/off.
+  autocmd!
+  autocmd BufEnter,FocusGained,InsertLeave,WinEnter * if &nu && mode() != "i" | set rnu   | endif
+  autocmd BufLeave,FocusLost,InsertEnter,WinLeave   * if &nu                  | set nornu | endif
+augroup END
+
 set encoding=utf-8
 
 " Open new vertical split panes to right, which feels more natural
@@ -348,7 +379,11 @@ set backup                        " make backup files
 set backupdir=~/.vim/dirs/backups " where to put backup files
 "set undofile                      " persistent undos - undo after you re-open the file
 set undodir=~/.vim/dirs/undos
-set viminfo+=n~/.vim/dirs/viminfo
+" When using neovim, we use Shada files, not viminfo
+if !has('nvim')
+    set viminfo+=n~/.vim/dirs/viminfo
+endif
+
 " store yankring history file there too
 let g:yankring_history_dir = '~/.vim/dirs/'
 
@@ -405,9 +440,10 @@ set t_Co=256   " This is may or may not needed.
 let g:rehash256=1
 let g:molokai_original = 1
 
-let use_neodark = 1
+let use_neodark = 0
 let use_gruvbox = 0
 let use_gruvbox_light = 0
+let use_distinguished = 1
 
 if use_gruvbox
     set background=dark
@@ -433,6 +469,14 @@ if use_neodark
     let g:neodark#solid_vertsplit = 0 " default: 0
     colorscheme neodark
     let g:airline_theme='dark'
+endif
+if use_distinguished
+    set background=dark
+    let g:distinguished#background = '#202020'
+    let g:distinguished = 0 " default: 0
+    let g:distinguished#solid_vertsplit = 0 " default: 0
+    colorscheme distinguished
+    let g:airline_theme='distinguished'
 endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -586,10 +630,10 @@ ca w!! w !sudo tee "%"
 " Buffer related stuff
 " Show opened buffers and wait for number of buffer to change to
 nnoremap <Leader>l :buffers<CR>:buffer<Space>
-map <C-S-Right> :bnext<CR>
-map <C-S-Left> :bprev<CR>
-map <C-S-H> :bprev<CR>
-map <C-S-L> :bnext<CR>
+map <C-Right> :bnext<CR>
+map <C-Left> :bprev<CR>
+map <C-H> :bprev<CR>
+map <C-L> :bnext<CR>
 set hidden
 " Close current buffer faster
 nnoremap <silent> <Leader>bd :bd<CR>
@@ -623,6 +667,7 @@ command! -nargs=1 Reword :execute ChangeCurrentWordTo('<args>')
 
 " Make my json pretty
 command! -nargs=0 Pretty :execute MakeJsonPretty()
+command! -nargs=0 SQLPretty :execute MakeSQLPretty()
 
 "au BufReadPost * call CheckRo()
 
@@ -947,3 +992,15 @@ function! DebugQuery()
     execute "normal! o" . debugStatement . "\<Esc>"
     call winrestview(l:save)
 endfunction
+
+
+" NEOVIM specific setup
+if has('nvim')
+    let use_gruvbox_flat = 1
+    if use_gruvbox_flat
+        set background=dark
+        colorscheme gruvbox-flat
+        " let g:airline_theme='distinguished'
+        let g:airline_theme='badwolf'
+    endif
+endif

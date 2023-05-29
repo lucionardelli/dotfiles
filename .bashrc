@@ -226,3 +226,5 @@ export PATH=$PATH:/usr/local/go/bin
 
 # Avoid opening less for "short" outputs
 export LESS=eFRX
+
+# export DEB_PYTHON_INSTALL_LAYOUT='deb'

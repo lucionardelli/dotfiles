@@ -164,3 +164,8 @@ setopt hist_ignore_space      # ignore commands that start with space
 setopt hist_verify            # show command with history expansion to user before running it
 # setopt share_history          # share command history data
 unsetopt share_history          # do not share command history data
+
+# export DEB_PYTHON_INSTALL_LAYOUT='deb'
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"

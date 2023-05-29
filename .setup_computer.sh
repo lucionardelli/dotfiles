@@ -46,6 +46,14 @@ sudo apt install -y gnome-tweaks chrome-gnome-shell gnome-shell-extension gnome-
 sudo apt install -y ruby-dev cowsay
 vim -c "PlugInstall|qa" > /dev/null 2>&1
 
+# Install NeoVim
+wget https://github.com/neovim/neovim/releases/download/stable/nvim.appimage -O /tmp/nvim
+chmod u+x /tmp/nvim
+sudo mv /tmp/nvim /usr/local/bin/
+mkdir ~/.config/nvim/
+echo -e "set runtimepath^=~/.vim runtimepath+=~/.vim/after\nlet &packpath = &runtimepath\nsource ~/.vimrc" > ~/config/nvim/init.vim
+
+
 # Install Chrome (already set as default)
 wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -O /tmp/google-chrome-stable_current_amd64.deb
 sudo dpkg -i /tmp/google-chrome-stable_current_amd64.deb
