@@ -34,6 +34,7 @@ sudo apt install -y build-essential python3-dev
 sudo apt install -y python3-pip python3-setuptools
 sudo pip3 install --upgrade pip
 pip3 install --user --upgrade virtualenv virtualenvwrapper
+curl https://pyenv.run | bash
 # Install Poetry
 curl -sSL https://install.python-poetry.org | python3 -
 
