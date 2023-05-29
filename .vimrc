@@ -169,7 +169,7 @@ let g:startify_change_to_vcs_root     = 1
 
 let g:startify_bookmarks = [
             \ {'vrc': '~/.vimrc'},
-            \ {'vrc': '~/.config/nvim/init.vim'},
+            \ {'nvrc': '~/.config/nvim/init.vim'},
             \ {'zrc': '~/.zshrc'},
             \ {'brc': '~/.bashrc'},
             \ {'git': '~/.gitignore'},
