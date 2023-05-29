@@ -11,10 +11,22 @@ alias wipp='cd $WIP_AHS_DIR/python'
 alias fio='cd $FORMIO_AHS_DIR'
 
 set_ahs_env () {
-  export TOKEN=<TOKEN>
+  if [[ -z "${SECRET_NGROK_TOKEN}" ]]; then
+      echo "NGROK token not set"
+  else
+    export TOKEN=${SECRET_NGROK_TOKEN}
+  fi
   export SUBDOMAIN=ahs-d9t
-  export OPENAI_API_KEY=<>
-  export OPENAI_ORG_ID=<>
+  if [[ -z "${SECRET_OPENAI_API_KEY}" ]]; then
+    echo "OpenAI key not set"
+  else
+    export OPENAI_API_KEY=${SECRET_OPENAI_API_KEY}
+  fi
+  if [[ -z "${SECRET_OPENAI_ORG_ID}" ]]; then
+    echo "OpenAI org ID not set"
+  else
+    export OPENAI_ORG_ID=${SECRET_OPENAI_ORG_ID}
+  fi
 }
 
 checkifahs () {
