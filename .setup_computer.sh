@@ -71,6 +71,10 @@ sudo sed -i 's/#\s*Defaults\s\+insults/Defaults\tinsults/' /etc/sudoers
 
 # I yield...use oh my zsh
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+ZSH="$HOME/.oh-my-zsh"
+git clone https://github.com/lukechilds/zsh-nvm $ZSH/custom/plugins/zsh-nvm
+git clone https://github.com/davidparsson/zsh-pyenv-lazy.git $ZSH/custom/plugins/pyenv-lazy
+
 
 
 # Reboot. But first...cleaning up my closet!
