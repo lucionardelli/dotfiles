@@ -116,6 +116,9 @@ alias ll='ls -alFtrBh --group-directories-first'
 alias la='ls -A'
 alias l='ls -CF'
 
+# Source env secrets if any
+[ -s ~/.secrets ] && source ~/.secrets
+
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
@@ -226,5 +229,3 @@ export PATH=$PATH:/usr/local/go/bin
 
 # Avoid opening less for "short" outputs
 export LESS=eFRX
-
-# export DEB_PYTHON_INSTALL_LAYOUT='deb'

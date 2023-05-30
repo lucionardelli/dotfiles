@@ -131,11 +131,10 @@ fi
 
 # Avoid removing everything when using https://github.com/lucionardelli/dotfiles repo
 [ -s ~/.git_clean.sh ] && source ~/.git_clean.sh
-
 [ -s ~/.fzf/fzfrc ] && source ~/.fzf/fzfrc
-
+[ -s ~/.secrets ] && source ~/.secrets
 [ -s ~/.bash_aliases ] && source ~/.bash_aliases
-
+[ -s ~/.bash_irobot ] && source ~/.bash_irobot
 [ -s ~/.bash_ahs ] && source ~/.bash_ahs
 
 # set PATH so it includes user's private bin if it exists
