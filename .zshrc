@@ -66,12 +66,15 @@ ZSH_THEME="robbyrussell"
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
+export NVM_LAZY_LOAD=true
+export NVM_DIR="$HOME/.nvm"
+
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git ag vi-mode)
+plugins=(git ag vi-mode zsh-nvm pyenv-lazy)
 
 VI_MODE_RESET_PROMPT_ON_MODE_CHANGE=true
 VI_MODE_SET_CURSOR=true
@@ -111,32 +114,6 @@ export EDITOR='vim'
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-# Automagically activate conda environment if folder has a .condaauto with
-# the name of the environment to activate
-if [ -e /usr/local/etc/conda_auto_activate.sh ]
-then
-    source /usr/local/etc/conda_auto_activate.sh
-fi
-
-
-# if [ -s ~/.local/bin/virtualenvwrapper_lazy.sh ]
-# then
-#     export WORKON_HOME=$HOME/.virtualenvs
-#     export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
-#     export VIRTUALENVWRAPPER_VIRTUALENV=/home/lnardelli/.local/bin/virtualenv
-#     source ~/.local/bin/virtualenvwrapper_lazy.sh
-# fi
-
-
-
-# Avoid removing everything when using https://github.com/lucionardelli/dotfiles repo
-[ -s ~/.git_clean.sh ] && source ~/.git_clean.sh
-[ -s ~/.fzf/fzfrc ] && source ~/.fzf/fzfrc
-[ -s ~/.secrets ] && source ~/.secrets
-[ -s ~/.bash_aliases ] && source ~/.bash_aliases
-[ -s ~/.bash_irobot ] && source ~/.bash_irobot
-[ -s ~/.bash_ahs ] && source ~/.bash_ahs
-
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
@@ -147,15 +124,32 @@ if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
 
+# Automagically activate conda environment if folder has a .condaauto with
+# the name of the environment to activate
+if [ -e /usr/local/etc/conda_auto_activate.sh ]
+then
+    source /usr/local/etc/conda_auto_activate.sh
+fi
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+if [ -s ~/.local/bin/virtualenvwrapper_lazy.sh ]
+then
+    export WORKON_HOME=$HOME/.virtualenvs
+    export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+    export VIRTUALENVWRAPPER_VIRTUALENV=/home/lnardelli/.local/bin/virtualenv
+    source ~/.local/bin/virtualenvwrapper_lazy.sh
+fi
+
+# Avoid removing everything when using https://github.com/lucionardelli/dotfiles repo
+[ -s ~/.git_clean.sh ] && source ~/.git_clean.sh
+[ -s ~/.fzf/fzfrc ] && source ~/.fzf/fzfrc
+[ -s ~/.secrets ] && source ~/.secrets
+[ -s ~/.bash_aliases ] && source ~/.bash_aliases
+[ -s ~/.bash_irobot ] && source ~/.bash_irobot
+[ -s ~/.bash_ahs ] && source ~/.bash_ahs
 
 
 # Avoid opening less for "short" outputs
 export LESS=eFRX
-
 
 # Better command history config
 setopt hist_ignore_dups       # ignore duplicated commands history list
@@ -163,8 +157,3 @@ setopt hist_ignore_space      # ignore commands that start with space
 setopt hist_verify            # show command with history expansion to user before running it
 # setopt share_history          # share command history data
 unsetopt share_history          # do not share command history data
-
-# export DEB_PYTHON_INSTALL_LAYOUT='deb'
-export PYENV_ROOT="$HOME/.pyenv"
-command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
