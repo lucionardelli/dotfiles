@@ -440,10 +440,10 @@ set t_Co=256   " This is may or may not needed.
 let g:rehash256=1
 let g:molokai_original = 1
 
-let use_neodark = 0
+let use_neodark = 1
 let use_gruvbox = 0
 let use_gruvbox_light = 0
-let use_distinguished = 1
+let use_distinguished = 0
 
 if use_gruvbox
     set background=dark
