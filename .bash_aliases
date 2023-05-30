@@ -36,7 +36,7 @@ vag() {
 # Open the result of last command in vim
 # (Basically used to open files grepped with
 # previus aliases)
-alias vil='vi $($(fc -ln -1))'
+alias vil='nvim $($(fc -ln -1))'
 
 # Rerun last command as sudo
 alias root='eval "sudo $(fc -ln -1)"'
@@ -50,8 +50,8 @@ alias say='DISPLAY=:0 spd-say -r -5 -l ES'
 # Go to sleep! Turn display off.
 alias gts='xset dpms force off'
 
-# Open Vim twice as fast!
-alias v='vi'
+# Open NeoVim for times faster!
+alias v='nvim'
 
 # Get weather report in Rosario
 alias clima='curl https://wttr.in/Rosario\?lang\=es'
@@ -69,7 +69,7 @@ alias kleene='ssh lnardelli@dcc.fceia.unr.edu.ar' # Dcc's Kleene
 
 # FZF
 alias fh='history | fzf --tac --no-sort'
-alias fv='vim `fzf`'
+alias fv='nvim `fzf`'
 alias fb='bat `fzf`'
 
 # fkill - kill proces using fzf completion

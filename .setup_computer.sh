@@ -48,6 +48,7 @@ sudo apt install -y ruby-dev cowsay
 vim -c "PlugInstall|qa" > /dev/null 2>&1
 
 # Install NeoVim
+sudo apt install libfuse2
 wget https://github.com/neovim/neovim/releases/download/stable/nvim.appimage -O /tmp/nvim
 chmod u+x /tmp/nvim
 sudo mv /tmp/nvim /usr/local/bin/
