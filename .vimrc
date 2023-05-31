@@ -352,12 +352,13 @@ set showmatch
 " How many tenths of a second to blink when matching brackets
 set mat=2
 
-" When seraching, use case if any caps used, else ignore
+" When searching, use case if any caps used, else ignore
 set ignorecase
 set smartcase
-" Highlight search pattern on match
+" Do not highlight search pattern on match, but allow for easy toggle
+set nohlsearch
 nnoremap <Leader>/ :set hlsearch!<CR>
-" But disable incremental search
+" Disable incremental search
 set noincsearch
 
 " No annoying sound on errors
