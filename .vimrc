@@ -91,8 +91,6 @@ Plug 'kh3phr3n/python-syntax'
 " Only for simple cases...you MUST write good code yourself
 Plug 'tell-k/vim-autopep8'
 
-" Black intregration for better python formatting
-Plug 'psf/black', { 'branch': 'stable' }
 
 " Visually select increasingly larger regions of text
 Plug 'terryma/vim-expand-region'
@@ -124,7 +122,16 @@ if has('nvim')
     " Colors for neovim
     Plug 'eddyekofo94/gruvbox-flat.nvim'
     " Github Copilot
-    Plug 'github/copilot.vim'
+    Plug 'github/copilot.vim', {'branch': 'release'}
+    " Black integration
+    let g:python3_host_prog = $WORKON_HOME. '/nvim/bin/python'
+    Plug 'averms/black-nvim', {'do': ':UpdateRemotePlugins'}
+
+    " Black does not work in NeoVim... :(
+    command! -nargs=0 Black !black %
+else
+    " Black intregration for better python formatting
+    Plug 'psf/black', { 'branch': 'stable' }
 endif
 
 " Initialize plugin system

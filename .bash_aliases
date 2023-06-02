@@ -52,6 +52,8 @@ alias gts='xset dpms force off'
 
 # Open NeoVim for times faster!
 alias v='nvim'
+# vi is NeoVim now. vim is still vim
+alias vi='nvim'
 
 # Get weather report in Rosario
 alias clima='curl https://wttr.in/Rosario\?lang\=es'
