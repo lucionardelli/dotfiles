@@ -157,3 +157,9 @@ setopt hist_ignore_space      # ignore commands that start with space
 setopt hist_verify            # show command with history expansion to user before running it
 # setopt share_history          # share command history data
 unsetopt share_history          # do not share command history data
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/AHS/google-cloud-sdk/path.zsh.inc' ]; then . '/AHS/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/AHS/google-cloud-sdk/completion.zsh.inc' ]; then . '/AHS/google-cloud-sdk/completion.zsh.inc'; fi
