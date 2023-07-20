@@ -91,7 +91,6 @@ Plug 'kh3phr3n/python-syntax'
 " Only for simple cases...you MUST write good code yourself
 Plug 'tell-k/vim-autopep8'
 
-
 " Visually select increasingly larger regions of text
 Plug 'terryma/vim-expand-region'
 
@@ -116,6 +115,9 @@ Plug 'airblade/vim-rooter'
 
 " Generate doxygen documentation
 Plug 'vim-scripts/DoxygenToolkit.vim'
+
+" Typescript syntax highlighting
+Plug 'leafgarland/typescript-vim'
 
 " NEOVIM specific setup
 if has('nvim')
