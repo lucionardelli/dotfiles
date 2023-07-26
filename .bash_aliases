@@ -29,7 +29,8 @@ vag() {
     files=()
     while read -r  filename; do files+=("${filename}"); done < <(ag -l "$@")
     if [ ${#files[@]} -ne 0 ]; then
-        vi "${files[@]}";
+        # vi "${files[@]}";
+        nvim "${files[@]}";
     fi
 }
 
