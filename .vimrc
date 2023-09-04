@@ -567,6 +567,7 @@ au FileType css             set smartindent sw=2 ts=2 et sts=2 et
 au FileType yaml            set smartindent sw=2 ts=2 et sts=2 et
 au FileType html            set smartindent sw=2 ts=2 et sts=2 et
 au FileType javascript      set smartindent sw=2 ts=2 et sts=2 et
+au FileType typescript      set smartindent sw=2 ts=2 et sts=2 et
 au FileType typescriptreact set smartindent sw=2 ts=2 et sts=2 et
 au FileType javascriptreact set smartindent sw=2 ts=2 et sts=2 et
 au FileType xml         set smartindent sw=2 ts=2 et sts=2 et
