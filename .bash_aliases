@@ -88,3 +88,5 @@ fkill() {
 
 mkcd() { mkdir -p "$1" && cd "$1"; }
 
+# Open bash on docker image
+alias dbash='docker run --rm -it --entrypoint bash'
