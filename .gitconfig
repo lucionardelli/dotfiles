@@ -41,6 +41,10 @@
     # Show files ignored by git:
     ign = ls-files -o -i --exclude-standard
 
+    # Grep regex on stashes
+    grepstash = "!f() { for i in `git stash list --format=\"%gd\"` ; \
+              do git stash show -p $i | grep -H --label=\"$i\" \"$@\" ; done ; }; f"
+
 # Highlight whitespace in diffs
 [color]
     ui = true
