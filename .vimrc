@@ -118,6 +118,7 @@ Plug 'vim-scripts/DoxygenToolkit.vim'
 
 " Typescript syntax highlighting
 Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
 
 " NEOVIM specific setup
 if has('nvim')
@@ -422,6 +423,8 @@ if &diff
     hi DiffChange ctermbg=white  guibg=#ececec gui=none   cterm=none
     hi DiffText   ctermfg=233  ctermbg=yellow  guifg=#000033 guibg=#DDDDFF gui=none cterm=none
 endif
+" Open git diffs vertically
+set diffopt+=vertical
 
 " I actually liked this and I'm used to them. Bring them back :)
 command Gblame Git blame
@@ -549,8 +552,8 @@ autocmd InsertLeave * match ExtraWhitespace /\s\+$/
 autocmd BufWinLeave * call clearmatches()
 
 au BufNewFile,BufRead python    setf python
-au BufNewFile,BufRead *.tsx		setf typescriptreact
-au BufNewFile,BufRead *.jsx		setf javascriptreact
+" set filetypes as typescriptreact
+autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescriptreact
 
 " For Scons files, use python highlithting
 au BufReadPost SC* set syntax=python
