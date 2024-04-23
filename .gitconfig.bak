@@ -3,6 +3,7 @@
     name = <YOUR_NAME>
 [init]
 	templatedir = ~/.git_template
+	defaultBranch = main
 [core]
     whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
 [color]
@@ -10,13 +11,19 @@
 [color "diff"]
     whitespace = red reverse
 [diff]
-	tool = vimdiff
+	tool = nvimdiff
+[difftool "nvimdiff"]
+	cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
 [difftool]
 	prompt = false
+[mergetool "nvimdiff"]
+    cmd = nvimdiff \"$LOCAL\" \"$MERGED\" \"$REMOTE\"
 [merge]
-	tool = vimdiff
-	conflictstyle = merge
+	tool = nvimdiff
+    # conflictstyle = merge
+    conflictstyle = diff3
 [mergetool]
+    keepBackup = false
 	prompt = false
 [push]
 	default = simple
@@ -30,6 +37,7 @@
     ci = commit
     df = diff
     dt = difftool
+    mt = mergetool
     lg = log -p
     last = log --name-status HEAD^..HEAD
     lastp = log -p -m --first-parent -n1
@@ -39,6 +47,10 @@
 
     # Show files ignored by git:
     ign = ls-files -o -i --exclude-standard
+
+    # Grep regex on stashes
+    grepstash = "!f() { for i in `git stash list --format=\"%gd\"` ; \
+              do git stash show -p $i | grep -H --label=\"$i\" \"$@\" ; done ; }; f"
 
 # Highlight whitespace in diffs
 [color]

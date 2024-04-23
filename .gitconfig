@@ -4,6 +4,8 @@
 [init]
 	templatedir = ~/.git_template
 	defaultBranch = main
+[core]
+    whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
 [color]
     ui = auto
 [color "diff"]
@@ -14,11 +16,19 @@
 	cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
 [difftool]
 	prompt = false
-[merge]
-	tool = nvimdiff
-	conflictstyle = merge
+[mergetool "nvimdiff"]
+    cmd = nvimdiff \"$LOCAL\" \"$MERGED\" \"$REMOTE\"
 [mergetool]
+    keepBackup = false
 	prompt = false
+[merge]
+    # tool = vim_mergetool
+    # conflictstyle = diff3
+    tool = nvimdiff
+    conflictstyle = merge
+[mergetool "vim_mergetool"]
+    cmd = vim -f -c "MergetoolStart" "$MERGED" "$BASE" "$LOCAL" "$REMOTE"
+    trustExitCode = false
 [push]
 	default = simple
 [alias]
@@ -31,6 +41,7 @@
     ci = commit
     df = diff
     dt = difftool
+    mt = mergetool
     lg = log -p
     last = log --name-status HEAD^..HEAD
     lastp = log -p -m --first-parent -n1
