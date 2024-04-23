@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Grep aliases
 alias gga='ag -l'
 alias ggan='ag'
@@ -18,10 +20,45 @@ alias ggdjango="ag -l --ignore={'*migrations*',}"
 alias gg='ag --python --cpp --js -l'
 alias ggn='ag --python --cpp --js'
 
+# Batcat is too long!
+alias bat="batcat"
+
+# Open all references to the given term
+
+vag() {
+    ignore_test=false
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            -it)
+                ignore_test=true
+                shift
+                ;;
+            *)
+                break
+                ;;
+        esac
+    done
+
+    query="$1"
+    shift
+
+    echo "$query" | xclip -rmlastnl
+    files=()
+    while read -r filename; do 
+        if $ignore_test && [[ "$filename" == *"test"* ]]; then
+            continue
+        fi
+        files+=("$filename")
+    done < <(ag -l "$query" "$@")
+    
+    if [ ${#files[@]} -ne 0 ]; then
+        nvim "${files[@]}"
+    fi
+}
 # Open the result of last command in vim
 # (Basically used to open files grepped with
 # previus aliases)
-alias vil='vi $($(fc -ln -1))'
+alias vil='nvim $($(fc -ln -1))'
 
 # Rerun last command as sudo
 alias root='eval "sudo $(fc -ln -1)"'
@@ -35,8 +72,10 @@ alias say='DISPLAY=:0 spd-say -r -5 -l ES'
 # Go to sleep! Turn display off.
 alias gts='xset dpms force off'
 
-# Open Vim twice as fast!
-alias v='vi'
+# Open NeoVim for times faster!
+alias v='nvim'
+# vi is NeoVim now. vim is still vim
+alias vi='nvim'
 
 # Get weather report in Rosario
 alias clima='curl https://wttr.in/Rosario\?lang\=es'
@@ -54,7 +93,7 @@ alias kleene='ssh lnardelli@dcc.fceia.unr.edu.ar' # Dcc's Kleene
 
 # FZF
 alias fh='history | fzf --tac --no-sort'
-alias fv='vim `fzf`'
+alias fv='nvim `fzf`'
 alias fb='bat `fzf`'
 
 # fkill - kill proces using fzf completion
@@ -70,3 +109,5 @@ fkill() {
 
 mkcd() { mkdir -p "$1" && cd "$1"; }
 
+# Open bash on docker image
+alias dbash='docker run --rm -it --entrypoint bash'

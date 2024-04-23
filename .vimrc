@@ -34,7 +34,9 @@ call plug#begin('~/.vim/plugged')
 " Colors
 Plug 'KeitaNakamura/neodark.vim'
 Plug 'morhetz/gruvbox'
+Plug 'jnurmine/Zenburn'
 Plug 'altercation/vim-colors-solarized'
+Plug 'Lokaltog/vim-distinguished'
 
 
 " Use buffers as GUI tabs
@@ -46,9 +48,6 @@ Plug 'vim-airline/vim-airline-themes'
 
 " Start page for vim
 Plug 'mhinz/vim-startify'
-
-" Undo tree <C-U>
-Plug 'sjl/gundo.vim'
 
 " Git integration
 Plug 'tpope/vim-fugitive'
@@ -76,10 +75,10 @@ Plug 'chemzqm/vim-jsx-improve'
 " Browse the tags of the current file
 Plug 'majutsushi/tagbar'
 
-" Plug Command-T and try to make it work
- Plug 'wincent/command-t', {
-     \   'do': 'cd ruby/command-t/ext/command-t && ruby extconf.rb && make'
-     \ }
+" Command-T and try to make it work - nice plugin but we are using fzf now!
+"  Plug 'wincent/command-t', {
+"      \   'do': 'cd ruby/command-t/ext/command-t && ruby extconf.rb && make'
+"      \ }
 
 " Flake8 integration (static syntax and style checker for Python)
 Plug 'nvie/vim-flake8'
@@ -100,7 +99,7 @@ Plug 'rhysd/committia.vim'
 " Plug 'zxqfl/tabnine-vim'   Consumes A LOT of memory. Take it out
 
 " Use FZF. fzf runs asynchronously so it might be faster than command-T
-Plug 'junegunn/fzf'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
 " Recover.vim adds a diff option when Vim finds a swap file
@@ -108,6 +107,42 @@ Plug 'chrisbra/Recover.vim'
 
 " Navigate to the window using overlay numbers/letters
 Plug 't9md/vim-choosewin'
+
+" Change working dir automagically
+Plug 'airblade/vim-rooter'
+
+" Generate doxygen documentation
+Plug 'vim-scripts/DoxygenToolkit.vim'
+
+" Typescript syntax highlighting
+Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
+
+" Mergetool
+Plug 'samoshkin/vim-mergetool'
+
+" NEOVIM specific setup
+if has('nvim')
+    " Colors for neovim
+    Plug 'eddyekofo94/gruvbox-flat.nvim'
+    " Github Copilot
+    Plug 'github/copilot.vim', {'branch': 'release'}
+    " Black integration
+    let g:python3_host_prog = $WORKON_HOME. '/nvim/bin/python'
+    Plug 'averms/black-nvim', {'do': ':UpdateRemotePlugins'}
+
+    " gundo doesn't work with neovim
+    Plug 'simnalamburt/vim-mundo'
+
+    " Black does not work in NeoVim... :(
+    command! -nargs=0 Black !black %
+else
+    " Black intregration for better python formatting
+    Plug 'psf/black', { 'branch': 'stable' }
+
+    " Undo tree <C-U>
+    Plug 'sjl/gundo.vim'
+endif
 
 " Initialize plugin system
 call plug#end()
@@ -151,6 +186,8 @@ let g:startify_change_to_vcs_root     = 1
 
 let g:startify_bookmarks = [
             \ {'vrc': '~/.vimrc'},
+            \ {'nvrc': '~/.config/nvim/init.vim'},
+            \ {'zrc': '~/.zshrc'},
             \ {'brc': '~/.bashrc'},
             \ {'git': '~/.gitignore'},
             \ ]
@@ -181,15 +218,28 @@ elseif test_clang_6
     let g:clang_format#command = "clang-format-6.0"
 endif
 
-" => Gundo configuration
-if has('python3')
-    " If vim is compiled with python3+ we need this
-    let g:gundo_prefer_python3 = 1
+if !has('nvim')
+    " => Gundo configuration
+    if has('python3')
+        " If vim is compiled with python3+ we need this
+        let g:gundo_prefer_python3 = 1
+    endif
+    nnoremap <C-U> :GundoToggle<CR>
+else
+    if has('python3')
+        " If vim is compiled with python3+ we need this
+        let g:mundo_prefer_python3 = 1
+    endif
+    " => Mundo configuration
+    nnoremap <C-U> :MundoToggle<CR>
+
+    " Enable persistent undo so that undo history persists across vim sessions
+    set undofile
+    set undodir=~/.vim/undo
 endif
-nnoremap <C-U> :GundoToggle<CR>
 
 "=> Copy things from VI to clipboard
-set clipboard=unnamedplus
+set clipboard^=unnamed,unnamedplus
 
 hi TabLine      ctermfg=Black  ctermbg=Green     cterm=NONE
 hi TabLineFill  ctermfg=Black  ctermbg=Green     cterm=NONE
@@ -251,9 +301,15 @@ endfunction
 "endfunction
 
 function! MakeJsonPretty()
-    execute "%!python -m json.tool"
+    execute "%!python3 -m json.tool"
     set filetype=json
     set foldmethod=indent
+    silent w
+endfunction
+
+function! MakeSQLPretty()
+    execute "%!sqlformat --reindent --indent_columns --keywords upper --identifiers lower -"
+    set filetype=sql
     silent w
 endfunction
 
@@ -262,7 +318,11 @@ endfunction
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 syntax on
 filetype plugin on
-set number
+
+" set number
+" turn hybrid line numbers off
+set number norelativenumber
+
 set encoding=utf-8
 
 " Open new vertical split panes to right, which feels more natural
@@ -311,12 +371,13 @@ set showmatch
 " How many tenths of a second to blink when matching brackets
 set mat=2
 
-" When seraching, use case if any caps used, else ignore
+" When searching, use case if any caps used, else ignore
 set ignorecase
 set smartcase
-" Highlight search pattern on match
+" Do not highlight search pattern on match, but allow for easy toggle
+set nohlsearch
 nnoremap <Leader>/ :set hlsearch!<CR>
-" But disable incremental search
+" Disable incremental search
 set noincsearch
 
 " No annoying sound on errors
@@ -338,7 +399,11 @@ set backup                        " make backup files
 set backupdir=~/.vim/dirs/backups " where to put backup files
 "set undofile                      " persistent undos - undo after you re-open the file
 set undodir=~/.vim/dirs/undos
-set viminfo+=n~/.vim/dirs/viminfo
+" When using neovim, we use Shada files, not viminfo
+if !has('nvim')
+    set viminfo+=n~/.vim/dirs/viminfo
+endif
+
 " store yankring history file there too
 let g:yankring_history_dir = '~/.vim/dirs/'
 
@@ -366,7 +431,27 @@ if &diff
     hi DiffAdd    ctermfg=233 ctermbg=LightGreen guifg=#003300 guibg=#DDFFDD gui=none cterm=none
     hi DiffChange ctermbg=white  guibg=#ececec gui=none   cterm=none
     hi DiffText   ctermfg=233  ctermbg=yellow  guifg=#000033 guibg=#DDDDFF gui=none cterm=none
+
+    " Move things from remote to merged
+    nnoremap <Leader>gr :diffget 3<CR>
+    nnoremap <Leader>g3 :diffget 3<CR>
+    " Move things from local to merged
+    nnoremap <Leader>gl :diffget 1<CR>
+    nnoremap <Leader>g1 :diffget 1<CR>
+    " Move things from current highlighted change to merged
+    nnoremap <Leader>dp :diffput 2<CR>
 endif
+
+" Mergetool config
+let g:mergetool_layout = 'mr'
+let g:mergetool_prefer_revision = 'local'
+
+" Open git diffs vertically
+set diffopt+=vertical
+
+" I actually liked this and I'm used to them. Bring them back :)
+command Gblame Git blame
+command Gdiff Gvdiffsplit
 
 " Quicker commands
 noremap ; :
@@ -394,6 +479,7 @@ let g:molokai_original = 1
 let use_neodark = 1
 let use_gruvbox = 0
 let use_gruvbox_light = 0
+let use_distinguished = 0
 
 if use_gruvbox
     set background=dark
@@ -420,12 +506,14 @@ if use_neodark
     colorscheme neodark
     let g:airline_theme='dark'
 endif
-
-" For Scons files, use python highlithting
-au BufReadPost SC* set syntax=python
-
-" For json files, use foldmethod with indent
-au BufReadPost *.json set foldmethod=indent
+if use_distinguished
+    set background=dark
+    let g:distinguished#background = '#202020'
+    let g:distinguished = 0 " default: 0
+    let g:distinguished#solid_vertsplit = 0 " default: 0
+    colorscheme distinguished
+    let g:airline_theme='distinguished'
+endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Text, tab and indent related
@@ -457,7 +545,7 @@ set viminfo^=%
 """""""""""""""""""""""""""""""""
 " => Status line
 """""""""""""""""""""""""""""""""
-" Show incomplete keywtrokes in status line
+" Show incomplete keystrokes in status line
 set showcmd
 
 " Always show the status line
@@ -486,13 +574,28 @@ autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 autocmd InsertLeave * match ExtraWhitespace /\s\+$/
 autocmd BufWinLeave * call clearmatches()
 
-au FileType python      set smartindent sw=4 ts=4 et sts=4 et
-au FileType c           set smartindent sw=4 ts=4 et sts=4 et
-au FileType c++         set smartindent sw=4 ts=4 et sts=4 et
-au FileType css         set smartindent sw=2 ts=2 et sts=2 et
-au FileType yaml        set smartindent sw=2 ts=2 et sts=2 et
-au FileType html        set smartindent sw=2 ts=2 et sts=2 et
-au FileType javascript  set smartindent sw=2 ts=2 et sts=2 et
+au BufNewFile,BufRead python    setf python
+" set filetypes as typescriptreact
+autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescriptreact
+
+" For Scons files, use python highlithting
+au BufReadPost SC* set syntax=python
+
+" For json files, use foldmethod with indent
+au BufReadPost *.json set foldmethod=indent
+au BufWinLeave *.json set foldmethod=manual
+
+
+au FileType python          set smartindent sw=4 ts=8 et sts=4 et
+au FileType c               set smartindent sw=4 ts=4 et sts=4 et
+au FileType c++             set smartindent sw=4 ts=4 et sts=4 et
+au FileType css             set smartindent sw=2 ts=2 et sts=2 et
+au FileType yaml            set smartindent sw=2 ts=2 et sts=2 et
+au FileType html            set smartindent sw=2 ts=2 et sts=2 et
+au FileType javascript      set smartindent sw=2 ts=2 et sts=2 et
+au FileType typescript      set smartindent sw=2 ts=2 et sts=2 et
+au FileType typescriptreact set smartindent sw=2 ts=2 et sts=2 et
+au FileType javascriptreact set smartindent sw=2 ts=2 et sts=2 et
 au FileType xml         set smartindent sw=2 ts=2 et sts=2 et
 au FileType rml         set smartindent sw=2 ts=2 et sts=2 et
 
@@ -510,7 +613,10 @@ imap <C-Up> <ESC><c-w>k
 imap <C-Down> <ESC><c-w>j
 
 " invoke choosewin plugin
-nmap  <Leader>w  <Plug>(choosewin)
+nmap <Leader>w  <Plug>(choosewin)
+" I seem to remember there's a reason I didn't want this. But I can't remember it now, so....
+nmap <Leader><tab> <Plug>(choosewin)
+
 "Use overlay feature for choosewin
 let g:choosewin_overlay_enable = 1
 let g:choosewin_statusline_replace = 0
@@ -550,7 +656,7 @@ runtime macros/matchit.vim
 
 nnoremap <F7> :%s/\s\+$<ENTER>
 nnoremap <F8> :g/\s*import pdb;\s*pdb.set_trace()$/d<ENTER>
-nnoremap <F9> Oimport pdb; pdb.set_trace()  # noqa: E702,E501<ESC>:w<ENTER>
+nnoremap <F9> Oimport pdb; pdb.set_trace()  # fmt: skip<ESC>:w<ENTER>
 
 " save as sudo
 ca w!! w !sudo tee "%"
@@ -561,16 +667,19 @@ ca w!! w !sudo tee "%"
 " Buffer related stuff
 " Show opened buffers and wait for number of buffer to change to
 nnoremap <Leader>l :buffers<CR>:buffer<Space>
-map <C-S-Right> :bnext<CR>
-map <C-S-Left> :bprev<CR>
-map <C-S-H> :bprev<CR>
-map <C-S-L> :bnext<CR>
+map <C-Right> :bnext<CR>
+map <C-Left> :bprev<CR>
+map <C-H> :bprev<CR>
+map <C-L> :bnext<CR>
 set hidden
 " Close current buffer faster
 nnoremap <silent> <Leader>bd :bd<CR>
 
 " Maximize/Minimize buffer
+nnoremap <Leader>m mm:tabedit %<CR>`m
+nnoremap <Leader>tm mm:tabedit %<CR>`m
 nnoremap <Leader>tab mm:tabedit %<CR>`m
+nnoremap <Leader>q :tabclose<CR>
 nnoremap <Leader>tc :tabclose<CR>
 nnoremap <Leader>td :tabclose<CR>
 
@@ -595,6 +704,7 @@ command! -nargs=1 Reword :execute ChangeCurrentWordTo('<args>')
 
 " Make my json pretty
 command! -nargs=0 Pretty :execute MakeJsonPretty()
+command! -nargs=0 SQLPretty :execute MakeSQLPretty()
 
 "au BufReadPost * call CheckRo()
 
@@ -651,9 +761,6 @@ set tags^=./.git/tags;
 noremap H ^
 noremap L $
 
-" Open fist matched tag in horizontal split
-map <C-g> :sp <CR>:exec("tag ".expand("<cword>"))<CR>
-
 function! AddGitDirToPath()
     " Change working dir to the current file
     cd %:p:h
@@ -694,6 +801,34 @@ set title
 noremap <Leader>] <C-]>   " forward
 noremap <Leader>[ <C-T>   " back
 
+" Configure how fzf should look like
+let g:fzf_layout = { 'right': '~20%' }
+let g:fzf_layout = { 'down': '~40%' }
+let g:fzf_layout = { 'window': { 'width': 0.75, 'height': 0.85, 'highlight': 'Normal' } }
+
+" Customize fzf colors to match your color scheme
+" - fzf#wrap translates this to a set of `--color` options
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
+
+" Enable per-command history
+" - History files will be stored in the specified directory
+" - When set, CTRL-N and CTRL-P will be bound to 'next-history' and
+"   'previous-history' instead of 'down' and 'up'.
+let g:fzf_history_dir = '~/.local/share/fzf-history'
+
 " Opne the tagbar browser
 let g:tagbar_autofocus = 1
 let g:tagbar_autoclose = 1
@@ -705,27 +840,68 @@ let g:tagbar_silent = 1
 map tt :TagbarToggle<CR>
 
 " Don't show the warning from Command-T
-let g:CommandTSuppressMaxFilesWarning=1
-let g:CommandTMaxFiles=2000000
-let g:CommandTWildIgnore=&wildignore . ",*/result/*,*/variant-dir/*,*/aristotle/*,*/mason_packages/*,*/externals/*,*/_build/*,*/_install/*"
-let g:CommandTNeverShowDotFiles=1
+" let g:CommandTSuppressMaxFilesWarning=1
+" let g:CommandTMaxFiles=2000000
+" let g:CommandTWildIgnore=&wildignore . ",*/result/*,*/variant-dir/*,*/aristotle/*,*/mason_packages/*,*/externals/*,*/_build/*,*/_install/*"
+" let g:CommandTNeverShowDotFiles=1
 
 " Open CommandT to look for open buffers
-nnoremap <Leader>b :CommandTBuffer<CR>
+" nnoremap <Leader>b :CommandTBuffer<CR>
 " Open CommandT to look for files in current directory recursively
-nnoremap <Leader>f :CommandT<CR>
+" nnoremap <Leader>f :CommandTSearch<CR>
 " Open CommandT to look for words in current file
-nnoremap <C-f> :CommandTLine<CR>
+" nnoremap <C-f> :CommandTLine<CR>
+
+" Open fzf to look for open buffers
+nnoremap <Leader>b :Buffers<CR>
+" Open fzf to look for files in current directory recursively
+nnoremap <Leader>f :Files<CR>
+" Open fzf to look for words in current file
+nnoremap <C-f> :BLines<CR>
+" Look for tags (ctags) for word under cursor
+function! FzfCurrentWord(action)
+  let l:word = expand('<cword>')
+  if len(l:word) == 0
+    if a:action == "tag"
+      execute ':Tags'
+    elseif a:action == "ag"
+      execute ':Ag'
+    endif
+  else
+      let l:list = taglist(l:word)
+      if a:action == "tag"
+        if len(l:list) == 1
+          execute ':tag ' . l:word
+        else
+          call fzf#vim#tags(l:word, {'options': '--no-preview'})
+        endif
+      elseif a:action == "ag"
+        call fzf#vim#ag(l:word)
+      endif
+  endif
+endfunction
+nnoremap <silent><Leader>] :call FzfCurrentWord("tag")<cr>
+nnoremap <silent><Leader><S-f> :call FzfCurrentWord("tag")<cr>
+
+
+" Search selected word using Ag
+nnoremap <silent><Leader>ag :call FzfCurrentWord("ag")<cr>
 
 
 " Make fold ignore blocks of less than 15 lines
 set foldminlines=8
 
-"command! File :echo expand('%:p')
-command! -nargs=0 PBreak :echo "break ".expand('%:p').":".line(".")
-command! -nargs=0 PFile :echo expand('%:p')
-command! -nargs=0 File :let @+=expand('%:p') | echo 'Copied to clipboard: ' . @+
-command! -nargs=0 Break :let @+="break ".expand('%:p').":".line(".") | echo 'Copied to clipboard: ' . @+
+" Copy/print breakpoint in current location (pdb/gdb style) (short and full path versions)
+command! -nargs=0 PBreak :echo "break ".expand('%').":".line(".")
+command! -nargs=0 Break :let @+="break ".expand('%').":".line(".") | echo 'Copied to clipboard: ' . @+
+command! -nargs=0 PFBreak :echo "break ".expand('%:p').":".line(".")
+command! -nargs=0 FBreak :let @+="break ".expand('%:p').":".line(".") | echo 'Copied to clipboard: ' . @+
+
+" Copy/print file path (short and full path versions)
+command! -nargs=0 PFFile :echo expand('%:p')
+command! -nargs=0 FFile :let @+=expand('%:p') | echo 'Copied to clipboard: ' . @+
+command! -nargs=0 PFile :echo expand('%')
+command! -nargs=0 File :let @+=expand('%') | echo 'Copied to clipboard: ' . @+
 
 " (Un)Indent selected test in visual mode
 vnoremap <Tab> >gv
@@ -798,13 +974,13 @@ highlight link Flake8_PyFlake    WarningMsg
 " Automatically call Flake8 on save
 " autocmd  BufWritePost *.py :silent call Flake8()
 " A la carte call for Flake8
-autocmd FileType python map <buffer> <LocalLeader>F :call Flake8()<CR>
+autocmd FileType python map <buffer> <LocalLeader>p :call Flake8()<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Trying AutoPEP8
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:autopep8_disable_show_diff=1
-let g:autopep8_max_line_length=89
+let g:autopep8_max_line_length=120
 let g:autopep8_aggressive=4
 
 
@@ -843,7 +1019,56 @@ function! WktToGeogebra()
     echo "Converted :-)"
 endfunction
 
-nnoremap <C-U> :GundoToggle<CR>
 
 ca wttr vertical term curl https://wttr.in/Rosario\?lang\=es
 ca clima vertical term curl https://wttr.in/Rosario\?lang\=es
+
+""""""""""""""""""""""""""""""""""""""""""
+" => Helpful commands for working with CSV
+""""""""""""""""""""""""""""""""""""""""""
+command! -nargs=0 CSVPretty :%ArrangeColumn
+command! -nargs=0 CSVUgly :%UnArrangeColumn
+
+
+
+""""""""""""""""""""""""""""""""""""""""""""""
+" => Hack for AHS development. Ignore dir webui
+""""""""""""""""""""""""""""""""""""""""""""""
+let g:rooter_patterns = ['!=webui', '.git', '_darcs', '.hg', '.bzr', '.svn', 'Makefile', 'package.json']
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""
+" => Print SQLAlchemy query with expanded params
+"""""""""""""""""""""""""""""""""""""""""""""""""
+function! DebugQuery()
+    " Save cursor position
+    let l:save = winsaveview()
+    let importStatement = 'from sqlalchemy.dialects import postgresql'
+    let queryVariable = expand('<cword>')
+    let debugStatement = "print(f\"\\n\\n{" . queryVariable . ".statement.compile(dialect=postgresql.dialect(), compile_kwargs={'literal_binds': True})}\\n\\n\")"
+
+    execute "normal! o" . importStatement . "\<Esc>"
+    execute "normal! o" . debugStatement . "\<Esc>"
+    call winrestview(l:save)
+endfunction
+
+
+" NEOVIM specific setup
+if has('nvim')
+    let use_gruvbox_flat = 1
+    if use_gruvbox_flat
+        let g:solarized_termtrans=1
+        let g:solarized_termcolors=256
+        " let g:airline_theme='distinguished'
+        let g:airline_theme='badwolf'
+        set background=dark
+        colorscheme gruvbox-flat
+    endif
+endif
+
+
+"" AHS specific config
+command! -nargs=0 Break :let @+="break ".substitute(expand('%'), 'python/', '', 'g').":".line(".") | echo 'Copied to clipboard: ' . @+
+command! -nargs=0 FromImport :let @+="from ".substitute(substitute(substitute(expand('%'), '.py$', '', 'g'), 'python/', '', 'g'), '/', '.', 'g') . ' import ' . expand('<cword>') | echo 'Copied to clipboard: '. @+
+command! -nargs=0 FI :FromImport
+ 

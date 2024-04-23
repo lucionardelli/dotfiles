@@ -8,6 +8,17 @@ case $- in
       *) return;;
 esac
 
+
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/bin" ] ; then
+    PATH="$HOME/bin:$PATH"
+fi
+
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/.local/bin" ] ; then
+    PATH="$HOME/.local/bin:$PATH"
+fi
+
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
@@ -105,6 +116,9 @@ alias ll='ls -alFtrBh --group-directories-first'
 alias la='ls -A'
 alias l='ls -CF'
 
+# Source env secrets if any
+[ -s ~/.secrets ] && source ~/.secrets
+
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
@@ -136,6 +150,9 @@ export LSCOLORS=Exfxcxdxbxegedabagacad
 # Necessary to use brewst-sdk
 if [ -f ~/.bash_irobot ]; then
     source ~/.bash_irobot
+fi
+if [ -f ~/.bash_ahs ]; then
+    source ~/.bash_ahs
 fi
 
 export EDITOR=vim
@@ -204,10 +221,11 @@ bind -m vi-command "\C-l":clear-screen
 #   CTRL-T - Paste the selected file path into the command line
 #   CTRL-R - Paste the selected command from history into the command line
 #   ALT-C - cd into the selected directory
-[ -s ~/.fzf.bash ] && source ~/.fzf.bash
-
-# [ -s ~/.fzf_completion.bash ] && source ~/.fzf_completion.bash
+[ -s ~/.fzf/fzfrc ] && source ~/.fzf/fzfrc
 
 
 # Add GO to the User's path
 export PATH=$PATH:/usr/local/go/bin
+
+# Avoid opening less for "short" outputs
+export LESS=eFRX

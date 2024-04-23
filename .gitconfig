@@ -1,6 +1,6 @@
 [user]
-    email = <YOUR_EMAIL>
-    name = <YOUR_NAME>
+	email = lucionardelli@gmail.com
+	name = Lucio Nardelli
 [init]
 	templatedir = ~/.git_template
 	defaultBranch = main
@@ -18,13 +18,17 @@
 	prompt = false
 [mergetool "nvimdiff"]
     cmd = nvimdiff \"$LOCAL\" \"$MERGED\" \"$REMOTE\"
-[merge]
-	tool = nvimdiff
-    # conflictstyle = merge
-    conflictstyle = diff3
 [mergetool]
     keepBackup = false
 	prompt = false
+[merge]
+    # tool = vim_mergetool
+    # conflictstyle = diff3
+    tool = nvimdiff
+    conflictstyle = merge
+[mergetool "vim_mergetool"]
+    cmd = vim -f -c "MergetoolStart" "$MERGED" "$BASE" "$LOCAL" "$REMOTE"
+    trustExitCode = false
 [push]
 	default = simple
 [alias]

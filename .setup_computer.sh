@@ -22,11 +22,11 @@ cp -r .dotfile-gitinfo .git/info
 # Install basic things
 sudo apt update -y
 sudo apt upgrade -y
-sudo apt install -y vim-gnome curl openssh-server
+sudo apt install -y vim curl openssh-server zsh
 # sudo apt install -y vim-gtk curl openssh-server
 
 # Set vim as default editor
-sudo update-alternatives --set editor /usr/bin/vim.gnome
+sudo update-alternatives --set editor /usr/bin/vim
 # sudo update-alternatives --set editor /usr/bin/vim-gtk3
 
 # Install basic development packages
@@ -34,15 +34,27 @@ sudo apt install -y build-essential python3-dev
 sudo apt install -y python3-pip python3-setuptools
 sudo pip3 install --upgrade pip
 pip3 install --user --upgrade virtualenv virtualenvwrapper
+curl https://pyenv.run | bash
+# Install Poetry
+curl -sSL https://install.python-poetry.org | python3 -
 
 # Install gnome-tweak-tools
 sudo add-apt-repository universe
-sudo apt install -y gnome-tweak-tool chrome-gnome-shell gnome-shell-extension-prefs
+sudo apt install -y gnome-tweaks chrome-gnome-shell gnome-shell-extension gnome-shell-extension-prefs
 
 
 # Make VIM AASF
 sudo apt install -y ruby-dev cowsay
 vim -c "PlugInstall|qa" > /dev/null 2>&1
+
+# Install NeoVim
+sudo apt install libfuse2
+wget https://github.com/neovim/neovim/releases/download/stable/nvim.appimage -O /tmp/nvim
+chmod u+x /tmp/nvim
+sudo mv /tmp/nvim /usr/local/bin/
+mkdir ~/.config/nvim/
+echo -e "set runtimepath^=~/.vim runtimepath+=~/.vim/after\nlet &packpath = &runtimepath\nsource ~/.vimrc" > ~/config/nvim/init.vim
+
 
 # Install Chrome (already set as default)
 wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -O /tmp/google-chrome-stable_current_amd64.deb
@@ -56,11 +68,14 @@ done
 # Improve wrong password messages
 sudo sed -i 's/#\s*Defaults\s\+insults/Defaults\tinsults/' /etc/sudoers
 
-# Config gnome things
-cp .dconf.bak /tmp/dconf.bak
-sed -i "s/<YOUR_USERNAME>/$USER/" /tmp/dconf.bak
-dconf reset -f /
-dconf load / < /tmp/dconf.bak
+
+# I yield...use oh my zsh
+sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+ZSH="$HOME/.oh-my-zsh"
+git clone https://github.com/lukechilds/zsh-nvm $ZSH/custom/plugins/zsh-nvm
+git clone https://github.com/davidparsson/zsh-pyenv-lazy.git $ZSH/custom/plugins/pyenv-lazy
+
+
 
 # Reboot. But first...cleaning up my closet!
 sudo apt autoremove

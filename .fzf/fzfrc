@@ -1,0 +1,36 @@
+# Setup fzf
+# ---------
+
+# FZF config
+FZF_BASIC_OPTS="--no-mouse --height 50% -1 --multi --inline-info"
+FZF_PREVIEW_OPTS="--preview='[[ \$(file --mime {}) =~ binary ]] && echo {} is a binary file || (batcat --style=numbers --color=always {} || cat {}) 2> /dev/null | head -300' --preview-window='right:wrap'"
+FZF_KEY_BIND="--bind 'ctrl-x:execute(xdg-open {}),ctrl-p:toggle-preview,ctrl-a:select-all+accept,alt-j:down,alt-k:up'"
+FZF_DEFAULT_OPTS="${FZF_BASIC_OPTS} ${FZF_PREVIEW_OPTS} ${FZF_KEY_BIND}"
+
+# Default command is applied to all files in git repository if in a git repository, to all non-hidden files otherwise
+FZF_DEFAULT_COMMAND="ag -l --path-to-ignore ~/.ignore --nocolor --hidden -g . || git ls-files --cached --others --exclude-standard || find . -not -path '*/\.*'"
+export FZF_DEFAULT_COMMAND
+export FZF_DEFAULT_OPTS
+
+
+if [[ ! "$PATH" == *$HOME/.fzf/bin* ]]; then
+  export PATH="${PATH:+${PATH}:}$HOME/.fzf/bin"
+fi
+
+# Auto-completion
+# ---------------
+
+if [ -n "$ZSH_VERSION" ]; then
+    # assume Zsh
+    [[ -s  "$HOME/.fzf/completion.zsh" ]]  && source "$HOME/.fzf/completion.zsh" 2> /dev/null
+elif [ -n "$BASH_VERSION" ]; then
+    [[ -s  "$HOME/.fzf/completion.bash" ]]  && source "$HOME/.fzf/completion.bash" 2> /dev/null
+fi
+
+# Key bindings
+# ------------
+if [ -n "$ZSH_VERSION" ]; then
+    [[ -s  "$HOME/.fzf/key-bindings.zsh" ]] && source "$HOME/.fzf/key-bindings.zsh" 2> /dev/null
+elif [ -n "$BASH_VERSION" ]; then
+    [[ -s  "$HOME/.fzf/key-bindings.bash" ]] && source "$HOME/.fzf/key-bindings.bash" 2> /dev/null
+fi
