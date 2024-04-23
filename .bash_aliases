@@ -24,16 +24,37 @@ alias ggn='ag --python --cpp --js'
 alias bat="batcat"
 
 # Open all references to the given term
+
 vag() {
-    echo "$1" | xclip -rmlastnl
+    ignore_test=false
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            -it)
+                ignore_test=true
+                shift
+                ;;
+            *)
+                break
+                ;;
+        esac
+    done
+
+    query="$1"
+    shift
+
+    echo "$query" | xclip -rmlastnl
     files=()
-    while read -r  filename; do files+=("${filename}"); done < <(ag -l "$@")
+    while read -r filename; do 
+        if $ignore_test && [[ "$filename" == *"test"* ]]; then
+            continue
+        fi
+        files+=("$filename")
+    done < <(ag -l "$query" "$@")
+    
     if [ ${#files[@]} -ne 0 ]; then
-        # vi "${files[@]}";
-        nvim "${files[@]}";
+        nvim "${files[@]}"
     fi
 }
-
 # Open the result of last command in vim
 # (Basically used to open files grepped with
 # previus aliases)
