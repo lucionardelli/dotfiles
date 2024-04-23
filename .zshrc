@@ -1,3 +1,10 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -8,7 +15,8 @@ export ZSH="$HOME/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="robbyrussell"
+# ZSH_THEME="robbyrussell"
+ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -74,16 +82,7 @@ export NVM_DIR="$HOME/.nvm"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git ag vi-mode zsh-nvm pyenv-lazy)
-
-VI_MODE_RESET_PROMPT_ON_MODE_CHANGE=true
-VI_MODE_SET_CURSOR=true
-MODE_INDICATOR="%F{white}+%f"
-INSERT_MODE_INDICATOR="%F{yellow}+%f"
-# Because vi is great!
-# But we still want to be able to clear screen with Crtl+L
-bindkey -M viins "^L" clear-screen
-bindkey -M vicmd "^L" clear-screen
+plugins=(git ag vi-mode zsh-nvm pyenv-lazy zsh-autosuggestions)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -163,3 +162,34 @@ if [ -f '/AHS/google-cloud-sdk/path.zsh.inc' ]; then . '/AHS/google-cloud-sdk/pa
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/AHS/google-cloud-sdk/completion.zsh.inc' ]; then . '/AHS/google-cloud-sdk/completion.zsh.inc'; fi
+
+# zsh-autosuggestions config
+
+# first try to find a suggestion from your history, but, if it can't find a match, will find a suggestion from the completion engine.
+ZSH__AUTOSUGGEST_STRATEGY=(history completion)
+
+# autosuggest-accept: Accepts the current suggestion.
+# autosuggest-execute: Accepts and executes the current suggestion.
+# autosuggest-clear: Clears the current suggestion.
+# autosuggest-fetch: Fetches a suggestion (works even when suggestions are disabled).
+# autosuggest-disable: Disables suggestions.
+# autosuggest-enable: Re-enables suggestions.
+# autosuggest-toggle: Toggles between enabled/disabled suggestions.
+# For example, this would bind ctrl + space to accept the current suggestion.
+
+bindkey '^ ' autosuggest-accept
+bindkey '^L' forward-word
+bindkey '^H' backward-word
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+
+VI_MODE_RESET_PROMPT_ON_MODE_CHANGE=true
+VI_MODE_SET_CURSOR=true
+MODE_INDICATOR="%F{white}+%f"
+INSERT_MODE_INDICATOR="%F{yellow}+%f"
+# Because vi is great!
+# But we still want to be able to clear screen with Crtl+L
+bindkey -M viins "^L" clear-screen
+bindkey -M vicmd "^L" clear-screen
