@@ -1,5 +1,6 @@
 export DEFAULT_AHS_DIR=$(readlink -f $HOME/AHS/digital-front-door/)
 export WIP_AHS_DIR=$(readlink -f $HOME/AHS/wip-digital-front-door/)
+export THIRD_AHS_DIR=$(readlink -f $HOME/AHS/ahs3/)
 export FORMIO_AHS_DIR=$(readlink -f $HOME/AHS/formio/)
 
 # Add helpful compile alias when entering one of the repos
@@ -8,6 +9,8 @@ alias dfd='cd $DEFAULT_AHS_DIR'
 alias ap='cd $DEFAULT_AHS_DIR/python'
 alias wip='cd $WIP_AHS_DIR'
 alias wipp='cd $WIP_AHS_DIR/python'
+alias a3='cd $THIRD_AHS_DIR'
+alias a3p='cd $THIRD_AHS_DIR/python'
 alias fio='cd $FORMIO_AHS_DIR'
 
 set_ahs_env () {
@@ -35,7 +38,7 @@ set_ahs_env () {
 
 checkifahs () {
   case $(readlink -f $PWD) in
-    $DEFAULT_AHS_DIR | $WIP_AHS_DIR)
+    $DEFAULT_AHS_DIR | $WIP_AHS_DIR | $THIRD_AHS_DIR)
 	  set_ahs_env $PWD
       ;;
     *)
@@ -51,4 +54,9 @@ cd () {
 # Manually call this when a new terminal/tab is opened
 checkifahs
 
+  
+# While we are reactnativing...
+export ANDROID_HOME="${HOME}/Android/Sdk"
+export PATH=$PATH:$ANDROID_HOME/emulator
+export PATH=$PATH:$ANDROID_HOME/platform-tools
 #vim: set syntax=sh
