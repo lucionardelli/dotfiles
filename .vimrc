@@ -34,6 +34,7 @@ call plug#begin('~/.vim/plugged')
 " Colors
 Plug 'KeitaNakamura/neodark.vim'
 Plug 'morhetz/gruvbox'
+Plug 'jnurmine/Zenburn'
 Plug 'altercation/vim-colors-solarized'
 Plug 'Lokaltog/vim-distinguished'
 
@@ -47,9 +48,6 @@ Plug 'vim-airline/vim-airline-themes'
 
 " Start page for vim
 Plug 'mhinz/vim-startify'
-
-" Undo tree <C-U>
-Plug 'sjl/gundo.vim'
 
 " Git integration
 Plug 'tpope/vim-fugitive'
@@ -120,6 +118,9 @@ Plug 'vim-scripts/DoxygenToolkit.vim'
 Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
 
+" Mergetool
+Plug 'samoshkin/vim-mergetool'
+
 " NEOVIM specific setup
 if has('nvim')
     " Colors for neovim
@@ -130,11 +131,17 @@ if has('nvim')
     let g:python3_host_prog = $WORKON_HOME. '/nvim/bin/python'
     Plug 'averms/black-nvim', {'do': ':UpdateRemotePlugins'}
 
+    " gundo doesn't work with neovim
+    Plug 'simnalamburt/vim-mundo'
+
     " Black does not work in NeoVim... :(
     command! -nargs=0 Black !black %
 else
     " Black intregration for better python formatting
     Plug 'psf/black', { 'branch': 'stable' }
+
+    " Undo tree <C-U>
+    Plug 'sjl/gundo.vim'
 endif
 
 " Initialize plugin system
@@ -211,12 +218,25 @@ elseif test_clang_6
     let g:clang_format#command = "clang-format-6.0"
 endif
 
-" => Gundo configuration
-if has('python3')
-    " If vim is compiled with python3+ we need this
-    let g:gundo_prefer_python3 = 1
+if !has('nvim')
+    " => Gundo configuration
+    if has('python3')
+        " If vim is compiled with python3+ we need this
+        let g:gundo_prefer_python3 = 1
+    endif
+    nnoremap <C-U> :GundoToggle<CR>
+else
+    if has('python3')
+        " If vim is compiled with python3+ we need this
+        let g:mundo_prefer_python3 = 1
+    endif
+    " => Mundo configuration
+    nnoremap <C-U> :MundoToggle<CR>
+
+    " Enable persistent undo so that undo history persists across vim sessions
+    set undofile
+    set undodir=~/.vim/undo
 endif
-nnoremap <C-U> :GundoToggle<CR>
 
 "=> Copy things from VI to clipboard
 set clipboard^=unnamed,unnamedplus
@@ -300,19 +320,8 @@ syntax on
 filetype plugin on
 
 " set number
-" turn hybrid line numbers on
-" set number relativenumber
-
-set number
-
-augroup numbertoggle
-  " Absolute and relative line numbers are enabled by default,
-  " which produces “hybrid” line numbers. When entering/leaving insert mode,
-  " relative line numbers are turned off/on, leaving absolute line numbers turned on/off.
-  autocmd!
-  autocmd BufEnter,FocusGained,InsertLeave,WinEnter * if &nu && mode() != "i" | set rnu   | endif
-  autocmd BufLeave,FocusLost,InsertEnter,WinLeave   * if &nu                  | set nornu | endif
-augroup END
+" turn hybrid line numbers off
+set number norelativenumber
 
 set encoding=utf-8
 
@@ -422,7 +431,21 @@ if &diff
     hi DiffAdd    ctermfg=233 ctermbg=LightGreen guifg=#003300 guibg=#DDFFDD gui=none cterm=none
     hi DiffChange ctermbg=white  guibg=#ececec gui=none   cterm=none
     hi DiffText   ctermfg=233  ctermbg=yellow  guifg=#000033 guibg=#DDDDFF gui=none cterm=none
+
+    " Move things from remote to merged
+    nnoremap <Leader>gr :diffget 3<CR>
+    nnoremap <Leader>g3 :diffget 3<CR>
+    " Move things from local to merged
+    nnoremap <Leader>gl :diffget 1<CR>
+    nnoremap <Leader>g1 :diffget 1<CR>
+    " Move things from current highlighted change to merged
+    nnoremap <Leader>dp :diffput 2<CR>
 endif
+
+" Mergetool config
+let g:mergetool_layout = 'mr'
+let g:mergetool_prefer_revision = 'local'
+
 " Open git diffs vertically
 set diffopt+=vertical
 
@@ -781,7 +804,30 @@ noremap <Leader>[ <C-T>   " back
 " Configure how fzf should look like
 let g:fzf_layout = { 'right': '~20%' }
 let g:fzf_layout = { 'down': '~40%' }
-let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.4, 'highlight': 'Normal' } }
+let g:fzf_layout = { 'window': { 'width': 0.75, 'height': 0.85, 'highlight': 'Normal' } }
+
+" Customize fzf colors to match your color scheme
+" - fzf#wrap translates this to a set of `--color` options
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
+
+" Enable per-command history
+" - History files will be stored in the specified directory
+" - When set, CTRL-N and CTRL-P will be bound to 'next-history' and
+"   'previous-history' instead of 'down' and 'up'.
+let g:fzf_history_dir = '~/.local/share/fzf-history'
 
 " Opne the tagbar browser
 let g:tagbar_autofocus = 1
@@ -973,7 +1019,6 @@ function! WktToGeogebra()
     echo "Converted :-)"
 endfunction
 
-nnoremap <C-U> :GundoToggle<CR>
 
 ca wttr vertical term curl https://wttr.in/Rosario\?lang\=es
 ca clima vertical term curl https://wttr.in/Rosario\?lang\=es
@@ -1012,9 +1057,18 @@ endfunction
 if has('nvim')
     let use_gruvbox_flat = 1
     if use_gruvbox_flat
-        set background=dark
-        colorscheme gruvbox-flat
+        let g:solarized_termtrans=1
+        let g:solarized_termcolors=256
         " let g:airline_theme='distinguished'
         let g:airline_theme='badwolf'
+        set background=dark
+        colorscheme gruvbox-flat
     endif
 endif
+
+
+"" AHS specific config
+command! -nargs=0 Break :let @+="break ".substitute(expand('%'), 'python/', '', 'g').":".line(".") | echo 'Copied to clipboard: ' . @+
+command! -nargs=0 FromImport :let @+="from ".substitute(substitute(substitute(expand('%'), '.py$', '', 'g'), 'python/', '', 'g'), '/', '.', 'g') . ' import ' . expand('<cword>') | echo 'Copied to clipboard: '. @+
+command! -nargs=0 FI :FromImport
+ 
