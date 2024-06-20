@@ -121,6 +121,9 @@ Plug 'peitalin/vim-jsx-typescript'
 " Mergetool
 Plug 'samoshkin/vim-mergetool'
 
+" Try ALE
+Plug 'dense-analysis/ale'
+
 " NEOVIM specific setup
 if has('nvim')
     " Colors for neovim
@@ -1066,9 +1069,22 @@ if has('nvim')
     endif
 endif
 
+" Configure ALE
+if executable('ruff')
+    let g:ale_linters={
+    \ 'python': ['ruff'],
+    \}
+    let g:ale_python_ruff_format_options = '--config=python/pyproject.toml'
+else
+    let g:ale_linters={
+    \ 'python': ['pylint'],
+    \}
+    let g:ale_python_pylint_options = '--rcfile=python/pyproject.toml'
+endif
+
+
 
 "" AHS specific config
 command! -nargs=0 Break :let @+="break ".substitute(expand('%'), 'python/', '', 'g').":".line(".") | echo 'Copied to clipboard: ' . @+
 command! -nargs=0 FromImport :let @+="from ".substitute(substitute(substitute(expand('%'), '.py$', '', 'g'), 'python/', '', 'g'), '/', '.', 'g') . ' import ' . expand('<cword>') | echo 'Copied to clipboard: '. @+
 command! -nargs=0 FI :FromImport
- 
