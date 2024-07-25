@@ -110,7 +110,20 @@ fkill() {
 mkcd() { mkdir -p "$1" && cd "$1"; }
 
 # Open bash on docker image
-alias dbash='docker run --rm -it --entrypoint bash'
+alias dbashi='docker run --rm -it --entrypoint bash'
+# Open bash on running container
+dbash () {
+    docker compose exec -ti "$1" bash
+}
+# Get docker ID from service
+docker-id () {
+    docker ps -f name=$1 --format "{{.ID}}"
+}
+
+# Truncate logs (not the most elegant thing to do...)
+dddlog () {
+    sudo sh -c ": > $(docker inspect --format='{{.LogPath}}' $(docker-id $1))"
+}
 
 # Taken from https://polothy.github.io/post/2019-08-19-fzf-git-checkout. A fuzzy finder for local git branches
 fzf-git-branch() {

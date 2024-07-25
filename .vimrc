@@ -124,6 +124,9 @@ Plug 'samoshkin/vim-mergetool'
 " Try ALE
 Plug 'dense-analysis/ale'
 
+" Improved Matchit
+Plug 'andymass/vim-matchup'
+
 " NEOVIM specific setup
 if has('nvim')
     " Colors for neovim
