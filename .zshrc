@@ -82,7 +82,7 @@ export NVM_DIR="$HOME/.nvm"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git ag vi-mode zsh-nvm pyenv-lazy zsh-autosuggestions)
+plugins=(git vi-mode zsh-nvm pyenv-lazy zsh-autosuggestions)
 
 source $ZSH/oh-my-zsh.sh
 
