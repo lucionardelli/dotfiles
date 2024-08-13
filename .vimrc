@@ -580,7 +580,7 @@ autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 autocmd InsertLeave * match ExtraWhitespace /\s\+$/
 autocmd BufWinLeave * call clearmatches()
 
-au BufNewFile,BufRead python    setf python
+au BufNewFile,BufRead python setf python
 " set filetypes as typescriptreact
 autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescriptreact
 
@@ -602,8 +602,9 @@ au FileType javascript      set smartindent sw=2 ts=2 et sts=2 et
 au FileType typescript      set smartindent sw=2 ts=2 et sts=2 et
 au FileType typescriptreact set smartindent sw=2 ts=2 et sts=2 et
 au FileType javascriptreact set smartindent sw=2 ts=2 et sts=2 et
-au FileType xml         set smartindent sw=2 ts=2 et sts=2 et
-au FileType rml         set smartindent sw=2 ts=2 et sts=2 et
+au FileType xml             set smartindent sw=2 ts=2 et sts=2 et
+au FileType rml             set smartindent sw=2 ts=2 et sts=2 et
+au FileType sh              set smartindent sw=2 ts=2 et sts=2 et
 
 " Disable vi compatibility mode
 nnoremap Q <nop>
