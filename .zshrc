@@ -84,6 +84,9 @@ export NVM_DIR="$HOME/.nvm"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git vi-mode zsh-nvm pyenv-lazy zsh-autosuggestions)
 
+# Currently plugin virtualenvwrapper doesn't work likely because we are using lazyload
+#plugins=(git vi-mode zsh-nvm pyenv-lazy zsh-autosuggestions virtualenvwrapper)
+
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
@@ -145,6 +148,7 @@ fi
 [ -s ~/.bash_aliases ] && source ~/.bash_aliases
 [ -s ~/.bash_irobot ] && source ~/.bash_irobot
 [ -s ~/.bash_ahs ] && source ~/.bash_ahs
+[ -s ~/.bash_tako ] && source ~/.bash_tako
 
 
 # Avoid opening less for "short" outputs
@@ -162,6 +166,9 @@ if [ -f '/AHS/google-cloud-sdk/path.zsh.inc' ]; then . '/AHS/google-cloud-sdk/pa
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/AHS/google-cloud-sdk/completion.zsh.inc' ]; then . '/AHS/google-cloud-sdk/completion.zsh.inc'; fi
+
+# The next line adds Go to the PATH
+export PATH=$PATH:/usr/local/go/bin
 
 # zsh-autosuggestions config
 
@@ -193,3 +200,5 @@ INSERT_MODE_INDICATOR="%F{yellow}+%f"
 # But we still want to be able to clear screen with Crtl+L
 bindkey -M viins "^L" clear-screen
 bindkey -M vicmd "^L" clear-screen
+
+unset ZSH_AUTOSUGGEST_USE_ASYNC

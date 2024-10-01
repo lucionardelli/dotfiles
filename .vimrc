@@ -663,7 +663,7 @@ runtime macros/matchit.vim
 
 nnoremap <F7> :%s/\s\+$<ENTER>
 nnoremap <F8> :g/\s*import pdb;\s*pdb.set_trace()$/d<ENTER>
-nnoremap <F9> Oimport pdb; pdb.set_trace()  # fmt: skip<ESC>:w<ENTER>
+nnoremap <F9> Oimport pdb; pdb.set_trace()  # noqa fmt: skip<ESC>:w<ENTER>
 
 " save as sudo
 ca w!! w !sudo tee "%"
@@ -1039,9 +1039,9 @@ command! -nargs=0 CSVUgly :%UnArrangeColumn
 
 
 """"""""""""""""""""""""""""""""""""""""""""""
-" => Hack for AHS development. Ignore dir webui
+" => Hack for AHS development and Tako. Ignore dir webu
 """"""""""""""""""""""""""""""""""""""""""""""
-let g:rooter_patterns = ['!=webui', '.git', '_darcs', '.hg', '.bzr', '.svn', 'Makefile', 'package.json']
+let g:rooter_patterns = ['!=website', '!=webui', '.git', '_darcs', '.hg', '.bzr', '.svn', 'package.json']
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""
@@ -1076,19 +1076,47 @@ endif
 " Configure ALE
 if executable('ruff')
     let g:ale_linters={
-    \ 'python': ['ruff'],
+    \ 'python': ['ruff', 'mypy'],
     \}
-    let g:ale_python_ruff_format_options = '--config=python/pyproject.toml'
+
+    if filereadable("python/pyproject.toml")
+        let g:ale_python_ruff_format_options = '--config=python/pyproject.toml'
+    endif
 else
     let g:ale_linters={
-    \ 'python': ['pylint'],
+    \ 'python': ['pylint', 'mypy'],
     \}
-    let g:ale_python_pylint_options = '--rcfile=python/pyproject.toml'
+    if filereadable("python/pyproject.toml")
+        let g:ale_python_pylint_options = '--rcfile=python/pyproject.toml'
+    endif
 endif
 
+" Enable ALE linting on save
+let g:ale_lint_on_save = 1
+" Enable linting as we are typing
+" let g:ale_lint_on_text_changed = 'always'
 
 
-"" AHS specific config
+" Enable linting for Python
+let g:ale_fixers = {
+\   'python': ['black', 'isort'],
+\}
+let g:ale_python_mypy_options = '--ignore-missing-imports'  " Optional: Ignore imports you don't want mypy to check
+" Show linting errors in a more detailed format
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+
+
+"" Project specifics config (e.g. remove unnecessary dirs from paths)
 command! -nargs=0 Break :let @+="break ".substitute(expand('%'), 'python/', '', 'g').":".line(".") | echo 'Copied to clipboard: ' . @+
-command! -nargs=0 FromImport :let @+="from ".substitute(substitute(substitute(expand('%'), '.py$', '', 'g'), 'python/', '', 'g'), '/', '.', 'g') . ' import ' . expand('<cword>') | echo 'Copied to clipboard: '. @+
+function! FromImport()
+    let l:filepath = expand('%')
+    let l:module = substitute(l:filepath, '.py$', '', 'g')
+    let l:module = substitute(l:module, 'python/', '', 'g')
+    let l:module = substitute(l:module, 'website/website', 'website', 'g')
+    let l:module = substitute(l:module, '/', '.', 'g')
+    let l:import_statement = 'from ' . l:module . ' import ' . expand('<cword>')
+    let @+ = l:import_statement
+    echo 'Copied to clipboard: ' . @+
+endfunction
+command! -nargs=0 FromImport :call FromImport()
 command! -nargs=0 FI :FromImport

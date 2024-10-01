@@ -154,6 +154,9 @@ fi
 if [ -f ~/.bash_ahs ]; then
     source ~/.bash_ahs
 fi
+if [ -f ~/.bash_tako ]; then
+    source ~/.bash_tako
+fi
 
 export EDITOR=vim
 export VISUAL=vim
