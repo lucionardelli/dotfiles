@@ -80,17 +80,8 @@ Plug 'majutsushi/tagbar'
 "      \   'do': 'cd ruby/command-t/ext/command-t && ruby extconf.rb && make'
 "      \ }
 
-" Flake8 integration (static syntax and style checker for Python)
-Plug 'nvie/vim-flake8'
-
 " Rich python syntax highlighting
 Plug 'kh3phr3n/python-syntax'
-
-" Only for simple cases...you MUST write good code yourself
-Plug 'tell-k/vim-autopep8'
-
-" Visually select increasingly larger regions of text
-Plug 'terryma/vim-expand-region'
 
 " Better commit scren
 Plug 'rhysd/committia.vim'
@@ -105,9 +96,6 @@ Plug 'junegunn/fzf.vim'
 " Recover.vim adds a diff option when Vim finds a swap file
 Plug 'chrisbra/Recover.vim'
 
-" Navigate to the window using overlay numbers/letters
-Plug 't9md/vim-choosewin'
-
 " Change working dir automagically
 Plug 'airblade/vim-rooter'
 
@@ -118,14 +106,8 @@ Plug 'vim-scripts/DoxygenToolkit.vim'
 Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
 
-" Mergetool
-Plug 'samoshkin/vim-mergetool'
-
 " Try ALE
-Plug 'dense-analysis/ale'
-
-" Improved Matchit
-Plug 'andymass/vim-matchup'
+" Plug 'dense-analysis/ale'
 
 " NEOVIM specific setup
 if has('nvim')
