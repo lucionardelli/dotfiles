@@ -160,3 +160,5 @@ fzf-git-checkout() {
 }
 alias gb='fzf-git-branch'
 alias gco='fzf-git-checkout'
+
+alias bf='$HOME/go/bin/butterfish shell'

@@ -148,7 +148,7 @@ fi
 [ -s ~/.bash_aliases ] && source ~/.bash_aliases
 [ -s ~/.bash_irobot ] && source ~/.bash_irobot
 [ -s ~/.bash_ahs ] && source ~/.bash_ahs
-[ -s ~/.bash_tako ] && source ~/.bash_tako
+# [ -s ~/.bash_tako ] && source ~/.bash_tako
 
 
 # Avoid opening less for "short" outputs
