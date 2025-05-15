@@ -10,6 +10,7 @@ if !filereadable(vim_plug_path)
     echo ""
     silent !mkdir -p ~/.vim/autoload
     silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    silent !curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     let vim_plug_just_installed = 1
 endif
 
@@ -638,7 +639,7 @@ noremap <C-c> <ESC>
 xnoremap <C-c> <ESC>
 
 " Toggle paste/nopaste and show the current state
-set pastetoggle=<F2>
+" set pastetoggle=<F2>
 
 " Extended matching with `%`
 runtime macros/matchit.vim
@@ -749,6 +750,9 @@ set tags^=./.git/tags;
 " Use 'H' and 'L' keys to move to start/end of the line
 noremap H ^
 noremap L $
+" When in insert mode, use jj to do Esc
+inoremap jj <ESC>
+
 
 function! AddGitDirToPath()
     " Change working dir to the current file
@@ -1054,6 +1058,19 @@ if has('nvim')
         colorscheme gruvbox-flat
     endif
 endif
+
+" Ruff commands
+let pyproject_toml = expand('python/pyproject.toml')
+if filereadable(pyproject_toml)
+    command! -nargs=0 Ruff execute '!ruff format --config ' . pyproject_toml . ' % && ruff check --fix --config ' . pyproject_toml . ' % && ruff format --config ' . pyproject_toml . ' %'
+    command! -nargs=0 RuffCheck execute '!ruff check --fix --config ' . pyproject_toml . ' %'
+    command! -nargs=0 RuffFormat execute '!ruff format --config ' . pyproject_toml . ' %'
+else
+    command! -nargs=0 Ruff execute '!ruff format % && ruff check --fix % && ruff format %'
+    command! -nargs=0 RuffCheck execute '!ruff check --fix %'
+    command! -nargs=0 RuffFormat execute '!ruff format %'
+endif
+
 
 " Configure ALE
 if executable('ruff')
