@@ -64,7 +64,7 @@ alias vil='nvim $($(fc -ln -1))'
 alias root='eval "sudo $(fc -ln -1)"'
 
 # Docker compose
-alias dc='docker-compose'
+alias dc='docker compose'
 
 # Say something
 alias say='DISPLAY=:0 spd-say -r -5 -l ES'
