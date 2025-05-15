@@ -4,12 +4,14 @@ set -e
 PATH="/usr/local/bin:$PATH"
 
 # Get .git directory in order to create tags file there
-dir="`git rev-parse --git-dir`"
+dir="$(git rev-parse --git-dir)"
 
 # Remove temporary files if something goes wrong 
 trap 'rm -f "$dir/$$.tags"' EXIT
 
-git ls-files | \
-  ctags --tag-relative -L - -f"$dir/$$.tags" --languages=C,C++,HTML,JavaScript,PHP,Python,Sh,Vim
-
-mv "$dir/$$.tags" "$dir/tags"
+if git ls-files | ctags --tag-relative -L - -f"$dir/$$.tags" --languages=C,C++,HTML,JavaScript,PHP,Python,Sh,Vim > /dev/null 2>&1; then
+    mv "$dir/$$.tags" "$dir/tags"
+else
+    echo "Failed to generate tags file" >&2
+    exit 1
+fi
