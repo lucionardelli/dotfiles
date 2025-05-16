@@ -632,7 +632,7 @@ augroup END
 nnoremap <Leader>h :set cursorline!<CR>
 
 " Close all buffers but current
-nnoremap <Leader>Q :if confirm('Close all other buffers?', "&Yes\n&No", 1)==1 <Bar> %bd <Bar> e# <Bar> bnext <Bar> bd <Bar> endif<CR><CR>
+nnoremap <Leader>Q :if confirm('Close all other buffers?', "&Yes\n&No", 1)==1 <Bar> %bd <Bar> e# <Bar> bnext <Bar> bd <Bar> endif<CR>
 
 " Additional <ESC> mapping to Ctrl-C, bash style
 noremap <C-c> <ESC>
