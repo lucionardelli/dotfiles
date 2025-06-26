@@ -52,7 +52,7 @@ vag() {
     done < <(ag -l "$query" "$@")
     
     if [ ${#files[@]} -ne 0 ]; then
-        nvim "${files[@]}"
+        nvim +"set hlsearch" "+/$query" "${files[@]}"
     fi
 }
 # Open the result of last command in vim

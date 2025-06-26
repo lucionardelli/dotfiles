@@ -125,6 +125,10 @@ if has('nvim')
 
     " Black does not work in NeoVim... :(
     command! -nargs=0 Black !black %
+
+    " Save as sudo trick doesn't work in nvim
+    Plug 'lambdalisue/vim-suda'
+
 else
     " Black intregration for better python formatting
     Plug 'psf/black', { 'branch': 'stable' }
@@ -649,7 +653,13 @@ nnoremap <F8> :g/\s*import pdb;\s*pdb.set_trace()$/d<ENTER>
 nnoremap <F9> Oimport pdb; pdb.set_trace()  # noqa fmt: skip<ESC>:w<ENTER>
 
 " save as sudo
-ca w!! w !sudo tee "%"
+if has('nvim')
+    ca w!! :SudaWrite
+    let g:suda#prompt = "Ah Ah Ah, You Didn't Say The Magic Word: "
+    let g:suda_smart_edit = 1
+else
+    ca w!! w !sudo tee "%"
+endif
 
 " Para borrar los espacios en blanco al final de las líneas automágicamente
 "autocmd BufWritePre *.py :%s/\s\+$//e
