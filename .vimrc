@@ -38,6 +38,11 @@ Plug 'morhetz/gruvbox'
 Plug 'jnurmine/Zenburn'
 Plug 'altercation/vim-colors-solarized'
 Plug 'Lokaltog/vim-distinguished'
+Plug 'mhinz/vim-janah'
+Plug 'catppuccin/vim', { 'as': 'catppuccin' }
+
+"Smoother moves when using C-D and C-F
+Plug 'psliwka/vim-smoothie'
 
 
 " Use buffers as GUI tabs
@@ -97,6 +102,9 @@ Plug 'junegunn/fzf.vim'
 " Recover.vim adds a diff option when Vim finds a swap file
 Plug 'chrisbra/Recover.vim'
 
+" Vimdiff tool for dirs
+Plug 'will133/vim-dirdiff'
+
 " Change working dir automagically
 Plug 'airblade/vim-rooter'
 
@@ -107,8 +115,14 @@ Plug 'vim-scripts/DoxygenToolkit.vim'
 Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
 
+" Vue syntax highlighting
+Plug 'posva/vim-vue'
+
 " Try ALE
 " Plug 'dense-analysis/ale'
+
+" Undotree
+Plug 'mbbill/undotree'
 
 " NEOVIM specific setup
 if has('nvim')
@@ -119,9 +133,6 @@ if has('nvim')
     " Black integration
     let g:python3_host_prog = $WORKON_HOME. '/nvim/bin/python'
     Plug 'averms/black-nvim', {'do': ':UpdateRemotePlugins'}
-
-    " gundo doesn't work with neovim
-    Plug 'simnalamburt/vim-mundo'
 
     " Black does not work in NeoVim... :(
     command! -nargs=0 Black !black %
@@ -211,25 +222,18 @@ elseif test_clang_6
     let g:clang_format#command = "clang-format-6.0"
 endif
 
-if !has('nvim')
-    " => Gundo configuration
-    if has('python3')
-        " If vim is compiled with python3+ we need this
-        let g:gundo_prefer_python3 = 1
-    endif
-    nnoremap <C-U> :GundoToggle<CR>
-else
-    if has('python3')
-        " If vim is compiled with python3+ we need this
-        let g:mundo_prefer_python3 = 1
-    endif
-    " => Mundo configuration
-    nnoremap <C-U> :MundoToggle<CR>
 
-    " Enable persistent undo so that undo history persists across vim sessions
-    set undofile
-    set undodir=~/.vim/undo
+" => Undotree configuration
+" Enable persistent undo so that undo history persists across vim sessions
+let target_path = expand('~/.vim/undo')
+if !isdirectory(target_path)
+    call mkdir(target_path, "p", 0700)
 endif
+let &undodir=target_path
+set undofile
+
+nnoremap <Leader>u :UndotreeToggle<CR>
+
 
 "=> Copy things from VI to clipboard
 set clipboard^=unnamed,unnamedplus
@@ -282,9 +286,36 @@ function! Get_visual_selection()
     return join(lines, "\n")
 endfunction
 
-function! ChangeCurrentWordTo(word)
-    execute "%s/\\<" . expand('<cword>') . "\\>/" . a:word . "/gc"
+" function! ChangeCurrentWordTo(word, confirm)
+"     let l:cursor = getpos(".")
+"     let l:confirm_flag = (a:confirm ==# '0' || a:confirm ==# 'false') ? 'g' : 'gc'
+"     let l:count = execute "%s/\\<" . expand('<cword>') . "\\>/" . a:word . "/" . confirm_flag
+"     call setpos('.', l:cursor)
+"     echo substitute(l:count, '\n.*', '', '')
+" endfunction
+function! ChangeCurrentWordTo(...)
+    let l:args = a:000
+    if len(l:args) < 1
+        echoerr "Missing required argument: word"
+        return
+    endif
+    let l:word = l:args[0]
+    let l:confirm = len(l:args) > 1 ? l:args[1] : '1'
+
+    let l:cursor = getpos(".")
+    let l:confirm_flag = (l:confirm ==# '0' || l:confirm ==# 'false') ? 'g' : 'gc'
+
+    " Redirect output of substitution into a variable
+    redir => output
+    silent execute "%s/\\<" . expand('<cword>') . "\\>/" . l:word . "/" . l:confirm_flag
+    redir END
+
+    call setpos('.', l:cursor)
+
+    " Display just the first line of substitution output
+    echo substitute(output, '\n.*', '', '')
 endfunction
+
 
 " RO files are open with a different color (Needs to be improved, because it changes all the window not only the buffer)
 "function CheckRo()
@@ -590,6 +621,7 @@ au FileType typescript      set smartindent sw=2 ts=2 et sts=2 et
 au FileType typescriptreact set smartindent sw=2 ts=2 et sts=2 et
 au FileType javascriptreact set smartindent sw=2 ts=2 et sts=2 et
 au FileType xml             set smartindent sw=2 ts=2 et sts=2 et
+au FileType vue             set smartindent sw=2 ts=2 et sts=2 et
 au FileType rml             set smartindent sw=2 ts=2 et sts=2 et
 au FileType sh              set smartindent sw=2 ts=2 et sts=2 et
 
@@ -635,8 +667,38 @@ augroup END
 " Toggle cursorline (i.e. line highlight)
 nnoremap <Leader>h :set cursorline!<CR>
 
+function! ConfirmCloseBuffers(side)
+  if confirm('Close buffers to the ' . a:side . '?', "&Yes\n&No", 1) == 1
+    let current = bufnr('%')
+    let buffers = map(
+          \ filter(getbufinfo({'buflisted': 1, 'bufloaded': 1}),
+          \   {_, b -> (a:side == 'left' && b.bufnr < current) || (a:side == 'right' && b.bufnr > current)}),
+          \ 'v:val.bufnr'
+          \ )
+    if !empty(buffers)
+      silent! execute 'bwipeout' join(buffers)
+    endif
+    silent! bnext
+  endif
+endfunction
+
+function! CloseAllOtherBuffers()
+  if confirm('Close all other buffers?', "&Yes\n&No", 1) == 1
+    let current = bufnr('%')
+    let others = filter(range(1, bufnr('$')), 'v:val != current && buflisted(v:val)')
+    if !empty(others)
+      silent! execute 'bwipeout' join(others)
+    endif
+    silent! bnext
+  endif
+endfunction
+
 " Close all buffers but current
-nnoremap <Leader>Q :if confirm('Close all other buffers?', "&Yes\n&No", 1)==1 <Bar> %bd <Bar> e# <Bar> bnext <Bar> bd <Bar> endif<CR>
+nnoremap <Leader>Q :call CloseAllOtherBuffers()<CR>
+" Close buffers to the left of current buffer
+nnoremap <Leader>lQ :call ConfirmCloseBuffers('left')<CR>
+" Close buffers to the right of current buffer
+nnoremap <Leader>rQ :call ConfirmCloseBuffers('right')<CR>
 
 " Additional <ESC> mapping to Ctrl-C, bash style
 noremap <C-c> <ESC>
@@ -700,7 +762,7 @@ command! GREP :execute 'noautocmd vimgrep /'.expand('<cword>').'/gj '.expand('%'
 map <F10> <Esc>:execute "noautocmd vimgrep /" . Get_visual_selection() . "/j **" <Bar> cw<CR>
 
 " Change word under cursor with given word. Asks confirmation
-command! -nargs=1 Reword :execute ChangeCurrentWordTo('<args>')
+command! -nargs=+ Reword call ChangeCurrentWordTo(<f-args>)
 
 " Make my json pretty
 command! -nargs=0 Pretty :execute MakeJsonPretty()
@@ -860,7 +922,7 @@ nnoremap <Leader>b :Buffers<CR>
 " Open fzf to look for files in current directory recursively
 nnoremap <Leader>f :Files<CR>
 " Open fzf to look for words in current file
-nnoremap <C-f> :BLines<CR>
+nnoremap <silent> <Leader><C-f> :BLines<CR>
 " Look for tags (ctags) for word under cursor
 function! FzfCurrentWord(action)
   let l:word = expand('<cword>')
@@ -1070,7 +1132,85 @@ if has('nvim')
 endif
 
 " Ruff commands
-let pyproject_toml = expand('python/pyproject.toml')
+" Recursive pyproject.toml search
+function! FindGitRootDirectory()
+    return trim(system('git rev-parse --show-toplevel'))
+endfunction
+"
+function! FindPyprojectToml(start_dir)
+    let l:dir = a:start_dir
+    while isdirectory(l:dir)
+        let l:config_file = l:dir . '/pyproject.toml'
+        if filereadable(l:config_file)
+            return l:config_file
+        endif
+        let l:parent = fnamemodify(l:dir, ':h')
+        if l:parent == l:dir
+            break
+        endif
+        let l:dir = l:parent
+    endwhile
+    return ''
+endfunction
+
+" function! FindPyprojectTomlDown(start_dir)
+"     let l:search_path = a:start_dir . '/**/pyproject.toml'
+"     let l:matches = glob(l:search_path, 0, 1)
+"     return len(l:matches) > 0 ? l:matches[0] : ''
+" endfunction
+
+
+function! FindPyprojectTomlDown(start_dir)
+    let l:max_depth = 1
+    let l:queue = [a:start_dir]
+    let l:visited = []
+
+    while !empty(l:queue)
+        let l:dir = remove(l:queue, 0)
+        if index(l:visited, l:dir) != -1
+            continue
+        endif
+        call add(l:visited, l:dir)
+
+        " Check current directory
+        let l:config_file = l:dir . '/pyproject.toml'
+        if filereadable(l:config_file)
+            return l:config_file
+        endif
+
+        " Add subdirectories if under depth limit
+        let l:depth = len(split(l:dir[strlen(a:start_dir):], '/'))
+        if l:depth < l:max_depth
+            let l:subdirs = globpath(l:dir, '*/', 1, 1)
+            call extend(l:queue, l:subdirs)
+        endif
+    endwhile
+
+    return ''
+endfunction
+
+function! GetPyprojectToml()
+    let l:candidates = [
+                \ expand('python/pyproject.toml'),
+                \ expand('backend/pyproject.toml'),
+                \ ]
+
+    " Check each candidate in order
+    for l:path in l:candidates
+        if filereadable(l:path)
+            return l:path
+        endif
+    endfor
+
+    " Fallback to downward search from project root
+    return FindPyprojectTomlDown(FindGitRootDirectory())
+endfunction
+
+
+" Attempt to use specific file first; fallback to downward search
+let pyproject_toml = GetPyprojectToml()
+" let pyproject_toml = expand('python/pyproject.toml')
+
 if filereadable(pyproject_toml)
     command! -nargs=0 Ruff execute '!ruff format --config ' . pyproject_toml . ' % && ruff check --fix --config ' . pyproject_toml . ' % && ruff format --config ' . pyproject_toml . ' %'
     command! -nargs=0 RuffCheck execute '!ruff check --fix --config ' . pyproject_toml . ' %'
