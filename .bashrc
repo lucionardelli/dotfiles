@@ -147,6 +147,9 @@ fi
 export CLICOLOR=1
 export LSCOLORS=Exfxcxdxbxegedabagacad
 
+if [ -f ~/.bash_kw ]; then
+    source ~/.bash_kw
+fi
 # Necessary to use brewst-sdk
 if [ -f ~/.bash_irobot ]; then
     source ~/.bash_irobot
@@ -232,3 +235,5 @@ export PATH=$PATH:/usr/local/go/bin
 
 # Avoid opening less for "short" outputs
 export LESS=eFRX
+
+. "$HOME/.local/bin/env"
