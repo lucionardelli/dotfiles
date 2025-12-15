@@ -27,10 +27,15 @@ alias bat="batcat"
 
 vag() {
     ignore_test=false
+    ignore_migrations=false
     while [[ $# -gt 0 ]]; do
         case "$1" in
             -it)
                 ignore_test=true
+                shift
+                ;;
+            -im)
+                ignore_migrations=true
                 shift
                 ;;
             *)
@@ -48,11 +53,14 @@ vag() {
         if $ignore_test && [[ "$filename" == *"test"* ]]; then
             continue
         fi
+        if $ignore_migrations && [[ "$filename" == *"migrations"* ]]; then
+            continue
+        fi
         files+=("$filename")
     done < <(ag -l "$query" "$@")
     
     if [ ${#files[@]} -ne 0 ]; then
-        nvim +"set hlsearch" "+/$query" "${files[@]}"
+        nvim "+/$query" "${files[@]}"
     fi
 }
 # Open the result of last command in vim
@@ -160,5 +168,3 @@ fzf-git-checkout() {
 }
 alias gb='fzf-git-branch'
 alias gco='fzf-git-checkout'
-
-alias bf='$HOME/go/bin/butterfish shell'
