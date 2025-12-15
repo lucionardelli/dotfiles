@@ -3,6 +3,7 @@ export WIP_AHS_DIR=$(readlink -f $HOME/AHS/wip-digital-front-door/)
 export DFD_PYLIB_COMMON=$(readlink -f $HOME/AHS/dfd-pylib-common/)
 export DXP_PYLIB_INFRA_COMMON=$(readlink -f $HOME/AHS/dxp-pylib-infra-common/)
 export FORMIO_AHS_DIR=$(readlink -f $HOME/AHS/formio/)
+export AHS_OMOP_DIR=$(readlink -f $HOME/AHS/dxp-omop/)
 
 # Add helpful compile alias when entering one of the repos
 alias a='cd $DEFAULT_AHS_DIR'
@@ -13,6 +14,7 @@ alias wipp='cd $WIP_AHS_DIR/python'
 alias fio='cd $FORMIO_AHS_DIR'
 alias ac='cd $DFD_PYLIB_COMMON'
 alias aic='cd $DXP_PYLIB_INFRA_COMMON'
+alias ao='cd $AHS_OMOP_DIR'
 
 set_ahs_env () {
   if [[ -z "${SECRET_NGROK_TOKEN}" ]]; then
@@ -55,6 +57,8 @@ cd () {
 # Manually call this when a new terminal/tab is opened
 checkifahs
 
+alias start-citrix=sudo systemctl start ctxcwalogd.service
+alias stop-citrix=sudo systemctl stop ctxcwalogd.service
   
 # While we are reactnativing...
 # export ANDROID_HOME="${HOME}/Android/Sdk"
