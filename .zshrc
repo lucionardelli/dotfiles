@@ -7,6 +7,8 @@ fi
 
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
+
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -148,7 +150,7 @@ fi
 [ -s ~/.bash_aliases ] && source ~/.bash_aliases
 [ -s ~/.bash_irobot ] && source ~/.bash_irobot
 [ -s ~/.bash_ahs ] && source ~/.bash_ahs
-# [ -s ~/.bash_tako ] && source ~/.bash_tako
+[ -s ~/.bash_kw ] && source ~/.bash_kw
 
 
 # Avoid opening less for "short" outputs
@@ -202,3 +204,10 @@ bindkey -M viins "^L" clear-screen
 bindkey -M vicmd "^L" clear-screen
 
 unset ZSH_AUTOSUGGEST_USE_ASYNC
+source ~/powerlevel10k/powerlevel10k.zsh-theme
+
+. "$HOME/.local/bin/env"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
