@@ -57,6 +57,9 @@
     grepstash = "!f() { for i in `git stash list --format=\"%gd\"` ; \
               do git stash show -p $i | grep -H --label=\"$i\" \"$@\" ; done ; }; f"
 
+    # Commit without running alembic-check
+    cisa = "!f() { SKIP=alembic-check git commit \"$@\"; }; f"
+
 # Highlight whitespace in diffs
 [color]
     ui = true

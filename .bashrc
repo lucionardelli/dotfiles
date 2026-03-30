@@ -237,3 +237,9 @@ export PATH=$PATH:/usr/local/go/bin
 export LESS=eFRX
 
 . "$HOME/.local/bin/env"
+
+
+# For Android SDK
+export ANDROID_HOME="${HOME}/Android/Sdk"
+export PATH=$PATH:$ANDROID_HOME/emulator
+export PATH=$PATH:$ANDROID_HOME/platform-tools

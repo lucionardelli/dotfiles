@@ -140,6 +140,9 @@ if has('nvim')
     " Save as sudo trick doesn't work in nvim
     Plug 'lambdalisue/vim-suda'
 
+    " Markdown preview
+    Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && npx --yes yarn install' }
+
 else
     " Black intregration for better python formatting
     Plug 'psf/black', { 'branch': 'stable' }
@@ -325,7 +328,8 @@ endfunction
 "endfunction
 
 function! MakeJsonPretty()
-    execute "%!python3 -m json.tool"
+    " Run Python inline to pretty-print without escaping non-ASCII characters
+    execute "%!python3 -c 'import sys, json; print(json.dumps(json.load(sys.stdin), indent=4, ensure_ascii=False))'"
     set filetype=json
     set foldmethod=indent
     silent w
@@ -713,6 +717,7 @@ runtime macros/matchit.vim
 nnoremap <F7> :%s/\s\+$<ENTER>
 nnoremap <F8> :g/\s*import pdb;\s*pdb.set_trace()$/d<ENTER>
 nnoremap <F9> Oimport pdb; pdb.set_trace()  # noqa fmt: skip<ESC>:w<ENTER>
+nnoremap <Leader><F9> Oimport debugpy; debugpy.breakpoint()  # noqa fmt: skip<ESC>:w<ENTER>
 
 " save as sudo
 if has('nvim')
@@ -1212,6 +1217,9 @@ let pyproject_toml = GetPyprojectToml()
 " let pyproject_toml = expand('python/pyproject.toml')
 
 if filereadable(pyproject_toml)
+    command! -nargs=0 EchoRuff echo '!ruff format --config ' . pyproject_toml . ' % && ruff check --fix --config ' . pyproject_toml . ' % && ruff format --config ' . pyproject_toml . ' %'
+    command! -nargs=0 CopyRuff :let @+='!ruff format --config ' . pyproject_toml . ' % && ruff check --fix --config ' . pyproject_toml . ' % && ruff format --config ' . pyproject_toml . ' %' | echo 'Copied to clipboard: ' . @+
+
     command! -nargs=0 Ruff execute '!ruff format --config ' . pyproject_toml . ' % && ruff check --fix --config ' . pyproject_toml . ' % && ruff format --config ' . pyproject_toml . ' %'
     command! -nargs=0 RuffCheck execute '!ruff check --fix --config ' . pyproject_toml . ' %'
     command! -nargs=0 RuffFormat execute '!ruff format --config ' . pyproject_toml . ' %'
@@ -1258,14 +1266,52 @@ let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 "" Project specifics config (e.g. remove unnecessary dirs from paths)
 command! -nargs=0 Break :let @+="break ".substitute(expand('%'), 'python/', '', 'g').":".line(".") | echo 'Copied to clipboard: ' . @+
 function! FromImport()
-    let l:filepath = expand('%')
-    let l:module = substitute(l:filepath, '.py$', '', 'g')
-    let l:module = substitute(l:module, 'python/', '', 'g')
-    let l:module = substitute(l:module, 'website/website', 'website', 'g')
-    let l:module = substitute(l:module, '/', '.', 'g')
-    let l:import_statement = 'from ' . l:module . ' import ' . expand('<cword>')
-    let @+ = l:import_statement
-    echo 'Copied to clipboard: ' . @+
+    " Only operate on Python files
+    if expand('%:e') !=# 'py'
+        echoerr 'Not a Python file'
+        return
+    endif
+
+    " expand('%:p:.') gets the path relative to the current working directory
+    let l:path = expand('%:p:.')
+    let l:parts = split(l:path, '/')
+
+    " Configurable root prefixes to strip
+    let l:strip_prefixes = ['backend', 'python']
+
+    " 1. Remove unwanted root prefixes
+    if !empty(l:parts) && index(l:strip_prefixes, l:parts[0]) >= 0
+        call remove(l:parts, 0)
+    endif
+
+    " 2. Deduplicate website/website
+    if len(l:parts) > 1 && l:parts[0] ==# 'website' && l:parts[1] ==# 'website'
+        call remove(l:parts, 1)
+    endif
+
+    " 3. Handle filename and __init__ logic
+    if !empty(l:parts)
+        let l:last = remove(l:parts, -1)
+        if l:last !=# '__init__.py'
+            call add(l:parts, fnamemodify(l:last, ':r'))
+        endif
+    endif
+
+    " 4. Build the module string
+    let l:module = join(l:parts, '.')
+
+    let l:symbol = expand('<cword>')
+
+    " Final import statement
+    if empty(l:module)
+        let l:import = printf('import %s', l:symbol)
+    else
+        let l:import = printf('from %s import %s', l:module, l:symbol)
+    endif
+
+    call setreg('+', l:import)
+    redraw | echo 'Copied: ' . l:import
 endfunction
+
 command! -nargs=0 FromImport :call FromImport()
 command! -nargs=0 FI :FromImport
