@@ -1,0 +1,19 @@
+name="gcommit"
+description = "Generates a clean, descriptive commit message from staged changes."
+
+prompt = """
+Enable raw markdown mode.
+Check these staged changes:
+!{git diff --staged}
+
+Come up with a commit message that is both descriptive and not TOO verbose.
+Rules:
+- NO emojis.
+- NO "feat", "fix", "bug", or other conventional commit tags.
+- DO NOT include granular details unless they are the main point of the change (e.g., DO NOT mention specific internal function names, file paths, or 'added unit tests').
+- Mention significant libraries, frameworks, or algorithms used if they are central to the implementation.
+- Provide a high-level functional summary followed by a brief explanation of the technical approach or core technologies employed.
+- NO "AI-generated" disclaimers/intros.
+- People should be able to understand the gist of the change and the underlying methodology just by reading the message.
+- **Output ONLY the RAW description text.** No conversational filler or wrapping the response in a code block.
+"""
