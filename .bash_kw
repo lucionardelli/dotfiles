@@ -1,5 +1,5 @@
 export KW_DIR=$(readlink -f $HOME/kw/)
-export BLU_DIR=$KW_DIR/blu
+export BLU_DIR=$KW_DIR/blu-appointment
 export PROJECTERIA_DIR=$KW_DIR/projecteria
 
 alias kb='cd $BLU_DIR'

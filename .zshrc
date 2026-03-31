@@ -204,9 +204,6 @@ bindkey -M viins "^L" clear-screen
 bindkey -M vicmd "^L" clear-screen
 
 unset ZSH_AUTOSUGGEST_USE_ASYNC
-source ~/powerlevel10k/powerlevel10k.zsh-theme
-
-. "$HOME/.local/bin/env"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
