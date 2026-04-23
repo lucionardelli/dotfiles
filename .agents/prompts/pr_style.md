@@ -8,7 +8,7 @@ Generate an awesome pull request description by analyzing the provided git diff.
 - **Environment Variables:** List any new variables introduced, including the name, purpose, and default value.
 
 ## Rules & Formatting
-- **Output ONLY the RAW description text.** No conversational filler or wrapping the response in a code block.
+- **Output ONLY the RAW MD description text.** No conversational filler or wrapping the response in a code block.
 - Stick to high-level changes and their impact on the project.
 - Use Markdown headers (`###`) for "Overview", "New Endpoints", and "Environment Variables" as needed.
 - Maintain a high-level perspective on project impact rather than line-by-line implementation.

@@ -30,7 +30,7 @@
     cmd = vim -f -c "MergetoolStart" "$MERGED" "$BASE" "$LOCAL" "$REMOTE"
     trustExitCode = false
 [push]
-	default = simple
+	default = current
 	autoSetupRemote = true
 [alias]
     untracked = "!${EDITOR} $(git ls-files --others --exclude-standard)"

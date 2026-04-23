@@ -24,6 +24,16 @@ if ! git rev-parse --verify "$BASE_BRANCH" >/dev/null 2>&1; then
     exit 1
 fi
 
-# 3. Execution
-# We use the triple-dot syntax to get changes since the branch diverged
+
+# 3. Get current branch name
+CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+# 4. Parse Jira issue key and description
+ISSUE_KEY=$(echo "$CURRENT_BRANCH" | cut -d'-' -f1 | tr '[:lower:]' '[:upper:]')
+ISSUE_DESC=$(echo "$CURRENT_BRANCH" | cut -d'-' -f2- | sed 's/-/ /g')
+
+# 5. Print PR title
+echo "PR_TITLE: ${ISSUE_KEY}: ${ISSUE_DESC^}"
+
+# 6. Execution: diff against base
 git diff "$BASE_BRANCH...HEAD"

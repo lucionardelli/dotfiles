@@ -6,14 +6,27 @@ Enable raw markdown mode.
 Check these staged changes:
 !{git diff --staged}
 
-Come up with a commit message that is both descriptive and not TOO verbose.
+Write a concise, descriptive commit message.
+
 Rules:
-- NO emojis.
-- NO "feat", "fix", "bug", or other conventional commit tags.
-- DO NOT include granular details unless they are the main point of the change (e.g., DO NOT mention specific internal function names, file paths, or 'added unit tests').
-- Mention significant libraries, frameworks, or algorithms used if they are central to the implementation.
+- No emojis.
+- No conventional commit prefixes (feat, fix, etc.).
+- Focus on WHAT changed and WHY, not file-level details.
+- Avoid mentioning function names, file paths, or trivial changes unless they are central to the change.
+- Include implementation approach only if it adds clarity.
 - Provide a high-level functional summary followed by a brief explanation of the technical approach or core technologies employed.
 - NO "AI-generated" disclaimers/intros.
 - People should be able to understand the gist of the change and the underlying methodology just by reading the message.
+- Keep the message high-signal and human-readable.
 - **Output ONLY the RAW description text.** No conversational filler or wrapping the response in a code block.
+
+
+Format:
+Summary (required)
+- Imperative, ~50 characters, no period
+
+Body (optional)
+- Explain why the change was made and how it works (if needed)
+- 1–3 short paragraphs max
+- Wrap lines at ~72 characters
 """

@@ -2,11 +2,14 @@ name = "gprdesc"
 description = "Generates an awesome PR summary by analyzing git diffs against develop, staging, or main."
 
 prompt = """
-Enable raw markdown mode. 
-Analyze the following git diff and generate a PR description.
+IMPORTANT: Enable raw markdown mode. 
+Analyze the following git diff and generate a PR description in RAW MARKDOWN format.
+
+# TITLE
+!{bash ~/.agents/bin/gprdesc.sh $1 | grep '^PR_TITLE:' | sed 's/PR_TITLE: //g'}
 
 # CHANGES
-!{bash ~/.agents/bin/gprdesc.sh $1}
+!{bash ~/.agents/bin/gprdesc.sh $1 | grep -v '^PR_TITLE:'}
 
 # STYLE RULES
 @~/.agents/prompts/pr_style.md

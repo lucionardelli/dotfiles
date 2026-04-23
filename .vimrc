@@ -40,6 +40,7 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'Lokaltog/vim-distinguished'
 Plug 'mhinz/vim-janah'
 Plug 'catppuccin/vim', { 'as': 'catppuccin' }
+Plug 'rakr/vim-one'
 
 "Smoother moves when using C-D and C-F
 Plug 'psliwka/vim-smoothie'
@@ -48,9 +49,9 @@ Plug 'psliwka/vim-smoothie'
 " Use buffers as GUI tabs
 Plug 'jlanzarotta/bufexplorer'
 
-" Beautifier
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+" Make me pretty
+Plug 'itchyny/lightline.vim'
+Plug 'mengelbrecht/lightline-bufferline'
 
 " Start page for vim
 Plug 'mhinz/vim-startify'
@@ -68,7 +69,8 @@ Plug 'rhysd/vim-clang-format'
 Plug 'sheerun/vim-polyglot'
 
 " C++ Additional syntax Highlighting
-Plug 'octol/vim-cpp-enhanced-highlight'
+" Plug 'octol/vim-cpp-enhanced-highlight'  " Sadly we are not C++ing anymore.
+" Let polyglot handle it for now
 
 " Javascript formatting and highlithing
 Plug 'pangloss/vim-javascript'
@@ -157,31 +159,6 @@ call plug#end()
 if vim_plug_just_installed
     :execute PlugInstall
 endif
-
-" => Airline configuration
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#show_splits = 0
-let g:airline#extensions#tabline#show_close_button = 0
-let g:airline#extensions#tabline#tab_nr_type = 1
-let g:airline#extensions#tabline#show_tab_nr = 1
-let g:airline#extensions#tabline#tab_min_count = 2
-let g:airline#extensions#tabline#tabs_label = 't'
-
-" Disable fancy powerline arrows
-let g:airline#extensions#tabline#left_sep = ''
-let g:airline#extensions#tabline#left_alt_sep = ''
-let g:airline#extensions#tabline#right_sep = ''
-let g:airline#extensions#tabline#right_alt_sep = ''
-
-let g:airline#extensions#tabline#buffer_nr_show = 1
-let g:airline#extensions#tabline#buffer_nr_format = '[%s]'
-let airline#extensions#tabline#tabs_label = ''
-let g:airline#extensions#tabline#show_tab_type = 0
-let g:airline#extensions#tabline#fnamecollapse = 1
-let g:airline#extensions#tabline#buffers_label = ''
-let g:airline#extensions#tabline#tabs_label = ''
-let g:airline#extensions#tabline#fnamemod = ':t' " Just show the file name
-let g:airline_section_c = '%<%F%m %#__accent_red#%{airline#util#wrap(airline#parts#readonly(),0)}%#__restore__#'
 
 " => Startify configuration
 let g:startify_session_dir            = '~/.vim/session'
@@ -484,64 +461,6 @@ command Gdiff Gvdiffsplit
 " Quicker commands
 noremap ; :
 
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Colors and Fonts
-" """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Enable syntax highlighting
-syntax enable
-if has('termguicolors')
-    set termguicolors
-endif
-
-" Set utf8 as standard encoding and en_US as the standard language
-set encoding=utf8
-
-" Use Unix as the standard file type
-set ffs=unix,dos,mac
-
-set t_Co=256   " This is may or may not needed.
-let g:rehash256=1
-let g:molokai_original = 1
-
-let use_neodark = 1
-let use_gruvbox = 0
-let use_gruvbox_light = 0
-let use_distinguished = 0
-
-if use_gruvbox
-    set background=dark
-    let g:gruvbox_italic=1
-    let g:gruvbox_termcolors=256
-    let g:solarized_termcolors=256
-    colorscheme gruvbox
-    let g:airline_theme='gruvbox'
-endif
-if use_gruvbox_light
-    set background=light
-    let g:gruvbox_italic=1
-    let g:gruvbox_termcolors=256
-    let g:solarized_termcolors=256
-    colorscheme gruvbox
-    let g:airline_theme='gruvbox'
-endif
-if use_neodark
-    set background=dark
-    let g:neodark#background = '#202020'
-    let g:neodark#use_256color = 1 " default: 0
-    let g:neodark#terminal_transparent = 0 " default: 0
-    let g:neodark#solid_vertsplit = 0 " default: 0
-    colorscheme neodark
-    let g:airline_theme='dark'
-endif
-if use_distinguished
-    set background=dark
-    let g:distinguished#background = '#202020'
-    let g:distinguished = 0 " default: 0
-    let g:distinguished#solid_vertsplit = 0 " default: 0
-    colorscheme distinguished
-    let g:airline_theme='distinguished'
-endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Text, tab and indent related
@@ -1123,19 +1042,6 @@ function! DebugQuery()
 endfunction
 
 
-" NEOVIM specific setup
-if has('nvim')
-    let use_gruvbox_flat = 1
-    if use_gruvbox_flat
-        let g:solarized_termtrans=1
-        let g:solarized_termcolors=256
-        " let g:airline_theme='distinguished'
-        let g:airline_theme='badwolf'
-        set background=dark
-        colorscheme gruvbox-flat
-    endif
-endif
-
 " Ruff commands
 " Recursive pyproject.toml search
 function! FindGitRootDirectory()
@@ -1315,3 +1221,112 @@ endfunction
 
 command! -nargs=0 FromImport :call FromImport()
 command! -nargs=0 FI :FromImport
+
+" -------------------------------
+" Colors & Fonts
+" -------------------------------
+syntax enable
+if has('termguicolors')
+    set termguicolors
+endif
+
+set encoding=utf8
+set ffs=unix,dos,mac
+set background=dark
+
+" -------------------------------
+" Choose color scheme
+" -------------------------------
+let g:colorscheme_choice = 'one'
+
+if g:colorscheme_choice ==# 'neodark'
+    let g:neodark#background = '#202020'
+    let g:neodark#use_256color = 1
+    let g:neodark#terminal_transparent = 0
+    let g:neodark#solid_vertsplit = 0
+    colorscheme neodark
+elseif g:colorscheme_choice ==# 'gruvbox'
+    let g:gruvbox_italic = 1
+    let g:gruvbox_termcolors = 256
+    colorscheme gruvbox
+elseif g:colorscheme_choice ==# 'gruvbox-flat'
+    let g:solarized_termtrans = 1
+    let g:solarized_termcolors = 256
+    colorscheme gruvbox-flat
+elseif g:colorscheme_choice ==# 'distinguished'
+    let g:distinguished#background = '#202020'
+    let g:distinguished#solid_vertsplit = 0
+    colorscheme distinguished
+elseif g:colorscheme_choice ==# 'one'
+    colorscheme one
+endif
+
+" -------------------------------
+" Lightline & Bufferline Styling
+" -------------------------------
+let g:lightline = {
+      \ 'colorscheme': g:colorscheme_choice,
+      \ 'separator': { 'left': '', 'right': '' },
+      \ 'subseparator': { 'left': '', 'right': '' },
+      \ 'active': {
+      \   'left': [ ['mode', 'paste'], ['gitbranch', 'readonly', 'filename', 'modified'] ],
+      \   'right': [ ['lineinfo'], ['percent'], ['fileformat', 'fileencoding', 'filetype'] ]
+      \ },
+      \ 'tabline': {
+      \   'left': [ ['buffers'] ],
+      \   'right': [ ['close'] ]
+      \ },
+      \ 'component_expand': {
+      \   'buffers': 'lightline#bufferline#buffers'
+      \ },
+      \ 'component_type': {
+      \   'buffers': 'tabsel'
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'fugitive#head'
+      \ }
+      \ }
+
+" Better Bufferline visuals
+let g:lightline#bufferline#show_number  = 2 " 2 = Ordinal number
+let g:lightline#bufferline#unnamed      = '[No Name]'
+let g:lightline#bufferline#modified_indicator = ' ●' " Add a dot for unsaved files
+let g:lightline#bufferline#more_symbol = '...'
+let g:lightline#bufferline#unicode_symbols = 1 " Use nicer unicode characters
+
+" -------------------------------
+" Bufferline Settings
+" -------------------------------
+set showtabline=2  " Always show tabline
+set noshowmode     " Hide default --INSERT-- text
+set mouse=a        " Enable mouse clicks to switch buffers
+let g:lightline#bufferline#auto_hide = 0  " hide buffers after ms of entering. 0 to disable
+
+" Quickly switch to buffers 1-10 with <Leader>1-0
+nmap <Leader>1 <Plug>lightline#bufferline#go(1)
+nmap <Leader>2 <Plug>lightline#bufferline#go(2)
+nmap <Leader>3 <Plug>lightline#bufferline#go(3)
+nmap <Leader>4 <Plug>lightline#bufferline#go(4)
+nmap <Leader>5 <Plug>lightline#bufferline#go(5)
+nmap <Leader>6 <Plug>lightline#bufferline#go(6)
+nmap <Leader>7 <Plug>lightline#bufferline#go(7)
+nmap <Leader>8 <Plug>lightline#bufferline#go(8)
+nmap <Leader>9 <Plug>lightline#bufferline#go(9)
+nmap <Leader>0 <Plug>lightline#bufferline#go(10)
+
+" Quickly close buffers 1-10 with <Leader>c1-0
+nmap <Leader>c1 <Plug>lightline#bufferline#delete(1)
+nmap <Leader>c2 <Plug>lightline#bufferline#delete(2)
+nmap <Leader>c3 <Plug>lightline#bufferline#delete(3)
+nmap <Leader>c4 <Plug>lightline#bufferline#delete(4)
+nmap <Leader>c5 <Plug>lightline#bufferline#delete(5)
+nmap <Leader>c6 <Plug>lightline#bufferline#delete(6)
+nmap <Leader>c7 <Plug>lightline#bufferline#delete(7)
+nmap <Leader>c8 <Plug>lightline#bufferline#delete(8)
+nmap <Leader>c9 <Plug>lightline#bufferline#delete(9)
+nmap <Leader>c0 <Plug>lightline#bufferline#delete(10)
+
+
+let g:lightline#bufferline#show_number  = 1
+let g:lightline#bufferline#shorten_path = 1
+let g:lightline#bufferline#unnamed      = '[No Name]'

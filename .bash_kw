@@ -1,6 +1,7 @@
 export KW_DIR=$(readlink -f $HOME/kw/)
 export BLU_DIR=$KW_DIR/blu-appointment
 export PROJECTERIA_DIR=$KW_DIR/projecteria
+export LECATEX_DIR=$KW_DIR/lecatex
 
 alias kb='cd $BLU_DIR'
 alias kbb='cd $BLU_DIR/backend'
@@ -8,5 +9,6 @@ alias kbf='cd $BLU_DIR/frontend'
 alias kp='cd $PROJECTERIA_DIR'
 alias kpb='cd $PROJECTERIA_DIR/backend'
 alias kpf='cd $PROJECTERIA_DIR/frontend'
+alias kl='cd $LECATEX_DIR/'
 
 alias bssh='ssh srv-d2jop7e3jp1c73fcomcg@ssh.virginia.render.com'
