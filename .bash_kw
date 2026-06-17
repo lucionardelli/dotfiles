@@ -9,6 +9,6 @@ alias kbf='cd $BLU_DIR/frontend'
 alias kp='cd $PROJECTERIA_DIR'
 alias kpb='cd $PROJECTERIA_DIR/backend'
 alias kpf='cd $PROJECTERIA_DIR/frontend'
-alias kl='cd $LECATEX_DIR/'
+alias kl='cd $LECATEX_DIR/odoo-docker'
 
 alias bssh='ssh srv-d2jop7e3jp1c73fcomcg@ssh.virginia.render.com'

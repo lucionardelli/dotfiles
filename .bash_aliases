@@ -1,20 +1,14 @@
 #!/bin/bash
 
-# Grep aliases
-alias gga='ag -l'
-alias ggan='ag'
-alias ggp='ag --python -l'
-alias ggpn='ag --python'
-alias ggh='ag -G .*\.h -l'
-alias gghn='ag -G .*\.h'
-alias ggc='ag -G .*\.c -l'
-alias ggcn='ag -G .*\.c'
-alias gghpp='ag -G .*\.hpp -l'
-alias gghppn='ag -G .*\.hpp'
-alias ggcpp='ag --cpp -l'
-alias ggcppn='ag --cpp'
-alias ggsc='ag -G SC.* -l'
-alias ggscn='ag -G SC.*'
+
+copilot() {
+    env -u WAYLAND_DISPLAY \
+        -u WAYLAND_SOCKET \
+        XDG_SESSION_TYPE=x11 \
+        DISPLAY=${DISPLAY:-:0} \
+        /home/$USER/.local/bin/copilot "$@"
+}
+
 alias ggdjango="ag -l --ignore={'*migrations*',}"
 
 alias gg='ag --python --cpp --js -l'
@@ -23,8 +17,10 @@ alias ggn='ag --python --cpp --js'
 # Batcat is too long!
 alias bat="batcat"
 
-# Open all references to the given term
+# We are using ripgrep now
+# alias ag=rg
 
+# Open all references to the given term
 vag() {
     ignore_test=false
     ignore_migrations=false

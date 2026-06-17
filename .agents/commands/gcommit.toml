@@ -16,6 +16,7 @@ Rules:
 - Include implementation approach only if it adds clarity.
 - Provide a high-level functional summary followed by a brief explanation of the technical approach or core technologies employed.
 - NO "AI-generated" disclaimers/intros.
+- NO "Co-authored-by: "
 - People should be able to understand the gist of the change and the underlying methodology just by reading the message.
 - Keep the message high-signal and human-readable.
 - **Output ONLY the RAW description text.** No conversational filler or wrapping the response in a code block.

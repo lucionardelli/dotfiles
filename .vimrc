@@ -785,6 +785,7 @@ set mouse=a
 
 " Set the window’s title, reflecting the file currently being edited.
 set title
+set titlestring=%<%F\ %h%m%r
 
 " Follow and go back from tags quicker
 noremap <Leader>] <C-]>   " forward
@@ -850,28 +851,26 @@ nnoremap <silent> <Leader><C-f> :BLines<CR>
 " Look for tags (ctags) for word under cursor
 function! FzfCurrentWord(action)
   let l:word = expand('<cword>')
-  if len(l:word) == 0
-    if a:action == "tag"
-      execute ':Tags'
-    elseif a:action == "ag"
-      execute ':Ag'
+
+  if empty(l:word)
+    if a:action ==# "tag"
+      execute 'Tags'
+    elseif a:action ==# "ag"
+      execute 'Ag'
     endif
-  else
-      let l:list = taglist(l:word)
-      if a:action == "tag"
-        if len(l:list) == 1
-          execute ':tag ' . l:word
-        else
-          call fzf#vim#tags(l:word, {'options': '--no-preview'})
-        endif
-      elseif a:action == "ag"
-        call fzf#vim#ag(l:word)
-      endif
+    return
+  endif
+
+  if a:action ==# "tag"
+    execute 'Tags ' . l:word
+
+  elseif a:action ==# "ag"
+    " execute 'Ag ' . shellescape(l:word)
+    execute 'Ag ' . l:word
   endif
 endfunction
 nnoremap <silent><Leader>] :call FzfCurrentWord("tag")<cr>
 nnoremap <silent><Leader><S-f> :call FzfCurrentWord("tag")<cr>
-
 
 " Search selected word using Ag
 nnoremap <silent><Leader>ag :call FzfCurrentWord("ag")<cr>
@@ -1034,7 +1033,13 @@ function! DebugQuery()
     let l:save = winsaveview()
     let importStatement = 'from sqlalchemy.dialects import postgresql'
     let queryVariable = expand('<cword>')
-    let debugStatement = "print(f\"\\n\\n{" . queryVariable . ".statement.compile(dialect=postgresql.dialect(), compile_kwargs={'literal_binds': True})}\\n\\n\")"
+
+    " Check if the variable is 'stmt' to accommodate SQLAlchemy 2.0 syntax
+    if queryVariable ==# 'stmt'
+        let debugStatement = "print(f\"\\n\\n{" . queryVariable . ".compile(dialect=postgresql.dialect(), compile_kwargs={'literal_binds': True})}\\n\\n\")"
+    else
+        let debugStatement = "print(f\"\\n\\n{" . queryVariable . ".statement.compile(dialect=postgresql.dialect(), compile_kwargs={'literal_binds': True})}\\n\\n\")"
+    endif
 
     execute "normal! o" . importStatement . "\<Esc>"
     execute "normal! o" . debugStatement . "\<Esc>"

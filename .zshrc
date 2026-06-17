@@ -6,15 +6,13 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 # If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
-export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
+export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 
-
-# Path to your oh-my-zsh installation.
+# Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
+# load a random theme each time Oh My Zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 # ZSH_THEME="robbyrussell"
@@ -72,7 +70,6 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # see 'man strftime' for details.
 # HIST_STAMPS="mm/dd/yyyy"
 
-
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
@@ -103,15 +100,18 @@ export EDITOR='vim'
 # if [[ -n $SSH_CONNECTION ]]; then
 #   export EDITOR='vim'
 # else
-#   export EDITOR='mvim'
+#   export EDITOR='nvim'
 # fi
 
 # Compilation flags
-# export ARCHFLAGS="-arch x86_64"
+# export ARCHFLAGS="-arch $(uname -m)"
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
+# Set personal aliases, overriding those provided by Oh My Zsh libs,
+# plugins, and themes. Aliases can be placed here, though Oh My Zsh
+# users are encouraged to define aliases within a top-level file in
+# the $ZSH_CUSTOM folder, with .zsh extension. Examples:
+# - $ZSH_CUSTOM/aliases.zsh
+# - $ZSH_CUSTOM/macos.zsh
 # For a full list of active aliases, run `alias`.
 #
 # Example aliases
@@ -128,20 +128,6 @@ if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
 
-# Automagically activate conda environment if folder has a .condaauto with
-# the name of the environment to activate
-if [ -e /usr/local/etc/conda_auto_activate.sh ]
-then
-    source /usr/local/etc/conda_auto_activate.sh
-fi
-
-if [ -s ~/.local/bin/virtualenvwrapper_lazy.sh ]
-then
-    export WORKON_HOME=$HOME/.virtualenvs
-    export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
-    export VIRTUALENVWRAPPER_VIRTUALENV="$HOME/.local/bin/virtualenv"
-    source ~/.local/bin/virtualenvwrapper_lazy.sh
-fi
 
 # Avoid removing everything when using https://github.com/lucionardelli/dotfiles repo
 [ -s ~/.git_clean.sh ] && source ~/.git_clean.sh
@@ -169,8 +155,6 @@ if [ -f '/AHS/google-cloud-sdk/path.zsh.inc' ]; then . '/AHS/google-cloud-sdk/pa
 # The next line enables shell command completion for gcloud.
 if [ -f '/AHS/google-cloud-sdk/completion.zsh.inc' ]; then . '/AHS/google-cloud-sdk/completion.zsh.inc'; fi
 
-# The next line adds Go to the PATH
-export PATH=$PATH:/usr/local/go/bin
 
 # zsh-autosuggestions config
 
@@ -204,10 +188,6 @@ bindkey -M viins "^L" clear-screen
 bindkey -M vicmd "^L" clear-screen
 
 unset ZSH_AUTOSUGGEST_USE_ASYNC
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 
 # For Android SDK

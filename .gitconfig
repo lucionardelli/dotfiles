@@ -59,6 +59,7 @@
 
     # Commit without running alembic-check
     cisa = "!f() { SKIP=alembic-check git commit \"$@\"; }; f"
+	rebase-dev = !git fetch origin develop:develop --prune && git rebase develop
 
 # Highlight whitespace in diffs
 [color]
@@ -67,5 +68,6 @@
     whitespace = red reverse
 [core]
     whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
+	editor = vim
 [credential]
     helper = cache --timeout=3600
